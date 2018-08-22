@@ -1,7 +1,7 @@
 <style lang="scss">
 
-@import '../common/style/var.pcss';
-@import '../common/style/hairline.pcss';
+@import '../styles/common/var.scss';
+@import '../styles/common/hairline.scss';
 
 .van-badge {
   display: block;
