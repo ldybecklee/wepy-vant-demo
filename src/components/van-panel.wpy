@@ -1,0 +1,71 @@
+<style lang="scss">
+
+@import '../styles/common/var.scss';
+@import '../styles/common/hairline.scss';
+
+.van-panel {
+  background: $white;
+
+  &__header-value {
+    color: $red;
+  }
+
+  &__footer {
+    padding: 10px 15px;
+  }
+}
+
+</style>
+
+<template>
+
+<view class="van-panel van-hairline--top-bottom custom-class">
+  <van-cell 
+    wx:if="{{ title || desc || status }}"
+    title="{{ title }}"
+    label="{{ desc }}"
+    value="{{ status }}"
+    custom-class="{{ headerClass }}"
+    value-class="van-panel__header-value"
+  />
+  <slot wx:else name="header" />
+
+  <view class="van-panel__content">
+    <slot />
+  </view>
+
+  <view wx:if="{{ useFooterSlot }}" class="van-panel__footer van-hairline--top footer-class">
+    <slot name="footer" />
+  </view>
+</view>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+Component({
+  externalClasses: [
+    'custom-class',
+    'footer-class'
+  ],
+
+  options: {
+    multipleSlots: true,
+    addGlobalClass: true
+  },
+
+  properties: {
+    desc: String,
+    title: String,
+    status: String,
+    headerClass: String,
+    useFooterSlot: Boolean
+  }
+});
+
+export default class vanPanel extends wepy.component {
+
+  
+}
+</script>
