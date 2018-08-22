@@ -1,0 +1,162 @@
+<style lang="scss">
+
+@import '../styles/common/var.scss';
+@import '../styles/common/mixins/ellipsis.scss';
+
+.van-card {
+  color: $text-color;
+  height: 100px;
+  font-size: 16px;
+  background: #fafafa;
+  position: relative;
+  box-sizing: border-box;
+  padding: 5px 15px 5px 115px;
+
+  &--center,
+  &__thumb {
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__thumb {
+    top: 5px;
+    left: 15px;
+    width: 90px;
+    height: 90px;
+    position: absolute;
+  }
+
+  &__img {
+    border: none;
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  &,
+  &__thumb,
+  &__row {
+    display: flex;
+  }
+
+  &__content {
+    width: 100%;
+
+    &--center {
+      height: 90px;
+      align-items: center;
+    }
+  }
+
+  &__title,
+  &__desc {
+    line-height: 20px;
+    word-break: break-all;
+  }
+
+  &__title {
+    max-height: 40px;
+
+    @mixin multi-ellipsis 2;
+  }
+
+  &__desc {
+    color: $gray-darker;
+    font-size: 12px;
+    max-height: 20px;
+
+    @mixin ellipsis;
+  }
+
+  &__price,
+  &__num {
+    flex: 1;
+    min-width: 80px;
+    line-height: 20px;
+    text-align: right;
+  }
+
+  &__price {
+    font-size: 14px;
+  }
+
+  &__num {
+    color: $gray-darker;
+    font-size: 12px;
+  }
+
+  &__footer {
+    right: 15px;
+    bottom: 5px;
+    position: absolute;
+
+    .van-button {
+      margin-left: 5px;
+    }
+  }
+}
+
+</style>
+
+<template>
+
+<view class="custom-class van-card">
+  <view class="van-card__thumb">
+    <image wx:if="{{ thumb }}" src="{{ thumb }}" class="van-card__img thumb-class" />
+    <slot wx:else name="thumb" />
+  </view>
+  <view class="van-card__content">
+    <view wx:if="{{ title || price || price === 0 }}" class="van-card__row">
+      <view wx:if="{{ title }}" class="van-card__title title-class">{{ title }}</view>
+      <view wx:if="{{ price || price === 0 }}" class="van-card__price price-class">{{ currency }} {{ price }}</view>
+    </view>
+    <slot wx:else name="title" />
+    <view wx:if="{{ desc || num }}" class="van-card__row">
+      <view wx:if="{{ desc }}" class="van-card__desc desc-class">{{ desc }}</view>
+      <view wx:if="{{ num }}" class="van-card__num num-class">x {{ num }}</view>
+    </view>
+    <slot wx:else name="desc" />
+    <slot name="tags" />
+  </view>
+  <view class="van-card__footer">
+    <slot name="footer" />
+  </view>
+</view>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+Component({
+  options: {
+    multipleSlots: true,
+    addGlobalClass: true
+  },
+
+  externalClasses: [
+    'custom-class',
+    'thumb-class',
+    'title-class',
+    'price-class',
+    'desc-class',
+    'num-class'
+  ],
+
+  properties: {
+    num: String,
+    desc: String,
+    thumb: String,
+    title: String,
+    price: String,
+    centered: Boolean,
+    currency: {
+      type: String,
+      default: '¥'
+    }
+  }
+});
+
+export default class zanCard extends wepy.component {
+  
+}
+</script>
