@@ -1,0 +1,229 @@
+<style lang="scss">
+
+.zan-noticebar {
+  display: -webkit-box;
+  display: flex;
+  padding: 9px 10px;
+  font-size: 12px;
+  line-height: 1.5
+}
+
+.zan-noticebar--within-icon {
+  position: relative;
+  padding-right: 30px
+}
+
+.zan-noticebar__left-icon {
+  height: 18px;
+  min-width: 20px;
+  padding-top: 1px;
+  box-sizing: border-box
+}
+
+.zan-noticebar__left-icon>image {
+  width: 16px;
+  height: 16px
+}
+
+.zan-noticebar__right-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 15px;
+  line-height: 1
+}
+
+.zan-noticebar__content-wrap {
+  position: relative;
+  -webkit-box-flex: 1;
+  flex: 1;
+  height: 18px;
+  overflow: hidden
+}
+
+.zan-noticebar__content {
+  position: absolute;
+  white-space: nowrap
+}
+
+</style>
+<template>
+  <view
+  wx:if="{{ show }}"
+  class="zan-noticebar {{ hasRightIcon ? 'zan-noticebar--within-icon' : '' }}"
+  style="color: {{ color }};background-color: {{ backgroundColor }}"
+>
+  <view wx:if="{{ leftIcon }}" class="zan-noticebar__left-icon">
+    <image src="{{ leftIcon }}" />
+  </view>
+  <view id="{{ componentId }}__content-wrap" class="zan-noticebar__content-wrap">
+    <view id="{{ componentId }}__content" class="zan-noticebar__content" animation="{{ animationData }}">
+      {{ text }}
+    </view>
+  </view>
+
+  <block wx:if="{{ mode }}">
+    <zan-icon
+      wx:if="{{ mode === 'closeable' }}"
+      class="zan-noticebar__right-icon"
+      type="close"
+      bindtap="_handleButtonClick"
+    />
+    <navigator
+      wx:if="{{ mode === 'link' }}"
+      url="{{ url }}"
+      open-type="{{ openType }}"
+    >
+      <zan-icon class="zan-noticebar__right-icon" type="arrow" />
+    </navigator>
+  </block>
+
+</view>
+
+</template>
+<script>
+import wepy from 'wepy'
+
+const VALID_MODE = ['closeable'];
+const FONT_COLOR = '#f60';
+const BG_COLOR = '#fff7cc';
+
+export default class zanNoticebar extends wepy.component {
+  
+  props = {
+    componentId: String,
+    text: String,
+    mode: String,
+    url: String,
+    openType: {
+      type: String,
+      default: 'navigate'
+    },
+    delay: {
+      type: Number,
+      default: 0
+    },
+    speed: {
+      type: Number,
+      default: 40
+    },
+    scrollable: {
+      type: Boolean,
+      default: false
+    },
+    leftIcon: String,
+    color: {
+      type: String,
+      default: FONT_COLOR
+    },
+    backgroundColor: {
+      type: String,
+      default: BG_COLOR
+    }
+  }
+  data = {
+    animationData: {},
+    show: true,
+    hasRightIcon: false,
+    width: undefined,
+    wrapWidth: undefined,
+    elapse: undefined,
+    animation: null,
+    resetAnimation: null,
+    timer: null
+  }
+  onLoad() {
+    var mode = this.mode;
+
+    if (mode && this._checkMode(mode)) {
+      this.hasRightIcon = true;
+    }
+
+    this.methods._init.call(this);
+  }
+  methods = {
+    _checkMode(val) {
+      var isValidMode = VALID_MODE.indexOf(val);
+      if (!isValidMode) {
+        console.warn('mode only accept value of ' + VALID_MODE + ', now get ' + val + '.');
+      }
+      return isValidMode;
+    },
+    _init() {
+      var that = this;
+      let componentId = this.componentId;
+
+      wx.createSelectorQuery().select(`#${componentId}__content`).boundingClientRect(function (rect) {
+        if (!rect || !rect.width) {
+          return;
+        }
+        that.width = rect.width;
+
+        wx.createSelectorQuery().select(`#${componentId}__content-wrap`).boundingClientRect(function (rect) {
+          if (!rect || !rect.width) {
+            return;
+          }
+
+          var wrapWidth = rect.width;
+          var width = that.width,
+              speed = that.speed,
+              scrollable = that.scrollable,
+              delay = that.delay;
+
+          if (scrollable && wrapWidth < width) {
+            var elapse = width / speed * 1000;
+            var animation = wx.createAnimation({
+              duration: elapse,
+              timeingFunction: 'linear',
+              delay: delay
+            });
+            var resetAnimation = wx.createAnimation({
+              duration: 0,
+              timeingFunction: 'linear'
+            });
+
+            that.elapse = elapse;
+            that.wrapWidth = wrapWidth;
+            that.animation = animation;
+            that.resetAnimation = resetAnimation;
+            // that._scroll();
+            that.methods._scroll.call(that);
+          }
+        }).exec();
+      }).exec();
+    },
+    _scroll() {
+      let that = this;
+      var animation = that.animation,
+          resetAnimation = that.resetAnimation,
+          wrapWidth = that.wrapWidth,
+          elapse = that.elapse,
+          speed = that.speed;
+
+      resetAnimation.translateX(wrapWidth).step();
+      var animationData = animation.translateX(-(elapse * speed) / 1000).step();
+      that.animationData = resetAnimation.export();
+      that.$apply();
+      setTimeout(function () {
+        that.animationData = animationData.export();
+        that.$apply();
+      }, 100);
+
+      var timer = setTimeout(function () {
+        that.methods._scroll.call(that);
+      }, elapse);
+
+      that.timer = timer;
+    },
+    _handleButtonClick() {
+      var timer = this.data.timer;
+
+      timer && clearTimeout(timer);
+      this.setData({
+        show: false,
+        timer: null
+      });
+    }
+  }
+}
+</script>
