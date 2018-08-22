@@ -1,0 +1,142 @@
+<style type="scss">
+@import '../common/style/var.scss';
+@import '../common/style/hairline.scss';
+
+.van-actionsheet {
+  color: $text-color;
+  max-height: 90%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background-color: $background-color;
+
+  &--withtitle {
+    background-color: $white;
+  }
+
+  &__item,
+  &__cancel {
+    height: 50px;
+    line-height: 50px;
+    font-size: 16px;
+    text-align: center;
+    background-color: $white;
+
+    &:active {
+      background-color: $active-color;
+    }
+  }
+
+  &__item--disabled {
+    color: $gray;
+
+    &:active {
+      background-color: $white;
+    }
+  }
+
+  &__subname {
+    font-size: 12px;
+    color: $gray-darker;
+    margin-left: 5px;
+  }
+
+  &__loading {
+    display: inline-block;
+  }
+
+  &__cancel {
+    margin-top: 10px;
+  }
+
+  &__header {
+    font-size: 16px;
+    line-height: 44px;
+    text-align: center;
+  }
+
+  &__close {
+    top: 0;
+    right: 0;
+    padding: 0 15px;
+    font-size: 18px;
+    color: $gray-dark;
+    position: absolute;
+    line-height: inherit;
+  }
+}
+</style>
+
+<template>
+
+<van-popup
+  show="{{ show }}"
+  overlay="{{ overlay }}"
+  close-on-click-overlay="{{ closeOnClickOverlay }}"
+  custom-class="van-actionsheet {{ title ? 'van-actionsheet--withtitle' : '' }}"
+  position="bottom"
+  bind:close="onClose"
+>
+  <view wx:if="{{ title }}" class="van-hairline--top-bottom van-actionsheet__header">
+    <view>{{ title }}</view>
+    <van-icon custom-class="van-actionsheet__close" name="close" bind:click="onClose" />
+  </view>
+  <view wx:else class="van-hairline--bottom">
+    <view
+      wx:for="{{ actions }}"
+      wx:key="index"
+      class="van-actionsheet__item van-hairline--top {{ item.disabled || item.loading ? 'van-actionsheet__item--disabled' : '' }} {{ item.className || '' }}"
+      data-index="{{ index }}"
+      bind:tap="onSelect"
+    >
+      <block wx:if="{{ !item.loading }}">
+        <view class="van-actionsheet__name">{{ item.name }}</view>
+        <view class="van-actionsheet__subname" wx:if="{{ item.subname }}">{{ item.subname }}</view>
+      </block>
+      <van-loading wx:else custom-class="van-actionsheet__loading" size="20px" />
+    </view>
+  </view>
+  <view
+    wx:if="{{ cancelText }}"
+    class="van-actionsheet__cancel van-hairline--top"
+    bind:tap="onCancel"
+  >
+    {{ cancelText }}
+  </view>
+  <view wx:else class="van-actionsheet__content">
+    <slot />
+  </view>
+</van-popup>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+export default class vanActionsheet extends wepy.component {
+  props = {
+    options: {
+      cardClass: {
+        type: String,
+        default: 'card-class'
+      },
+      useThumbSlot: {
+        type: Boolean,
+        default: false
+      },
+      useDetailSlot: {
+        type: Boolean,
+        default: false
+      },
+      thumb: String,
+      price: String,
+      title: String,
+      num: Number,
+      desc: String,
+      status: String,
+      componentId: String
+    }
+  }
+  data = {}
+  
+}
+</script>
