@@ -1,0 +1,100 @@
+<style lang="scss">
+
+@import '../styles/common/var.scss';
+
+.van-switch {
+  height: 1em;
+  width: 1.6em;
+  display: inline-block;
+  position: relative;
+  background: $white;
+  box-sizing: content-box;
+  border: 1px solid rgba(0, 0, 0, .1);
+  border-radius: 1em;
+
+  &__node {
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 1em;
+    height: 1em;
+    transition: .3s;
+    position: absolute;
+    border-radius: 100%;
+    background-color: $white;
+    box-shadow: 0 3px 1px 0 rgba(0, 0, 0, .05), 0 2px 2px 0 rgba(0, 0, 0, .1), 0 3px 3px 0 rgba(0, 0, 0, .05);
+  }
+
+  &__loading {
+    top: 25%;
+    left: 25%;
+    width: 50%;
+    height: 50%;
+    position:absolute;
+  }
+
+  &--on {
+    background-color: #44db5e;
+
+    .van-switch__node {
+      transform: translateX(.6em);
+    }
+  }
+
+  &--disabled {
+    opacity: .4;
+  }
+}
+
+</style>
+
+<template>
+
+<view
+  class="van-switch custom-class {{ checked ? 'van-switch--on' : '' }} {{ disabled ? 'van-switch--disabled' : '' }}"
+  style="font-size: {{ size }};"
+  bind:tap="onClick"
+>
+  <view class="van-switch__node node-class">
+    <van-loading wx:if="{{ loading }}" size="50%" custom-class="van-switch__loading" />
+  </view>
+</view>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+Component({
+  options: {
+    addGlobalClass: true
+  },
+
+  externalClasses: ['custom-class', 'node-class'],
+
+  properties: {
+    checked: Boolean,
+    loading: Boolean,
+    disabled: Boolean,
+    size: {
+      type: String,
+      value: '30px'
+    }
+  },
+
+  methods: {
+    onClick() {
+      if (!this.data.disabled && !this.data.loading) {
+        const checked = !this.data.checked;
+        this.triggerEvent('input', checked);
+        this.triggerEvent('change', checked);
+      }
+    }
+  }
+});
+
+export default class vanSwitch extends wepy.component {
+
+  
+}
+</script>
