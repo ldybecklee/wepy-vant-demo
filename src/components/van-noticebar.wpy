@@ -1,0 +1,274 @@
+<style lang="scss">
+
+.van-notice-bar {
+  display: flex;
+  padding: 9px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+
+  &--within-icon {
+    position: relative;
+    padding-right: 30px;
+  }
+
+  &__left-icon {
+    height: 18px;
+    min-width: 20px;
+    padding-top: 1px;
+    box-sizing: border-box;
+
+    > image {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &__right-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 15px;
+    line-height: 1;
+  }
+
+  &__content-wrap {
+    position: relative;
+    flex: 1;
+    height: 18px;
+    overflow: hidden;
+  }
+
+  &__content {
+    position: absolute;
+    white-space: nowrap;
+  }
+}
+
+</style>
+
+<template>
+
+<view
+  wx:if="{{ show }}"
+  class="custom-class van-notice-bar {{ hasRightIcon ? 'van-notice-bar--within-icon' : '' }}"
+  style="color: {{ color }};background-color: {{ backgroundColor }}"
+  bind:tap="onClick"
+>
+  <view wx:if="{{ leftIcon }}" class="van-notice-bar__left-icon">
+    <image src="{{ leftIcon }}" />
+  </view>
+  <view class="van-notice-bar__content-wrap">
+    <view class="van-notice-bar__content" animation="{{ animationData }}">
+      {{ text }}
+    </view>
+  </view>
+
+  <block wx:if="{{ mode }}">
+    <van-icon
+      wx:if="{{ mode === 'closeable' }}"
+      class="van-notice-bar__right-icon"
+      name="close"
+      bind:tap="_handleButtonClick"
+    />
+    <navigator
+      wx:if="{{ mode === 'link' }}"
+      url="{{ url }}"
+      open-type="{{ openType }}"
+    >
+      <van-icon class="van-notice-bar__right-icon" name="arrow" />
+    </navigator>
+  </block>
+</view>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+const VALID_MODE = ['closeable', 'link'];
+const FONT_COLOR = '#f60';
+const BG_COLOR = '#fff7cc';
+
+Component({
+  options: {
+    addGlobalClass: true
+  },
+
+  externalClasses: ['custom-class'],
+
+  properties: {
+    text: {
+      type: String,
+      value: '',
+      observer() {
+        this.setData({}, this._init);
+      }
+    },
+    mode: {
+      type: String,
+      value: ''
+    },
+    url: {
+      type: String,
+      value: ''
+    },
+    openType: {
+      type: String,
+      value: 'navigate'
+    },
+    delay: {
+      type: Number,
+      value: 0
+    },
+    speed: {
+      type: Number,
+      value: 50
+    },
+    scrollable: {
+      type: Boolean,
+      value: true
+    },
+    leftIcon: {
+      type: String,
+      value: ''
+    },
+    color: {
+      type: String,
+      value: FONT_COLOR
+    },
+    backgroundColor: {
+      type: String,
+      value: BG_COLOR
+    }
+  },
+
+  data: {
+    show: true,
+    hasRightIcon: false,
+    width: undefined,
+    wrapWidth: undefined,
+    elapse: undefined,
+    animation: null,
+    resetAnimation: null,
+    timer: null
+  },
+
+  attached() {
+    const { mode } = this.data;
+    if (mode && this._checkMode(mode)) {
+      this.setData({
+        hasRightIcon: true
+      });
+    }
+  },
+
+  detached() {
+    const { timer } = this.data;
+    timer && clearTimeout(timer);
+  },
+
+  methods: {
+    _checkMode(val) {
+      const isValidMode = ~VALID_MODE.indexOf(val);
+      if (!isValidMode) {
+        console.warn(`mode only accept value of ${VALID_MODE}, now get ${val}.`);
+      }
+      return isValidMode;
+    },
+
+    _init() {
+      wx.createSelectorQuery()
+        .in(this)
+        .select('.van-notice-bar__content')
+        .boundingClientRect((rect) => {
+          if (!rect || !rect.width) {
+            return;
+          }
+          this.setData({
+            width: rect.width
+          });
+
+          wx.createSelectorQuery()
+            .in(this)
+            .select('.van-notice-bar__content-wrap')
+            .boundingClientRect((rect) => {
+              if (!rect || !rect.width) {
+                return;
+              }
+
+              const wrapWidth = rect.width;
+              const {
+                width, speed, scrollable, delay
+              } = this.data;
+
+              if (scrollable && wrapWidth < width) {
+                const elapse = width / speed * 1000;
+                const animation = wx.createAnimation({
+                  duration: elapse,
+                  timeingFunction: 'linear',
+                  delay
+                });
+                const resetAnimation = wx.createAnimation({
+                  duration: 0,
+                  timeingFunction: 'linear'
+                });
+
+                this.setData({
+                  elapse,
+                  wrapWidth,
+                  animation,
+                  resetAnimation
+                }, () => {
+                  this._scroll();
+                });
+              }
+            })
+            .exec();
+        })
+        .exec();
+    },
+
+    _scroll() {
+      const {
+        animation, resetAnimation, wrapWidth, elapse, speed
+      } = this.data;
+      resetAnimation.translateX(wrapWidth).step();
+      const animationData = animation.translateX(-(elapse * speed) / 1000).step();
+      this.setData({
+        animationData: resetAnimation.export()
+      });
+      setTimeout(() => {
+        this.setData({
+          animationData: animationData.export()
+        });
+      }, 100);
+
+      const timer = setTimeout(() => {
+        this._scroll();
+      }, elapse);
+
+      this.setData({
+        timer
+      });
+    },
+
+    _handleButtonClick() {
+      const { timer } = this.data;
+      timer && clearTimeout(timer);
+      this.setData({
+        show: false,
+        timer: null
+      });
+    },
+
+    onClick(event) {
+      this.triggerEvent('click', event);
+    }
+  }
+});
+
+export default class vanNoticeBar extends wepy.component {
+
+  
+}
+</script>
