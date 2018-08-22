@@ -1,0 +1,125 @@
+<style lang="scss">
+@import '../zanui/color.scss';
+@import '../zanui/helper.scss';
+.zan-card {
+  display: flex;
+  margin-left: 0px;
+  padding: 5px 15px;
+  overflow: hidden;
+  position: relative;
+  font-size: 14px;
+}
+
+.zan-card__thumb {
+  width: 90px;
+  height: 90px;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+  background-size: cover;
+}
+
+.zan-card__img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.zan-card__detail {
+  flex: 1;
+  margin-left: 10px;
+  position: relative;
+}
+
+.zan-card__detail-row {
+  overflow: hidden;
+  line-height: 20px;
+  min-height: 20px;
+  margin-bottom: 3px;
+}
+
+.zan-card__right-col {
+  float: right;
+}
+
+.zan-card__left-col {
+  margin-right: 80px;
+}
+
+</style>
+<template>
+  <view class="zan-card {{ options.cardClass }} {{componentId}}">
+
+    <!-- 左侧图片 -->
+    <view class="zan-card__thumb">
+      <image class="zan-card__img"
+        src="{{ options.thumb }}" 
+        mode="aspectFit"
+      ></image>
+    </view>
+    <!-- 右侧详情 -->
+    <view class="zan-card__detail">
+      <block wx:if="{{ options.useDetailSlot }}">
+        <slot name="detail-slot"></slot>
+      </block>
+      <block wx:else>
+        <view class="zan-card__detail-row">
+          <view class="zan-card__right-col">¥ {{ options.price }}</view>
+          <view class="zan-card__left-col zan-ellipsis--l2">
+            {{ options.title }}
+          </view>
+        </view>
+
+        <view class="zan-card__detail-row zan-c-gray-darker">
+          <view wx:if="{{ options.num }}" class="zan-card__right-col">x {{ options.num }}</view>
+          <view wx:if="{{ options.desc }}" class="zan-card__left-col">
+            {{ options.desc }}
+          </view>
+        </view>
+
+        <view wx:if="{{ options.status }}" class="zan-card__detail-row">
+          <view class="zan-card__left-col zan-c-red">{{ options.status }}</view>
+        </view>
+      </block>
+    </view>
+
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+
+export default class zanCard extends wepy.component {
+  props = {
+    options: {
+      cardClass: {
+        type: String,
+        default: 'card-class'
+      },
+      useThumbSlot: {
+        type: Boolean,
+        default: false
+      },
+      useDetailSlot: {
+        type: Boolean,
+        default: false
+      },
+      thumb: String,
+      price: String,
+      title: String,
+      num: Number,
+      desc: String,
+      status: String,
+      componentId: String
+    }
+  }
+  data = {}
+  
+}
+</script>
