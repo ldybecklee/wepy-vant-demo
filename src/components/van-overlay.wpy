@@ -1,0 +1,53 @@
+<style lang="scss">
+
+.van-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+</style>
+
+<template>
+
+<van-transition
+  show="{{ show }}"
+  custom-class="van-overlay"
+  custom-style="z-index: {{ zIndex }}; {{ mask ? 'background-color: rgba(0, 0, 0, .7);' : '' }}; {{ customStyle }}"
+  bind:tap="onClick"
+/>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+Component({
+  options: {
+    addGlobalClass: true
+  },
+
+  properties: {
+    show: Boolean,
+    mask: Boolean,
+    customStyle: String,
+    zIndex: {
+      type: Number,
+      value: 1
+    }
+  },
+
+  methods: {
+    onClick() {
+      this.triggerEvent('click');
+    }
+  }
+});
+
+export default class vanOverlay extends wepy.component {
+
+  
+}
+</script>
