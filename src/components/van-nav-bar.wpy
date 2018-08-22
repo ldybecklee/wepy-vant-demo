@@ -1,0 +1,137 @@
+<style lang="scss">
+
+@import '../styles/common/var.scss';
+
+.van-nav-bar {
+  height: 46px;
+  position: relative;
+  user-select: none;
+  text-align: center;
+  line-height: 46px;
+  background-color: $white;
+
+  &__arrow {
+    color: $blue;
+    vertical-align: middle;
+    transform: rotate(180deg);
+
+    + .van-nav-bar__text {
+      margin-left: -20px;
+      padding-left: 25px;
+    }
+  }
+
+  &--fixed {
+    top: 0;
+    left: 0;
+    width: 100%;
+    position: fixed;
+  }
+
+  &__title {
+    margin: 0 auto;
+    max-width: 60%;
+    font-size: 16px;
+  }
+
+  &__left,
+  &__right {
+    bottom: 0;
+    font-size: 14px;
+    position: absolute;
+  }
+
+  &__left {
+    left: 15px;
+  }
+
+  &__right {
+    right: 15px;
+  }
+
+  &__text {
+    color: $blue;
+    margin: 0 -15px;
+    padding: 0 15px;
+    display: inline-block;
+    vertical-align: middle;
+
+    &:active {
+      background-color: $active-color;
+    }
+  }
+}
+
+</style>
+
+<template>
+
+<view
+  class="custom-class van-nav-bar van-hairline--bottom {{ fixed ? 'van-nav-bar--fixed' : '' }}"
+  style="z-index: {{ zIndex }}"
+>
+  <view class="van-nav-bar__left" bind:tap="onClickLeft">
+    <block wx:if="{{ leftArrow || leftText }}">
+      <van-icon
+        wx:if="{{ leftArrow }}"
+        name="arrow"
+        custom-class="van-nav-bar__arrow"
+      />
+      <view wx:if="{{ leftText }}" class="van-nav-bar__text">{{ leftText }}</view>
+    </block>
+    <slot wx:else name="left" />
+  </view>
+  <view class="van-nav-bar__title title-class van-ellipsis">
+    <block wx:if="{{ title }}">{{ title }}</block>
+    <slot wx:else name="title" />
+  </view>
+  <view class="van-nav-bar__right" bind:tap="onClickRight">
+    <view wx:if="{{ rightText }}" class="van-nav-bar__text">{{ rightText }}</view>
+    <slot wx:else name="right" />
+  </view>
+</view>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+Component({
+  externalClasses: [
+    'custom-class',
+    'title-class'
+  ],
+
+  options: {
+    multipleSlots: true,
+    addGlobalClass: true
+  },
+
+  properties: {
+    title: String,
+    leftText: String,
+    rightText: String,
+    leftArrow: Boolean,
+    fixed: Boolean,
+    zIndex: {
+      type: Number,
+      value: 1
+    }
+  },
+
+  methods: {
+    onClickLeft() {
+      this.triggerEvent('click-left');
+    },
+
+    onClickRight() {
+      this.triggerEvent('click-right');
+    }
+  }
+});
+
+export default class vanNavBar extends wepy.component {
+
+  
+}
+</script>
