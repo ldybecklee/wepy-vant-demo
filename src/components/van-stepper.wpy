@@ -1,0 +1,222 @@
+<style lang="scss">
+
+@import '../styles/common/var.scss';
+
+.van-stepper {
+  font-size: 0;
+
+  &__minus,
+  &__plus,
+  &__input {
+    display: inline-block;
+    vertical-align: middle;
+    background-color: $white;
+  }
+
+  &__minus,
+  &__plus {
+    width: 40px;
+    height: 30px;
+    box-sizing: border-box;
+    border: 1px solid $border-color;
+    position: relative;
+    padding: 5px;
+
+    &::before {
+      width: 9px;
+      height: 1px;
+    }
+
+    &::after {
+      width: 1px;
+      height: 9px;
+    }
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      margin: auto;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #6c6c6c;
+    }
+
+    &:active {
+      background-color: $active-color;
+    }
+
+    &--disabled {
+      background-color: $background-color;
+
+      &::before,
+      &::after {
+        background-color: $gray;
+      }
+    }
+
+    &--disabled:active {
+      background-color: $background-color;
+    }
+  }
+
+  &__minus {
+    border-radius: 2px 0 0 2px;
+
+    &::after {
+      display: none;
+    }
+  }
+
+  &__plus {
+    border-radius: 0 2px 2px 0;
+  }
+
+  &__input {
+    width: 33px;
+    height: 26px;
+    padding: 1px;
+    border: 1px solid $border-color;
+    border-width: 1px 0;
+    border-radius: 0;
+    box-sizing: content-box;
+    color: $gray-darker;
+    font-size: 14px;
+    text-align: center;
+    -webkit-appearance: none;
+
+    &--disabled {
+      color: $gray;
+      background-color: $background-color;
+    }
+  }
+}
+
+</style>
+
+<template>
+
+<view class="van-stepper custom-class">
+  <view
+    class="minus-class van-stepper__minus {{ disabled || currentValue <= min ? 'van-stepper__minus--disabled' : '' }}"
+    bind:tap="onMinus"
+  />
+  <input
+    type="{{ integer ? 'number' : 'digit' }}"
+    class="input-class van-stepper__input {{ disabled || disableInput ? 'van-stepper__input--disabled' : '' }}"
+    value="{{ currentValue }}"
+    disabled="{{ disabled || disableInput }}"
+    bindinput="onInput"
+    bind:blur="onBlur"
+  />
+  <view
+    class="plus-class van-stepper__plus {{ disabled || currentValue >= max ? 'van-stepper__plus--disabled' : '' }}"
+    bind:tap="onPlus"
+  />
+</view>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+// Note that the bitwise operators and shift operators operate on 32-bit ints
+// so in that case, the max safe integer is 2^31-1, or 2147483647
+const MAX = 2147483647;
+
+Component({
+  options: {
+    addGlobalClass: true
+  },
+
+  externalClasses: [
+    'custom-class',
+    'input-class',
+    'plus-class',
+    'minus-class'
+  ],
+
+  properties: {
+    value: {
+      type: null,
+      observer(val) {
+        if (val !== this.currentValue) {
+          this.setData({ currentValue: this.range(val) });
+        }
+      }
+    },
+    integer: Boolean,
+    disabled: Boolean,
+    disableInput: Boolean,
+    min: {
+      type: null,
+      value: 1
+    },
+    max: {
+      type: null,
+      value: MAX
+    },
+    step: {
+      type: null,
+      value: 1
+    }
+  },
+
+  attached() {
+    this.setData({
+      currentValue: this.range(this.data.value)
+    });
+  },
+
+  methods: {
+    // limit value range
+    range(value) {
+      return Math.max(Math.min(this.data.max, value), this.data.min);
+    },
+
+    onInput(event) {
+      const { value = '' } = event.detail || {};
+      this.triggerInput(value);
+    },
+
+    onChange(type) {
+      if (this[`${type}Disabled`]) {
+        this.triggerEvent('overlimit', type);
+        return;
+      }
+
+      const diff = type === 'minus' ? -this.data.step : +this.data.step;
+      const value = Math.round((this.data.currentValue + diff) * 100) / 100;
+      this.triggerInput(this.range(value));
+      this.triggerEvent(type);
+    },
+
+    onBlur(event) {
+      const currentValue = this.range(this.data.currentValue);
+      this.triggerInput(currentValue);
+      this.triggerEvent('blur', event);
+    },
+
+    onMinus() {
+      this.onChange('minus');
+    },
+
+    onPlus() {
+      this.onChange('plus');
+    },
+
+    triggerInput(currentValue) {
+      this.setData({ currentValue });
+      this.triggerEvent('input', currentValue);
+      this.triggerEvent('change', currentValue);
+    }
+  }
+});
+
+export default class vanStepper extends wepy.component {
+
+  
+}
+</script>
