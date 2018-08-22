@@ -1,0 +1,67 @@
+<style lang="scss">
+
+@import '../styles/common/var.scss';
+
+.van-switch-cell {
+  padding-top: 8px;
+  padding-bottom: 8px;
+
+  &__switch {
+    vertical-align: middle;
+  }
+}
+
+</style>
+
+<template>
+
+<van-cell
+  center
+  title="{{ title }}"
+  border="{{ border }}"
+  custom-class="van-switch-cell"
+>
+  <van-switch
+    size="{{ size }}"
+    checked="{{ checked }}"
+    loading="{{ loading }}"
+    disabled="{{ disabled }}"
+    custom-class="van-switch-cell__switch"
+    bind:change="onChange"
+  />
+</van-cell>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+Component({
+  options: {
+    addGlobalClass: true
+  },
+
+  properties: {
+    title: String,
+    checked: Boolean,
+    border: Boolean,
+    loading: Boolean,
+    disabled: Boolean,
+    size: {
+      type: String,
+      value: '26px'
+    }
+  },
+
+  methods: {
+    onChange(event) {
+      this.triggerEvent('change', event.detail);
+    }
+  }
+});
+
+export default class vanSwitchCell extends wepy.component {
+
+  
+}
+</script>
