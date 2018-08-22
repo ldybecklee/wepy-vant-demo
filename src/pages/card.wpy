@@ -1,0 +1,53 @@
+<style lang="css">
+@import '/zanui/panel.wxss';
+@import '/zanui/card.wxss';
+@import '/zanui/color.wxss';
+</style>
+
+<template>
+<doc-page title="CARD" without-padding>
+
+  <zan-panel without-border>
+    <zan-card
+      card-class="test-card"
+      thumb="https://img.yzcdn.cn/upload_files/2016/11/25/FpqPXlrMRjKwJs8VdTu3ZDJCj4j5.jpeg?imageView2/2/w/200/h/200/q/90/format/jpeg"
+      price="999.99"
+      title="红烧牛肉【虚拟商品】【有库存】【有sku】"
+      num="2"
+      desc="3000克 50%"
+      status="已发货"
+    >
+    </zan-card>
+
+  </zan-panel>
+
+  <zan-panel title="使用slot">
+    <zan-card
+      card-class="test-card"
+      thumb="https://img.yzcdn.cn/upload_files/2016/11/25/FpqPXlrMRjKwJs8VdTu3ZDJCj4j5.jpeg?imageView2/2/w/200/h/200/q/90/format/jpeg"
+      useThumbSlot="{{ true }}"
+      useDetailSlot="{{ true }}"
+    >
+      <!-- 右侧详情 -->
+      <view slot="detail-slot" class="zan-card__detail">
+        我是自定义内容区域
+      </view>
+    </zan-card>
+  </zan-panel>
+</doc-page>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+export default class Card extends wepy.page {
+  config = {
+    navigationBarTitleText: 'Card 卡片'
+  }
+  components = {}
+  data = {}
+  methods = {}
+  onLoad() {}
+}
+</script>
