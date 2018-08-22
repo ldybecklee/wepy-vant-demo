@@ -1,0 +1,90 @@
+<style lang="scss">
+
+@import '../styles/common/var.scss';
+
+.van-notify {
+  top: 0;
+  width: 100%;
+  z-index: 110;
+  color: $white;
+  position: fixed;
+  min-height: 32px;
+  line-height: 2.3;
+  font-size: 14px;
+  text-align: center;
+  background-color: #E64340;
+}
+
+</style>
+
+<template>
+
+<van-transition
+  name="slide-down"
+  show="{{ show }}"
+  custom-class="van-notify"
+  custom-style="background-color:{{ backgroundColor }}"
+>
+  {{ text }}
+</van-transition>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+import Notify from './notify';
+
+Component({
+  options: {
+    addGlobalClass: true
+  },
+
+  properties: {
+    text: String,
+    color: {
+      type: String,
+      value: '#fff'
+    },
+    backgroundColor: {
+      type: String,
+      value: '#e64340'
+    },
+    duration: {
+      type: Number,
+      value: 3000
+    }
+  },
+
+  methods: {
+    show() {
+      const { duration } = this.data;
+
+      clearTimeout(this.timer);
+      this.setData({
+        show: true
+      });
+
+      if (duration > 0 && duration !== Infinity) {
+        this.timer = setTimeout(() => {
+          this.hide();
+        }, duration);
+      }
+    },
+
+    hide() {
+      clearTimeout(this.timer);
+      this.setData({
+        show: false
+      });
+    }
+  }
+});
+
+export default Notify;
+
+export default class vanNotify extends wepy.component {
+
+  
+}
+</script>
