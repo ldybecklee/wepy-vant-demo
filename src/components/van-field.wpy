@@ -1,0 +1,295 @@
+<style lang="scss">
+
+@import '../styles/common/var.scss';
+
+.van-field {
+  &__body {
+    display: flex;
+    align-items: center;
+
+    &--textarea {
+      min-height: 24px;
+    }
+  }
+
+  &__control {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    resize: none;
+    display: block;
+    text-align: left;
+    box-sizing: border-box;
+    line-height: inherit;
+    background-color: transparent;
+
+    &--disabled {
+      opacity: 1;
+      color: $gray-darker;
+      background-color: transparent;
+    }
+
+    &--center {
+      text-align: center;
+    }
+
+    &--right {
+      text-align: right;
+    }
+  }
+
+  &__clear,
+  &__icon-container,
+  &__button {
+    flex-shrink: 0;
+  }
+
+  &__clear,
+  &__icon-container {
+    padding: 0 10px;
+    color: $gray-dark;
+    line-height: inherit;
+    margin-right: -10px;
+    vertical-align: middle;
+  }
+
+  &__icon {
+    display: block;
+    font-size: 16px;
+    line-height: inherit;
+  }
+
+  &__button {
+    padding-left: 10px;
+  }
+
+  &__error-message {
+    color: $red;
+    font-size: 12px;
+    text-align: left;
+  }
+
+  &--error {
+    color: $red;
+  }
+
+  &--label {
+    &-center {
+      .van-cell__title {
+        text-align: center;
+      }
+    }
+
+    &-right {
+      .van-cell__title {
+        text-align: right;
+      }
+    }
+  }
+}
+
+</style>
+
+<template>
+
+<van-cell
+  icon="{{ leftIcon }}"
+  title="{{ label }}"
+  center="{{ center }}"
+  border="{{ border }}"
+  is-link="{{ isLink }}"
+  required="{{ required }}"
+  custom-style="{{ customStyle }}"
+  title-width="90px"
+  custom-class="{{ customClass }} van-field {{ labelAlign ? 'van-field--label-' + labelAlign : '' }}"
+>
+  <slot name="label" slot="title" />
+  <view class="van-field__body {{ type === 'textarea' ? 'van-field__body--textarea' : '' }}">
+    <textarea
+      wx:if="{{ type === 'textarea' }}"
+      class="input-class van-field__control van-field__textarea {{ inputAlign ? 'van-field--' + inputAlign : '' }} {{ error ? 'van-field--error' : '' }} {{ disabled ? 'van-field__control--disabled' : '' }}"
+      focus="{{ focus }}"
+      value="{{ value }}"
+      disabled="{{ disabled }}"
+      readonly="{{ readonly }}"
+      maxlength="{{ maxlength }}"
+      placeholder="{{ placeholder }}"
+      auto-height="{{ autosize }}"
+      placeholder-class="{{ placeholderClass }} {{ error ? 'van-field--error' : '' }}"
+      cursor-spacing="{{ cursorSpacing }}"
+      bindinput="onInput"
+      bind:blur="onBlur"
+      bind:focus="onFocus"
+      bind:confirm="onConfirm"
+    />
+    <input
+      wx:else
+      class="input-class van-field__control {{ inputAlign ? 'van-field--' + inputAlign : '' }} {{ error ? 'van-field--error' : '' }} {{ disabled ? 'van-field__control--disabled' : '' }}"
+      type="{{ type }}"
+      focus="{{ focus }}"
+      value="{{ value }}"
+      disabled="{{ disabled }}"
+      readonly="{{ readonly }}"
+      maxlength="{{ maxlength }}"
+      placeholder="{{ placeholder }}"
+      placeholder-class="{{ placeholderClass }} {{ error ? 'van-field--error' : '' }}"
+      confirm-type="{{ confirmType }}"
+      cursor-spacing="{{ cursorSpacing }}"
+      bindinput="onInput"
+      bind:blur="onBlur"
+      bind:focus="onFocus"
+      bind:confirm="onConfirm"
+    />
+    <van-icon
+      wx:if="{{ showClear }}"
+      name="clear"
+      custom-class="van-field__clear"
+      bind:touchstart="onClear"
+    />
+    <view class="van-field__icon-container" wx:if="{{ icon || useIconSlot }}" bind:tap="onClickIcon">
+      <van-icon
+        wx:if="{{ icon }}"
+        name="{{ icon }}"
+        custom-class="van-field__icon {{ iconClass }}"
+      />
+      <slot wx:else name="icon" />
+    </view>
+    <view wx:if="{{ useButtonSlot }}" class="van-field__button">
+      <slot name="button" />
+    </view>
+  </view>
+  <view wx:if="{{ errorMessage }}" class="van-field__error-message">
+    {{ errorMessage }}
+  </view>
+</van-cell>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+Component({
+  behaviors: ['wx://form-field'],
+
+  externalClasses: [
+    'input-class'
+  ],
+
+  options: {
+    multipleSlots: true,
+    addGlobalClass: true
+  },
+
+  properties: {
+    icon: String,
+    label: String,
+    error: Boolean,
+    focus: Boolean,
+    center: Boolean,
+    isLink: Boolean,
+    leftIcon: String,
+    disabled: Boolean,
+    autosize: Boolean,
+    readonly: Boolean,
+    required: Boolean,
+    iconClass: String,
+    clearable: Boolean,
+    labelAlign: String,
+    inputAlign: String,
+    customClass: String,
+    confirmType: String,
+    errorMessage: String,
+    placeholder: String,
+    customStyle: String,
+    useIconSlot: Boolean,
+    useButtonSlot: Boolean,
+    placeholderClass: String,
+    cursorSpacing: {
+      type: Number,
+      value: 50
+    },
+    maxlength: {
+      type: Number,
+      value: -1
+    },
+    value: {
+      type: null,
+      value: ''
+    },
+    type: {
+      type: String,
+      value: 'text'
+    },
+    border: {
+      type: Boolean,
+      value: true
+    }
+  },
+
+  data: {
+    focused: false,
+    showClear: false
+  },
+
+  methods: {
+    onInput(event) {
+      const { value = '' } = event.detail || {};
+      this.triggerEvent('input', value);
+      this.triggerEvent('change', value);
+      this.setData({
+        value,
+        showClear: this.getShowClear({ value })
+      });
+    },
+
+    onFocus(event) {
+      this.triggerEvent('focus', event);
+      this.setData({
+        focused: true,
+        showClear: this.getShowClear({ focused: true })
+      });
+    },
+
+    onBlur(event) {
+      this.focused = false;
+      this.triggerEvent('blur', event);
+      this.setData({
+        focused: false,
+        showClear: this.getShowClear({ focused: false })
+      });
+    },
+
+    onClickIcon() {
+      this.triggerEvent('click-icon');
+    },
+
+    getShowClear(options) {
+      const {
+        focused = this.data.focused,
+        value = this.data.value
+      } = options;
+
+      return this.data.clearable && focused && value !== '' && !this.data.readonly;
+    },
+
+    onClear() {
+      this.setData({
+        value: '',
+        showClear: this.getShowClear({ value: '' })
+      });
+      this.triggerEvent('input', '');
+      this.triggerEvent('change', '');
+    },
+
+    onConfirm() {
+      this.triggerEvent('confirm', this.data.value);
+    }
+  }
+});
+
+export default class vanField extends wepy.component {
+
+  
+}
+</script>
