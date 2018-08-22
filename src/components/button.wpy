@@ -138,3 +138,125 @@
 }
 
 </style>
+
+<template>
+
+<button
+  class="custom-class van-button {{ classes }}"
+  disabled="{{ disabled }}"
+  hover-class="button-hover"
+  open-type="{{ openType }}"
+  app-parameter="{{ appParameter }}"
+  hover-stop-propagation="{{ hoverStopPropagation }}"
+  hover-start-time="{{ hoverStartTime }}"
+  hover-stay-time="{{ hoverStayTime }}"
+  lang="{{ lang }}"
+  session-from="{{ sessionFrom }}"
+  send-message-title="{{ sendMessageTitle }}"
+  send-message-path="{{ sendMessagePath }}"
+  send-message-img="{{ sendMessageImg }}"
+  show-message-card="{{ showMessageCard }}"
+  bind:tap="onClick"
+  bindcontact="bindcontact"
+  bindgetuserinfo="bindgetuserinfo"
+  bindgetphonenumber="bindgetphonenumber"
+  binderror="binderror"
+  bindopensetting="bindopensetting"
+>
+  <van-loading
+    wx:if="{{ loading }}"
+    size="20px"
+    custom-class="loading-class"
+    color="{{ type === 'default' ? '#c9c9c9' : '#fff' }}"
+  />
+  <slot></slot>
+</button>
+
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+const buttonBehaviors = require('../behaviors/button');
+const classnames = require('../common/classnames');
+
+const observer = function() {
+  this.setClasses();
+};
+
+Component({
+  options: {
+    addGlobalClass: true
+  },
+
+  externalClasses: ['custom-class', 'loading-class'],
+
+  behaviors: [buttonBehaviors],
+
+  properties: {
+    type: {
+      type: String,
+      value: 'default',
+      observer
+    },
+    size: {
+      type: String,
+      value: 'normal',
+      observer
+    },
+    plain: {
+      type: Boolean,
+      observer
+    },
+    disabled: {
+      type: Boolean,
+      observer
+    },
+    loading: {
+      type: Boolean,
+      observer
+    },
+    block: {
+      type: Boolean,
+      observer
+    },
+    square: {
+      type: Boolean,
+      observer
+    }
+  },
+
+  attached() {
+    this.setClasses();
+  },
+
+  methods: {
+    onClick() {
+      if (!this.data.disabled && !this.data.loading) {
+        this.triggerEvent('click');
+      }
+    },
+
+    setClasses() {
+      const { type, size, plain, disabled, loading, square, block } = this.data;
+      this.setData({
+        classes: classnames(`van-button--${type}`, `van-button--${size}`, {
+          'van-button--block': block,
+          'van-button--plain': plain,
+          'van-button--square': square,
+          'van-button--loading': loading,
+          'van-button--disabled': disabled,
+          'van-button--unclickable': disabled || loading
+        })
+      });
+    }
+  }
+});
+
+
+export default class vanButton extends wepy.component {
+  
+  
+}
+</script>
