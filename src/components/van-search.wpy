@@ -1,0 +1,146 @@
+<style lang="scss">
+
+@import '../styles/common/var.scss';
+
+.van-search {
+  display: flex;
+  padding: 7px 15px;
+  align-items: center;
+  box-sizing: border-box;
+
+  &__field {
+    flex: 1;
+    border-radius: 4px;
+
+    &__left-icon {
+      color: $gray-dark;
+    }
+  }
+
+  &--show-action {
+    padding-right: 0;
+  }
+
+  input {
+    &::-webkit-search-decoration,
+    &::-webkit-search-cancel-button,
+    &::-webkit-search-results-button,
+    &::-webkit-search-results-decoration {
+      display: none;
+    }
+  }
+
+  &__action {
+    padding: 0 10px;
+    font-size: 14px;
+    line-height: 30px;
+    color: $gray-darker;
+
+    &:active {
+      background-color: $active-color;
+    }
+  }
+}
+
+</style>
+
+<template>
+
+<view
+  class="van-search custom-class {{ showAction || useActionSlot ? 'van-search--show-action' : '' }}"
+  style="background: {{ background }}"
+>
+  <view class="van-search__field">
+    <van-field
+      clearable
+      type="search"
+      left-icon="search"
+      border="{{ false }}"
+      confirm-type="search"
+      value="{{ currentValue }}"
+      disabled="{{ disabled }}"
+      readonly="{{ readony }}"
+      maxlength="{{ maxlength }}"
+      placeholder="{{ placeholder }}"
+      custom-style="padding: 3px 10px"
+      bind:blur="onBlur"
+      bind:focus="onFocus"
+      bind:change="onChange"
+      bind:confirm="onSearch"
+    />
+  </view>
+  <view wx:if="{{ showAction || useActionSlot }}" class="van-search__action">
+    <slot wx:if="{{ useActionSlot }}" name="action" />
+    <view wx:else bind:tap="onCancel" class="cancel-class">取消</view>
+  </view>
+</view>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+Component({
+  externalClasses: ['custom-class', 'cancel-class'],
+
+  options: {
+    multipleSlots: true,
+    addGlobalClass: true
+  },
+
+  properties: {
+    disabled: Boolean,
+    readonly: Boolean,
+    showAction: Boolean,
+    useActionSlot: Boolean,
+    placeholder: String,
+    value: {
+      type: String,
+      observer(currentValue) {
+        this.setData({ currentValue });
+      }
+    },
+    background: {
+      type: String,
+      value: '#f2f2f2'
+    },
+    maxlength: {
+      type: Number,
+      value: -1
+    }
+  },
+
+  attached() {
+    this.setData({ currentValue: this.data.value });
+  },
+
+  methods: {
+    onChange(event) {
+      this.triggerEvent('change', event.detail);
+    },
+
+    onCancel() {
+      this.setData({ currentValue: '' });
+      this.triggerEvent('cancel');
+      this.triggerEvent('change', '');
+    },
+
+    onSearch() {
+      this.triggerEvent('search', this.data.currentValue);
+    },
+
+    onFocus() {
+      this.triggerEvent('focus');
+    },
+
+    onBlur() {
+      this.triggerEvent('blur');
+    }
+  }
+});
+
+export default class vanSearch extends wepy.component {
+
+  
+}
+</script>
