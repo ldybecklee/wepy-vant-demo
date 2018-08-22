@@ -1,0 +1,167 @@
+<style lang="scss">
+
+@import '../styles/common/var.scss';
+
+.van-slider {
+  position: relative;
+  border-radius: 999px;
+  background-color: $gray-light;
+
+  &__bar {
+    position: relative;
+    border-radius: inherit;
+    background-color: $blue;
+  }
+
+  &__button {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: $white;
+    transform: translate3d(50%, -50%, 0);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .5);
+
+    /* use pseudo element to expand touch area */
+    &::after {
+      content: '';
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+    }
+  }
+
+  &--disabled {
+    opacity: .3;
+  }
+}
+
+</style>
+
+<template>
+
+<view class="custom-class van-slider {{ disabled ? 'van-slider--disabled' : '' }}" bind:tap="onClick">
+  <view class="van-slider__bar" style="{{ barStyle }}">
+    <view
+      class="van-slider__button"
+      bind:touchstart="onTouchStart"
+      catch:touchmove="onTouchMove"
+      bind:touchend="onTouchEnd"
+      bind:touchcancel="onTouchEnd"
+    />
+  </view>
+</view>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+const touchBehaviors = require('../behaviors/touch');
+
+Component({
+  options: {
+    addGlobalClass: true
+  },
+
+  externalClasses: ['custom-class'],
+
+  behaviors: [touchBehaviors],
+
+  properties: {
+    disabled: Boolean,
+    max: {
+      type: Number,
+      value: 100
+    },
+    min: {
+      type: Number,
+      value: 0
+    },
+    step: {
+      type: Number,
+      value: 1
+    },
+    value: {
+      type: Number,
+      value: 0
+    },
+    barHeight: {
+      type: String,
+      value: '2px'
+    }
+  },
+
+  attached() {
+    this.updateValue(this.data.value);
+  },
+
+  methods: {
+    getRect(callback) {
+      wx.createSelectorQuery()
+        .in(this)
+        .select('.van-slider')
+        .boundingClientRect(callback)
+        .exec();
+    },
+
+    onTouchStart(event) {
+      if (this.data.disabled) return;
+
+      this.touchStart(event);
+      this.startValue = this.format(this.data.value);
+    },
+
+    onTouchMove(event) {
+      if (this.data.disabled) return;
+
+      this.touchMove(event);
+      this.getRect(rect => {
+        const diff = this.deltaX / rect.width * 100;
+        this.updateValue(this.startValue + diff);
+      });
+    },
+
+    onTouchEnd() {
+      if (this.data.disabled) return;
+      this.updateValue(this.data.value, true);
+    },
+
+    onClick(event) {
+      if (this.data.disabled) return;
+
+      this.getRect(rect => {
+        const value = (event.detail.x - rect.left) / rect.width * 100;
+        this.updateValue(value, true);
+      });
+    },
+
+    updateValue(value, end) {
+      value = this.format(value);
+
+      this.setData({
+        value,
+        barStyle: `width: ${value}%; height: ${this.data.barHeight};`
+      });
+
+      if (end) {
+        this.triggerEvent('change', value);
+      }
+    },
+
+    format(value) {
+      const { max, min, step } = this.data;
+      return Math.round(Math.max(min, Math.min(value, max)) / step) * step;
+    }
+  }
+});
+
+export default class vanSlider extends wepy.component {
+
+  
+}
+</script>
