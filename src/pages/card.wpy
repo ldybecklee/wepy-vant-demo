@@ -1,79 +1,160 @@
 <style lang="scss">
 
-.container {
-  height: 100vh;
-  background-color: #fff;
-}
+@import '../styles/var.scss';
+@import '../styles/mixins/ellipsis.scss';
 
-.button {
-  margin-right: 5px;
+.van-card {
+  color: $text-color;
+  height: 100px;
+  font-size: 16px;
+  background: #fafafa;
+  position: relative;
+  box-sizing: border-box;
+  padding: 5px 15px 5px 115px;
+
+  &--center,
+  &__thumb {
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__thumb {
+    top: 5px;
+    left: 15px;
+    width: 90px;
+    height: 90px;
+    position: absolute;
+  }
+
+  &__img {
+    border: none;
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  &,
+  &__thumb,
+  &__row {
+    display: flex;
+  }
+
+  &__content {
+    width: 100%;
+
+    &--center {
+      height: 90px;
+      align-items: center;
+    }
+  }
+
+  &__title,
+  &__desc {
+    line-height: 20px;
+    word-break: break-all;
+  }
+
+  &__title {
+    max-height: 40px;
+
+    @include multi-ellipsis(2);
+  }
+
+  &__desc {
+    color: $gray-darker;
+    font-size: 12px;
+    max-height: 20px;
+
+    @include ellipsis();
+  }
+
+  &__price,
+  &__num {
+    flex: 1;
+    min-width: 80px;
+    line-height: 20px;
+    text-align: right;
+  }
+
+  &__price {
+    font-size: 14px;
+  }
+
+  &__num {
+    color: $gray-darker;
+    font-size: 12px;
+  }
+
+  &__footer {
+    right: 15px;
+    bottom: 5px;
+    position: absolute;
+
+    .van-button {
+      margin-left: 5px;
+    }
+  }
 }
 
 </style>
 
 <template>
 
-<view class="container">
-  <demo-block title="基础用法">
-    <van-card :options="cardOption1" />
-  </demo-block>
-
-  <demo-block title="高级用法">
-    <van-card :options="cardOption2">
-      <view slot="footer">
-        <van-button1 size="mini" :externalClasses="buttonClass1">按钮</van-button1>
-        <van-button2 size="mini">按钮</van-button2>
-      </view>
-    </van-card>
-  </demo-block>
+<view class="{{ externalClasses.custom }} van-card">
+  <view class="van-card__thumb">
+    <image wx:if="{{ options.thumb }}" src="{{ options.thumb }}" class="van-card__img thumb-class" />
+    <block wx:else>
+      <slot name="thumb" />
+    </block>
+  </view>
+  <view class="van-card__content">
+    <view wx:if="{{ options.title || options.price || options.price === 0 }}" class="van-card__row">
+      <view wx:if="{{ options.title }}" class="van-card__title title-class">{{ options.title }}</view>
+      <view wx:if="{{ options.price || options.price === 0 }}" class="van-card__price price-class">{{ options.currency }} {{ options.price }}</view>
+    </view>
+    <block wx:else>
+      <slot name="title" />
+    </block>
+    <view wx:if="{{ options.desc || options.num }}" class="van-card__row">
+      <view wx:if="{{ options.desc }}" class="van-card__desc desc-class">{{ options.desc }}</view>
+      <view wx:if="{{ options.num }}" class="van-card__num num-class">x {{ options.num }}</view>
+    </view>
+    <block wx:else>
+      <slot name="desc" />
+    </block>
+    <slot name="tags" />
+  </view>
+  <view class="van-card__footer">
+    <slot name="footer" />
+  </view>
 </view>
 
 </template>
 
 <script>
-import wepy from "wepy"
+import wepy from 'wepy'
 
-import demoBlock from "../components/demo-block"
-import vanCard from "../components/van-card"
-import vanButton from "../components/van-button"
+export default class vanCard extends wepy.component {
 
-// import buttonMixin from '../mixins/button'
-
-export default class Card extends wepy.page {
-  config = {
-    navigationBarTitleText: 'Card 卡片'
-  }
-  
-  // mixins = [buttonMixin]
-
-  components = {
-    'demo-block': demoBlock,
-    'van-card': vanCard,
-    'van-button1': vanButton,
-    'van-button2': vanButton
-  }
-  data = {
-    cardOption1: {
-      title: "标题",
-      desc: "描述信息",
-      num: 2,
-      price: '2.00',
-      thumb: 'https://img.yzcdn.cn/upload_files/2017/07/02/af5b9f44deaeb68000d7e4a711160c53.jpg'
+  props = {
+    externalClasses: {
+      type: Objec,
+      default: { custom: 'custom-class' }
     },
-    cardOption2: {
-      title: "标题",
-      desc: "描述信息",
-      num: 2,
-      price: '2.00',
-      thumb: 'https://img.yzcdn.cn/upload_files/2017/07/02/af5b9f44deaeb68000d7e4a711160c53.jpg'
-    },
-    buttonClass1: {
-      custom: 'button'
+    options: {
+      num: String,
+      desc: String,
+      thumb: String,
+      title: String,
+      price: String,
+      centered: Boolean,
+      currency: {
+        type: String,
+        default: '¥'
+      },
+      componentId: String
     }
   }
-  methods = {
+  data = {}
 
-  }
-  onLoad() {}
 }
 </script>
