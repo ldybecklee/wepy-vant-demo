@@ -1,0 +1,191 @@
+<style lang="scss">
+
+@import "../styles/index.scss";
+@import '../styles/common/ellipsis.scss';
+
+.tree-select {
+  user-select: none;
+  position: relative;
+  font-size: 16px;
+
+  &__nav {
+    width: 143px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    overflow: scroll;
+    background-color: #fff;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  &__nitem {
+    line-height: 44px;
+    padding: 0 15px;
+    background-color: #fff;
+
+    &--active {
+      background-color: #f8f8f8;
+    }
+  }
+
+  &__content {
+    padding: 0 15px;
+    margin-left: 143px;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  &__item {
+    position: relative;
+    line-height: 44px;
+    padding-left: 5px;
+    padding-right: 18px;
+
+    &--active {
+      color: #f44;
+    }
+  }
+
+  &__selected {
+    float: right;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    line-height: inherit;
+  }
+}
+
+</style>
+
+<template>
+
+<view
+  class="tree-select"
+  style="height: {{ mainHeight }}px"
+>
+  <view class="tree-select__nav">
+    <view
+      wx:for="{{ items }}"
+      wx:key="index"
+      class="tree-select__nitem van-ellipsis {{ mainActiveIndex === index ? 'tree-select__nitem--active' : '' }}"
+      data-index="{{ index }}"
+      bind:tap="onClickNav"
+    >
+      {{ item.text }}
+    </view>
+  </view>
+  <view
+    class="tree-select__content"
+    style="height: {{ itemHeight }}px"
+  >
+    <view
+      wx:for="{{ subItems }}"
+      wx:key="id"
+      class="tree-select__item van-ellipsis {{ activeId === item.id ? 'tree-select__item--active' : '' }}"
+      data-item="{{ item }}"
+      bind:tap="onSelectItem"
+    >
+      {{ item.text }}
+      <van-icon
+        wx:if="{{ activeId === item.id }}"
+        name="success"
+        class="tree-select__selected"
+      ></van-icon>
+    </view>
+  </view>
+</view>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+const ITEM_HEIGHT = 44;
+
+Component({
+  options: {
+    addGlobalClass: true
+  },
+
+  properties: {
+    items: {
+      type: Array,
+      observer() {
+        this.updateSubItems();
+        this.updateMainHeight();
+      }
+    },
+    mainActiveIndex: {
+      type: Number,
+      value: 0,
+      observer() {
+        this.updateSubItems();
+      }
+    },
+    activeId: {
+      type: Number,
+      value: 0
+    },
+    maxHeight: {
+      type: Number,
+      value: 300,
+      observer() {
+        this.updateItemHeight();
+        this.updateMainHeight();
+      }
+    }
+  },
+
+  data: {
+    subItems: [],
+    mainHeight: 0,
+    itemHeight: 0
+  },
+
+  methods: {
+    // 当一个子项被选择时
+    onSelectItem(event) {
+      const {
+        dataset = {}
+      } = event.currentTarget || {};
+      this.triggerEvent('click-item', { ...(dataset.item || {}) });
+    },
+
+    // 当一个导航被点击时
+    onClickNav(event) {
+      const {
+        dataset = {}
+      } = event.currentTarget || {};
+      this.triggerEvent('click-nav', { index: dataset.index });
+    },
+
+    // 更新子项列表
+    updateSubItems() {
+      const selectedItem = this.data.items[this.data.mainActiveIndex] || {};
+
+      this.setData({ subItems: selectedItem.children || [] });
+
+      this.updateItemHeight();
+    },
+
+    // 更新组件整体高度，根据最大高度和当前组件需要展示的高度来决定
+    updateMainHeight() {
+      const maxHeight = Math.max(this.data.items.length * ITEM_HEIGHT, this.data.subItems.length * ITEM_HEIGHT);
+
+      this.setData({ mainHeight: Math.min(maxHeight, this.data.maxHeight) });
+    },
+
+    // 更新子项列表高度，根据可展示的最大高度和当前子项列表的高度决定
+    updateItemHeight() {
+      this.setData({ itemHeight: Math.min(this.data.subItems.length * ITEM_HEIGHT, this.data.maxHeight) });
+    }
+  }
+});
+
+export default class vanTreeSelect extends wepy.component {
+
+  
+}
+</script>
