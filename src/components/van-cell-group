@@ -1,7 +1,7 @@
 <style lang="scss">
 
-@import '../styles/common/var.scss';
-@import '../styles/common/hairline.scss';
+@import '../styles/var.scss';
+@import '../styles/hairline.scss';
 
 </style>
 
