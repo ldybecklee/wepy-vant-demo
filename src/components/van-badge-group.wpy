@@ -20,8 +20,7 @@
 <script>
 import wepy from 'wepy'
 
-export default class vanBadgeGroup extends wepy.component {
-  const BADGE_PATH = '../badge/index';
+const BADGE_PATH = '../badge/index';
 
 Component({
   options: {
@@ -86,6 +85,9 @@ Component({
     }
   }
 });
+
+export default class vanBadgeGroup extends wepy.component {
+  
   
 }
 </script>
