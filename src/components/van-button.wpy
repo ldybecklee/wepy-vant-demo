@@ -1,5 +1,3 @@
-/** @todo: loading status */
-
 <style lang="scss">
 
 @import '../styles/var.scss';
@@ -144,7 +142,7 @@
 <template>
 
 <button
-  class="{{ externalClasses.custom }} van-button {{ classes }}"
+  class="{{ externalClasses[0] }} van-button {{ classes }}"
   disabled="{{ disabled }}"
   hover-class="button-hover"
   open-type="{{ openType }}"
@@ -163,7 +161,7 @@
   <van-loading
     wx:if="{{ loading }}"
     size="20px"
-    custom-class="loading-class"
+    custom-class="{{ externalClasses[1] }}"
     color="{{ type === 'default' ? '#c9c9c9' : '#fff' }}"
   />
   <slot></slot>
@@ -181,11 +179,8 @@ export default class vanButton extends wepy.component {
   
   props = {
     externalClasses: {
-      type: Object,
-      default: { 
-        custom: 'custom-class', 
-        loading: 'loading-class'
-      }
+      type: Array,
+      default: ['custom-class', 'loading-class']
     },
     type: {
       type: String,
