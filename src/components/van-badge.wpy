@@ -71,8 +71,7 @@
 <script>
 import wepy from 'wepy'
 
-export default class zanCard extends wepy.component {
-  const BADGE_GROUP_PATH = '../badge-group/index';
+const BADGE_GROUP_PATH = '../badge-group/index';
 
 Component({
   options: {
@@ -105,6 +104,9 @@ Component({
     }
   }
 });
+
+export default class vanBadge extends wepy.component {
+  
   
 }
 </script>
