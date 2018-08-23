@@ -1,6 +1,6 @@
 <style lang="scss">
 
-@import '../styles/common/var.scss';
+@import '../styles/var.scss';
 
 .van-loading {
   z-index: 0;
