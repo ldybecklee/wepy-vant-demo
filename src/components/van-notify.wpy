@@ -33,7 +33,7 @@
 <script>
 import wepy from 'wepy'
 
-import Notify from './notify';
+// import Notify from './notify'
 
 Component({
   options: {
@@ -80,8 +80,6 @@ Component({
     }
   }
 });
-
-export default Notify;
 
 export default class vanNotify extends wepy.component {
 
