@@ -1,0 +1,137 @@
+<style lang="scss">
+
+@import '../styles/common/var.scss';
+
+.van-toast {
+  display: flex;
+  color: $white;
+  font-size: 12px;
+  line-height: 1.2;
+  border-radius: 5px;
+  word-break: break-all;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  box-sizing: border-box;
+  background-color: rgba(0, 0, 0, .7);
+
+  &__container {
+    top: 50%;
+    left: 50%;
+    z-index: 3001;
+    position: fixed;
+    transform: translate(-50%, -50%);
+  }
+
+  &--text {
+    padding: 12px;
+    min-width: 220px;
+  }
+
+  &--icon {
+    width: 120px;
+    min-height: 120px;
+    padding: 15px;
+
+    .van-toast__icon {
+      height: 1em;
+      font-size: 50px;
+    }
+
+    .van-toast__text {
+      font-size: 14px;
+      padding-top: 10px;
+    }
+  }
+
+  &__loading {
+    margin: 10px 0 5px;
+  }
+
+  &--top {
+    transform: translate(0, -30vh);
+  }
+
+  &--bottom {
+    transform: translate(0, 30vh);
+  }
+}
+
+</style>
+
+<template>
+
+<van-overlay
+  show="{{ show && (mask || forbidClick) }}"
+  mask="{{ mask }}"
+  z-index="3000"
+/>
+<van-transition
+  show="{{ show }}"
+  custom-class="van-toast__container"
+>
+  <view class="van-toast van-toast--{{ type === 'text' ? 'text' : 'icon' }} van-toast--{{ position }}">
+    <!-- text only -->
+    <view wx:if="{{ type === 'text' }}">{{ message }}</view>
+
+    <!-- with icon -->
+    <block wx:else>
+      <van-loading
+        wx:if="{{ type === 'loading' }}"
+        color="white"
+        type="{{ loadingType }}"
+        custom-class="van-toast__loading"
+      />
+      <van-icon wx:else class="van-toast__icon" name="{{ type }}" />
+      <view wx:if="{{ message }}" class="van-toast__text">{{ message }}</view>
+    </block>
+  </view>
+</van-transition>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+import Toast from './toast';
+
+Component({
+  options: {
+    addGlobalClass: true
+  },
+
+  properties: {
+    show: Boolean,
+    mask: Boolean,
+    message: String,
+    forbidClick: Boolean,
+    type: {
+      type: String,
+      value: 'text'
+    },
+    loadingType: {
+      type: String,
+      value: 'circular'
+    },
+    position: {
+      type: String,
+      value: 'middle'
+    }
+  },
+
+  methods: {
+    clear() {
+      this.setData({
+        show: false
+      });
+    }
+  }
+});
+
+export default Toast;
+
+export default class vanToast extends wepy.component {
+
+  
+}
+</script>
