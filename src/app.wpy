@@ -1,0 +1,79 @@
+<style lang="css">
+
+@import "/styles/common/index.wxss";
+
+page {
+  color: #333;
+  background: #f8f8f8;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 0 0 100rpx;
+  -webkit-font-smoothing: antialiased;
+  font-family: 'PingFang SC', Helvetica, 'STHeiti STXihei', 'Microsoft YaHei', Tohoma, Arial, sans-serif;
+}
+
+.demo-margin-left {
+  margin-left: 10px;
+}
+
+.demo-margin-right {
+  margin-right: 10px;
+}
+
+.demo-margin-bottom {
+  display: block;
+  margin-bottom: 15px;
+}
+
+</style>
+
+<script>
+import wepy from 'wepy'
+import 'wepy-async-function'
+
+export default class extends wepy.app {
+  config = {
+    pages: [
+      "pages/dashboard",
+      "pages/actionsheet",
+      "pages/badge",
+      "pages/button",
+      "pages/card",
+      "pages/cell",
+      "pages/col",
+      "pages/field",
+      "pages/icon",
+      "pages/loading",
+      "pages/nav-bar",
+      "pages/notice-bar",
+      "pages/notify",
+      "pages/panel",
+      "pages/popup",
+      "pages/stepper",
+      "pages/steps",
+      "pages/switch",
+      "pages/switch-cell",
+      "pages/search",
+      "pages/slider",
+      "pages/tag",
+      "pages/toast",
+      "pages/tabbar",
+      "pages/transition",
+      "pages/tree-select"
+    ],
+    window: {
+      "navigationBarBackgroundColor": "#f8f8f8",
+      "navigationBarTitleText": "Vant-Wepy",
+      "navigationBarTextStyle": "black",
+      "backgroundTextStyle": "dark",
+      "backgroundColor": "#f8f8f8"
+    },
+    debug: true
+  }
+
+  constructor() {
+    super()
+    this.use('promisify')
+  }
+}
+</script>
