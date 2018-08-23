@@ -99,7 +99,7 @@
 
 <template>
 
-<view class="{{ externalClasses.custom }} van-card">
+<view class="{{ externalClasses[0] }} van-card">
   <view class="van-card__thumb">
     <image wx:if="{{ options.thumb }}" src="{{ options.thumb }}" class="van-card__img thumb-class" />
     <block wx:else>
@@ -137,8 +137,8 @@ export default class vanCard extends wepy.component {
 
   props = {
     externalClasses: {
-      type: Object,
-      default: { custom: 'custom-class' }
+      type: Array,
+      default: ['custom-class']
     },
     options: {
       num: String,
@@ -155,6 +155,8 @@ export default class vanCard extends wepy.component {
     }
   }
   data = {}
+
+  onLoad() { }
 
 }
 </script>
