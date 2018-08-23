@@ -1,0 +1,117 @@
+<style lang="scss">
+
+@import '../styles/common/var.scss';
+
+.van-tabbar-item {
+  float: left;
+  color: #666;
+  height: 100%;
+  display: flex;
+  line-height: 1;
+  font-size: 12px;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
+  &__icon {
+    font-size: 18px;
+    margin-bottom: 5px;
+    position: relative;
+
+    .van-icon {
+      display: block;
+    }
+
+    &--dot {
+      &::after {
+        top: 0;
+        right: -8px;
+        width: 8px;
+        height: 8px;
+        content: ' ';
+        position: absolute;
+        border-radius: 100%;
+        background-color: $red;
+      }
+    }
+
+    image {
+      width: 50px;
+      height: 18px;
+    }
+  }
+
+  &--active {
+    color: $blue;
+  }
+}
+
+</style>
+
+<template>
+
+<view
+  class="van-tabbar-item {{ active ? 'van-tabbar-item--active' : '' }}"
+  style="{{ count ? 'width: ' + 100 / count + '%' : '' }}"
+  bind:tap="onClick"
+>
+  <view class="van-tabbar-item__icon {{ dot ? 'van-tabbar-item__icon--dot' : '' }}">
+    <block wx:if="{{ active }}">
+      <slot name="icon-active" />
+    </block>
+    <block wx:else>
+      <slot name="icon" />
+    </block>
+    <van-icon wx:if="{{ icon }}" name="{{ icon }}" info="{{ info }}" />
+  </view>
+  <view class="van-tabbar-item__text">
+    <slot />
+  </view>
+</view>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+const TABBAR_PATH = '../tabbar/index';
+
+Component({
+  properties: {
+    info: null,
+    icon: String,
+    dot: Boolean
+  },
+
+  options: {
+    multipleSlots: true,
+    addGlobalClass: true
+  },
+
+  relations: {
+    [TABBAR_PATH]: {
+      type: 'ancestor'
+    }
+  },
+
+  data: {
+    active: false,
+    count: 0
+  },
+
+  methods: {
+    onClick() {
+      const parent = this.getRelationNodes(TABBAR_PATH)[0];
+      if (parent) {
+        parent.onChange(this);
+      }
+      this.triggerEvent('click');
+    }
+  }
+});
+
+export default class vanTabbarItem extends wepy.component {
+
+  
+}
+</script>
