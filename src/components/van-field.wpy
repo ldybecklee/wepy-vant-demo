@@ -1,6 +1,6 @@
 <style lang="scss">
 
-@import '../styles/common/var.scss';
+@import '../styles/var.scss';
 
 .van-field {
   &__body {
