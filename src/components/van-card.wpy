@@ -56,7 +56,7 @@
   &__title {
     max-height: 40px;
 
-    @mixin multi-ellipsis 2;
+    @include multi-ellipsis(2);
   }
 
   &__desc {
@@ -64,7 +64,7 @@
     font-size: 12px;
     max-height: 20px;
 
-    @mixin ellipsis;
+    @include ellipsis();
   }
 
   &__price,
@@ -99,22 +99,28 @@
 
 <template>
 
-<view class="custom-class van-card">
+<view class="{{ externalClasses.custom }} van-card">
   <view class="van-card__thumb">
-    <image wx:if="{{ thumb }}" src="{{ thumb }}" class="van-card__img thumb-class" />
-    <slot wx:else name="thumb" />
+    <image wx:if="{{ options.thumb }}" src="{{ options.thumb }}" class="van-card__img thumb-class" />
+    <block wx:else>
+      <slot name="thumb" />
+    </block>
   </view>
   <view class="van-card__content">
-    <view wx:if="{{ title || price || price === 0 }}" class="van-card__row">
-      <view wx:if="{{ title }}" class="van-card__title title-class">{{ title }}</view>
-      <view wx:if="{{ price || price === 0 }}" class="van-card__price price-class">{{ currency }} {{ price }}</view>
+    <view wx:if="{{ options.title || options.price || options.price === 0 }}" class="van-card__row">
+      <view wx:if="{{ options.title }}" class="van-card__title title-class">{{ options.title }}</view>
+      <view wx:if="{{ options.price || options.price === 0 }}" class="van-card__price price-class">{{ options.currency }} {{ options.price }}</view>
     </view>
-    <slot wx:else name="title" />
-    <view wx:if="{{ desc || num }}" class="van-card__row">
-      <view wx:if="{{ desc }}" class="van-card__desc desc-class">{{ desc }}</view>
-      <view wx:if="{{ num }}" class="van-card__num num-class">x {{ num }}</view>
+    <block wx:else>
+      <slot name="title" />
+    </block>
+    <view wx:if="{{ options.desc || options.num }}" class="van-card__row">
+      <view wx:if="{{ options.desc }}" class="van-card__desc desc-class">{{ options.desc }}</view>
+      <view wx:if="{{ options.num }}" class="van-card__num num-class">x {{ options.num }}</view>
     </view>
-    <slot wx:else name="desc" />
+    <block wx:else>
+      <slot name="desc" />
+    </block>
     <slot name="tags" />
   </view>
   <view class="van-card__footer">
@@ -127,36 +133,28 @@
 <script>
 import wepy from 'wepy'
 
-Component({
-  options: {
-    multipleSlots: true,
-    addGlobalClass: true
-  },
+export default class vanCard extends wepy.component {
 
-  externalClasses: [
-    'custom-class',
-    'thumb-class',
-    'title-class',
-    'price-class',
-    'desc-class',
-    'num-class'
-  ],
-
-  properties: {
-    num: String,
-    desc: String,
-    thumb: String,
-    title: String,
-    price: String,
-    centered: Boolean,
-    currency: {
-      type: String,
-      default: '¥'
+  props = {
+    externalClasses: {
+      type: Object,
+      default: { custom: 'custom-class' }
+    },
+    options: {
+      num: String,
+      desc: String,
+      thumb: String,
+      title: String,
+      price: String,
+      centered: Boolean,
+      currency: {
+        type: String,
+        default: '¥'
+      },
+      componentId: String
     }
   }
-});
+  data = {}
 
-export default class vanCard extends wepy.component {
-  
 }
 </script>
