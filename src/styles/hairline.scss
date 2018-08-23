@@ -1,4 +1,4 @@
-@import "./mixins/border-retina.scss";
+@import "./mixins/border-retina";
 
 .van-hairline,
 .van-hairline--top,
@@ -10,7 +10,7 @@
   position: relative;
 
   &::after {
-    @mixin hairline;
+    @include hairline();
   }
 }
 
