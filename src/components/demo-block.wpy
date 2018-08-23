@@ -1,0 +1,46 @@
+<style lang="scss">
+
+.demo-block__title {
+  margin: 0;
+  font-weight: 400;
+  font-size: 14px;
+  color: rgba(69,90,100,.6);
+  padding: 20px 15px 15px;
+}
+
+.demo-block--padding {
+  padding: 0 15px;
+}
+
+.demo-block--padding .demo-block__title {
+  padding-left: 0;
+}
+
+</style>
+
+<template>
+
+<view class="custom-class demo-block {{ padding ? 'demo-block--padding' : '' }}">
+  <view wx:if="{{ title }}" class="demo-block__title">{{ title }}</view>
+  <slot />
+</view>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+Component({
+  properties: {
+    title: String,
+    padding: Boolean
+  },
+
+  externalClasses: ['custom-class']
+});
+
+export default class demoBlock extends wepy.component {
+
+  
+}
+</script>
