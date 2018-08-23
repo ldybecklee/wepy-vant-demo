@@ -14,18 +14,18 @@
 <template>
 
 <view class="container">
-  <demo-block title="基础用法">
-    <van-card :options="cardOption1" />
-  </demo-block>
+  <demo-block1 title="基础用法">
+    <van-card1 :options="cardOption1" :externalClasses="cardClass1" />
+  </demo-block1>
 
-  <demo-block title="高级用法">
-    <van-card :options="cardOption2">
+  <demo-block2 title="高级用法">
+    <van-card2 :options="cardOption2">
       <view slot="footer">
         <van-button1 size="mini" :externalClasses="buttonClass1">按钮</van-button1>
         <van-button2 size="mini">按钮</van-button2>
       </view>
-    </van-card>
-  </demo-block>
+    </van-card2>
+  </demo-block2>
 </view>
 
 </template>
@@ -37,18 +37,16 @@ import demoBlock from "../components/demo-block"
 import vanCard from "../components/van-card"
 import vanButton from "../components/van-button"
 
-// import buttonMixin from '../mixins/button'
-
 export default class Card extends wepy.page {
   config = {
     navigationBarTitleText: 'Card 卡片'
   }
   
-  // mixins = [buttonMixin]
-
   components = {
-    'demo-block': demoBlock,
-    'van-card': vanCard,
+    'demo-block1': demoBlock,
+    'demo-block2': demoBlock,
+    'van-card1': vanCard,
+    'van-card2': vanCard,
     'van-button1': vanButton,
     'van-button2': vanButton
   }
@@ -67,6 +65,7 @@ export default class Card extends wepy.page {
       price: '2.00',
       thumb: 'https://img.yzcdn.cn/upload_files/2017/07/02/af5b9f44deaeb68000d7e4a711160c53.jpg'
     },
+    cardClass1: ['card-class'],
     buttonClass1: {
       custom: 'button'
     }
@@ -74,6 +73,8 @@ export default class Card extends wepy.page {
   methods = {
 
   }
-  onLoad() {}
+  onLoad() {
+  
+  }
 }
 </script>
