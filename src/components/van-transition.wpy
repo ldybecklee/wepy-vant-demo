@@ -1,0 +1,216 @@
+<style lang="scss">
+
+.van-transition {
+  animation: ease both;
+}
+
+@keyframes van-fade-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes van-fade-leave {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes van-fade-up-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
+}
+
+@keyframes van-fade-up-leave {
+  to {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
+}
+
+@keyframes van-slide-up-enter {
+  from {
+    transform: translate3d(0, 100%, 0);
+  }
+}
+
+@keyframes van-slide-up-leave {
+  to {
+    transform: translate3d(0, 100%, 0);
+  }
+}
+
+@keyframes van-fade-down-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -100%, 0);
+  }
+}
+
+@keyframes van-fade-down-leave {
+  to {
+    opacity: 0;
+    transform: translate3d(0, -100%, 0);
+  }
+}
+
+@keyframes van-slide-down-enter {
+  from {
+    transform: translate3d(0, -100%, 0);
+  }
+}
+
+@keyframes van-slide-down-leave {
+  to {
+    transform: translate3d(0, -100%, 0);
+  }
+}
+
+@keyframes van-fade-left-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+@keyframes van-fade-left-leave {
+  to {
+    opacity: 0;
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+@keyframes van-slide-left-enter {
+  from {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+@keyframes van-slide-left-leave {
+  to {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+@keyframes van-fade-right-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+  }
+}
+
+@keyframes van-fade-right-leave {
+  to {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+  }
+}
+
+@keyframes van-slide-right-enter {
+  from {
+    transform: translate3d(100%, 0, 0);
+  }
+}
+
+@keyframes van-slide-right-leave {
+  to {
+    transform: translate3d(100%, 0, 0);
+  }
+}
+
+</style>
+
+<template>
+
+<view
+  wx:if="{{ inited }}"
+  class="van-transition custom-class"
+  style="animation-name: van-{{ name }}-{{ type }}; animation-duration: {{ duration }}ms; {{ display ? '' : 'display: none;' }} {{ customStyle }}"
+  bind:animationend="onAnimationEnd"
+>
+  <slot />
+</view>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+Component({
+  options: {
+    addGlobalClass: true
+  },
+
+  externalClasses: ['custom-class'],
+
+  properties: {
+    customStyle: String,
+    show: {
+      value: true,
+      type: Boolean,
+      observer(value) {
+        if (value) {
+          this.show();
+        } else {
+          this.setData({
+            type: 'leave'
+          });
+        }
+      }
+    },
+    name: {
+      type: String,
+      value: 'fade'
+    },
+    duration: {
+      type: Number,
+      value: 300
+    }
+  },
+
+  data: {
+    type: '',
+    inited: false,
+    display: false
+  },
+
+  attached() {
+    if (this.data.show) {
+      this.show();
+    }
+  },
+
+  methods: {
+    show() {
+      this.setData({
+        inited: true,
+        display: true,
+        type: 'enter'
+      });
+    },
+
+    onAnimationEnd() {
+      if (!this.data.show) {
+        this.setData({
+          display: false
+        });
+      }
+    }
+  }
+});
+
+export default class vanTransition extends wepy.component {
+
+  
+}
+</script>
