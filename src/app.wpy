@@ -1,6 +1,6 @@
 <style lang="css">
 
-@import "/styles/common/index.wxss";
+@import "/styles/index.wxss";
 
 page {
   color: #333;
