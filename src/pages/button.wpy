@@ -2,6 +2,7 @@
 <style lang="scss">
 
 @import '../vant/button.scss';
+@import '../vant/loading.scss';
 
 .loading {
   margin: 0 18px;
@@ -17,44 +18,43 @@
 <template>
 
 <view class="section">
-  <demo-block1 title="按钮类型" padding>
+  <demo-block1 title="按钮类型" :padding="demoBlockPadding">
     <view class="row">
-      <van-button type="default" custom-class="demo-margin-right">默认按钮</van-button>
-      <button class="demo-margin-right van-button van-button--default">默认按钮</button>
-      <button class="van-button van-button--primary">主要按钮</button>
+      <button class="demo-margin-right van-button van-button--normal van-button--default">默认按钮</button>
+      <button class="van-button van-button--normal van-button--primary">主要按钮</button>
     </view>
-    <button class="demo-margin-right van-button van-button--warning">警告按钮</button>
-    <button class="van-button van-button--danger">危险按钮</button>
+    <button class="demo-margin-right van-button van-button--normal van-button--warning">警告按钮</button>
+    <button class="van-button van-button--normal van-button--danger">危险按钮</button>
   </demo-block1>
 
-  <demo-block2 title="朴素按钮" padding>
+  <demo-block2 title="朴素按钮" :padding="demoBlockPadding">
     <view class="row">
-      <button class="demo-margin-right van-button van-button--default van-button--plain">默认按钮</button>
-      <button class="demo-margin-right van-button van-button--primary van-button--plain">主要按钮</button>
+      <button class="demo-margin-right van-button van-button--normal van-button--default van-button--plain">默认按钮</button>
+      <button class="demo-margin-right van-button van-button--normal van-button--primary van-button--plain">主要按钮</button>
     </view>
-    <button class="demo-margin-right van-button van-button--warning van-button--plain">警告按钮</button>
-    <button class="van-button van-button--danger van-button--plain">危险按钮</button>
+    <button class="demo-margin-right van-button van-button--normal van-button--warning van-button--plain">警告按钮</button>
+    <button class="van-button van-button--danger van-button--normal van-button--plain">危险按钮</button>
   </demo-block2>
 
-  <demo-block3 title="按钮尺寸" padding>
-    <button class="demo-margin-bottom van-button van-button--large van-button--block">大号按钮</button>
-    <button class="demo-margin-right van-button van-button--normal">普通按钮</button>
-    <button class="demo-margin-right van-button van-button--small">小型按钮</button>
-    <button class="van-button van-button--mini">迷你按钮</button>
+  <demo-block3 title="按钮尺寸" :padding="demoBlockPadding">
+    <button class="demo-margin-bottom van-button van-button--large van-button--default van-button--block">大号按钮</button>
+    <button class="demo-margin-right van-button van-button--normal van-button--default">普通按钮</button>
+    <button class="demo-margin-right van-button van-button--small van-button--default">小型按钮</button>
+    <button class="van-button van-button--mini van-button--default">迷你按钮</button>
   </demo-block3>
 
-  <demo-block4 title="禁用状态" padding>
-    <button disabled class="van-button van-button--disabled">禁用状态</button>
+  <demo-block4 title="禁用状态" :padding="demoBlockPadding">
+    <button disabled class="van-button van-button--normal van-button--disabled">禁用状态</button>
   </demo-block4>
 
-  <demo-block5 title="加载状态" padding>
-    <button class="demo-margin-right van-button van-button--loading">
-      <view class="van-loading loading" style="width: 30px; height: 30px">
+  <demo-block5 title="加载状态" :padding="demoBlockPadding">
+    <button class="demo-margin-right van-button van-button--normal van-button--default van-button--loading">
+      <view class="van-loading loading" style="width: 20px; height: 20px">
         <view class="van-loading__spinner van-loading__spinner--circular" style="color: #c9c9c9;"></view>
       </view>
     </button>
-    <button class="demo-margin-right van-button van-button--primary van-button--loading">
-      <view class="van-loading loading" style="width: 30px; height: 30px">
+    <button class="demo-margin-right van-button van-button--normal van-button--primary van-button--loading">
+      <view class="van-loading loading" style="width: 20px; height: 20px">
         <view class="van-loading__spinner van-loading__spinner--circular" style="color: #c9c9c9;"></view>
       </view>
     </button>
@@ -76,6 +76,10 @@ export default class Button extends wepy.page {
     'demo-block3': demoBlock,
     'demo-block4': demoBlock,
     'demo-block5': demoBlock,
+  }
+
+  data = {
+    demoBlockPadding: true
   }
   
 }
