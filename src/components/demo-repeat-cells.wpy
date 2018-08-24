@@ -1,0 +1,56 @@
+<style lang="scss">
+
+.mobile-nav {
+  margin-bottom: 20px;
+}
+
+.mobile-nav__title {
+  font-size: 16px;
+  background-color: #fff;
+  padding: 17px 15px;
+}
+
+</style>
+
+<template>
+
+<block wx:for="{{ list }}" wx:for-item="group" wx:key="group.title">
+    <view class="mobile-nav">
+      <view class="mobile-nav__title">{{ group.groupName }}</view>
+      <van-cell-group>
+        <van-cell
+          wx:for="{{ group.list }}"
+          wx:key="item.title"
+          is-link
+          title-width="200px"
+          url="/pages{{ item.path }}/index"
+          title="{{ item.title }}"
+        ></van-cell>
+      </van-cell-group>
+    </view>
+  </block>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+import vanCellGroup from '../components/van-cell-group'
+import vanCell from '../components/van-cell'
+
+export default class repeatCells extends wepy.component {
+
+  components = {
+    'van-cell-group': vanCellGroup,
+    'van-cell': vanCell
+  }
+  
+  props = {
+    list: {
+      type: Array,
+      default: []
+    }
+  }
+  
+}
+</script>
