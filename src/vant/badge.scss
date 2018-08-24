@@ -1,6 +1,10 @@
 @import '../styles/var.pcss';
 @import '../styles/hairline.pcss';
 
+.van-badge-group {
+  width: 85px;
+}
+
 .van-badge {
   display: block;
   overflow: hidden;
