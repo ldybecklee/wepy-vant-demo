@@ -49,9 +49,9 @@
 }
 
 @for $i from 1 to 12 {
-  .van-loading__dot:nth-of-type($i) {
+  .van-loading__dot:nth-of-type(#{$i}) {
     opacity: 1 - (0.75 / 12) * ($i - 1);
-    transform: rotate(($i * 30)deg);
+    transform: rotate($i * 30deg);
   }
 }
 
