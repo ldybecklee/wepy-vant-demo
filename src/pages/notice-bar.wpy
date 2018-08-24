@@ -28,7 +28,7 @@
 import wepy from 'wepy'
 
 import demoBlock from '../components/demo-block'
-import vanNoticeBar from '../components/van-notice-bar'
+import vanNoticeBar from '../components/van-noticebar'
 
 export default class Noticebar extends wepy.page {
 
