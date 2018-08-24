@@ -2,11 +2,12 @@ import wepy from 'wepy';
 
 export default class ComponentMixin extends wepy.mixin {
   
-  prop_options = {
-    options: {
-      type: Object
-    }
-  }
+  // 需要在component组件中定义props: 
+  // { 
+  //   options: { 
+ //      type: Object 
+  //   } 
+  // }
   
   onLoad() {  
     // 增加使用options参数进行props传值，
