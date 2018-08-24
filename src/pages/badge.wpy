@@ -1,5 +1,7 @@
 <style lang="scss">
 
+@import '../vant/badge.scss';
+
 .container {
   width: auto;
   margin: 0 15px;
@@ -18,10 +20,21 @@
 <demo-block title="基础用法">
   <view class="container">
     <view class="van-badge-group group" active="0" bind:change="onChange">
-      <view class="van-badge" title="标签名称" />
-      <view class="van-badge" title="标签名称" info="8" />
-      <view class="van-badge" title="标签名称" info="99" />
-      <view class="van-badge" title="标签名称" info="199" />
+      <view class="van-badge van-hairline" bind:tap="onClick">
+        标签名称
+      </view>
+      <view class="van-badge" bind:tap="onClick">
+        <view class="van-badge__info">8</view>
+        标签名称
+      </view>
+      <view class="van-badge bind:tap="onClick">
+        <view class="van-badge__info">99</view>
+        标签名称
+      </view>
+      <view class="van-badge bind:tap="onClick">
+        <view class="van-badge__info">199</view>
+        标签名称
+      </view>
     </view>
   </view>
 </demo-block>
