@@ -1,0 +1,64 @@
+<style lang="scss">
+
+@import '../vant/icon.scss';
+
+.icon {
+  color: #38f;
+}
+
+</style>
+
+<template>
+
+<demo-block1 title="基础用法">
+  <van-nav-bar1
+    title="标题"
+    leftText="返回"
+    rightText="按钮"
+    :leftArrow="navBarLeftArrow1"
+    bind:click-left="onClickLeft"
+    bind:click-right="onClickRight"
+  />
+  
+</demo-block1>
+
+<demo-block2 title="高级用法">
+  <van-nav-bar2 title="标题" left-text="返回" left-arrow>
+    <view class="icon van-icon van-icon-search" style="font-size: 32px;" />
+  </van-nav-bar2>
+</demo-block2>
+
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+import demoBlock from '../components/demo-block'
+import vanNavBar from '../components/van-nav-bar'
+
+export default class Navbar extends wepy.page {
+
+  components = {
+    'demo-block1': demoBlock,
+    'demo-block2': demoBlock,
+    'van-nav-bar1': vanNavBar,
+    'van-nav-bar2': vanNavBar
+  }
+  
+  data = {
+    navBarLeftArrow1: true
+  }
+  
+  methods = {
+    onClickLeft() {
+      wx.showToast({ title: '点击返回', icon: 'none' });
+    },
+
+    onClickRight() {
+      wx.showToast({ title: '点击按钮', icon: 'none' });
+    }
+  }
+  
+}
+</script>
