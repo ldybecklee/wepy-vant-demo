@@ -1,0 +1,50 @@
+<style lang="scss">
+
+@import '../vant/row.wxss'
+@import '../vant/col.wxss'
+
+</style>
+
+<template>
+
+<demo-block1 title="基础用法" padding>
+  <view class="van-row">
+    <view class="van-col van-col--8 dark">span: 8</view>
+    <view class="van-col van-col--8 light">span: 8</view>
+    <view class="van-col van-col--8 dark">span: 8</view>
+  </view>
+
+  <view class="van-row">
+    <view class="van-col van-col--4 dark">span: 4</view>
+    <view class="van-col van-col--10 van-col--offset-4 light">offset: 4, span: 10</view>
+  </view>
+
+  <view class="van-row">
+    <view class="van-col van-col--offset-12 van-col--12 dark">offset: 12, span: 12</view>
+  </view>
+</demo-block1>
+
+<demo-block2 title="在列元素之间增加间距" padding>
+  <view class="van-row" gutter="20">
+    <view class="van-col van-col--8 dark">span: 8</view>
+    <view class="van-col van-col--8 light">span: 8</view>
+    <view class="van-col van-col--8 dark">span: 8</view>
+  </view>
+</demo-block2>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+import demoBlock from '../components/demo-block'
+
+export default class Col extends wepy.component {
+
+  components: [
+    'demo-block1': demoBlock,
+    'demo-block2': demoBlock
+  ]
+  
+}
+</script>
