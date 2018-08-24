@@ -19,19 +19,19 @@
 
 <demo-block title="基础用法">
   <view class="container">
-    <view class="van-badge-group group" active="0" bind:change="onChange">
-      <view class="van-badge van-hairline" bind:tap="onClick">
+    <view class="van-badge-group group" bind:change="onChange">
+      <view class="van-badge van-badge--active" bind:tap="onClick">
         标签名称
       </view>
       <view class="van-badge" bind:tap="onClick">
         <view class="van-badge__info">8</view>
         标签名称
       </view>
-      <view class="van-badge bind:tap="onClick">
+      <view class="van-badge" bind:tap="onClick">
         <view class="van-badge__info">99</view>
         标签名称
       </view>
-      <view class="van-badge bind:tap="onClick">
+      <view class="van-badge" bind:tap="onClick">
         <view class="van-badge__info">199</view>
         标签名称
       </view>
@@ -44,7 +44,7 @@
 <script>
 import wepy from 'wepy'
 
-import demoBlock from '../components/deom-block'
+import demoBlock from '../components/demo-block'
 
 export default class Badge extends wepy.page {
 
