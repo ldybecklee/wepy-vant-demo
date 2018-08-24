@@ -1,0 +1,52 @@
+<style lang="scss">
+
+.container {
+  width: auto;
+  margin: 0 15px;
+  padding: 20px 0;
+  background-color: #fff;
+}
+
+.group {
+  margin: 0 auto;
+}
+
+</style>
+
+<template>
+
+<demo-block title="基础用法">
+  <view class="container">
+    <view class="van-badge-group group" active="0" bind:change="onChange">
+      <view class="van-badge" title="标签名称" />
+      <view class="van-badge" title="标签名称" info="8" />
+      <view class="van-badge" title="标签名称" info="99" />
+      <view class="van-badge" title="标签名称" info="199" />
+    </view>
+  </view>
+</demo-block>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+import demoBlock from '../components/deom-block'
+
+export default class Badge extends wepy.page {
+
+  components = {
+    'demo-block': demoBlock
+  }
+  
+  methods = {
+    onChange(event) {
+      wx.showToast({
+        icon: 'none',
+        title: `切换至第${event.detail}项`
+      });
+    }
+  }
+  
+}
+</script>
