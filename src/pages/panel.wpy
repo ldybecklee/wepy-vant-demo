@@ -1,0 +1,78 @@
+<style lang="scss">
+
+@import '../vant/cell.scss';
+@import '../vant/button.scss';
+@import '../vant/panel.scss';
+
+.content {
+  padding: 20px;
+  font-size: 16px;
+}
+
+.footer {
+  text-align: right;
+}
+
+
+</style>
+
+<template>
+
+<demo-block1 title="基础用法">
+  <view class="van-panel van-hairline--top-bottom">
+    <view class="van-cell van-hairline van-hairline--bottom">
+      <view class="van-cell__title title-class">
+        标题
+        <view class="van-cell__label label-class">描述信息</view>
+      </view>
+      <view class="van-cell__value van-panel__header-value">
+        <view>状态</view>
+      </view>
+    </view>
+    <view class="van-panel__content">
+      <view class="content">内容</view>
+    </view>
+  </view>
+</demo-block1>
+
+<demo-block2 title="高级用法">
+  <view class="van-panel van-hairline--top-bottom">
+    <view class="van-cell van-hairline van-hairline--bottom">
+      <view class="van-cell__title title-class">
+        标题
+        <view class="van-cell__label label-class">描述信息</view>
+      </view>
+      <view class="van-cell__value van-panel__header-value">
+        <view>状态</view>
+      </view>
+    </view>
+    <view class="van-panel__content">
+      <view class="content">内容</view>
+    </view>
+    <view class="van-panel__footer van-hairline--top footer">
+      <button class="van-button van-button--default van-button--small demo-margin-right">按钮</button>
+      <button class="van-button van-button--danger van-button--small">按钮</button>
+    </view>
+  </view>
+</demo-block2>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+import demoBlock from '../components/demo-block'
+
+export default class Panel extends wepy.page {
+
+  config = {
+    "navigationBarTitleText": "Panel 面板"
+  }
+
+  components = {
+    'demo-block1': demoBlock,
+    'demo-block2': demoBlock
+  }
+  
+}
+</script>
