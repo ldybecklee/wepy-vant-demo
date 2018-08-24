@@ -42,7 +42,7 @@ export default class extends wepy.app {
       "pages/cell",
       "pages/col",
       // "pages/field",
-      // "pages/icon",
+      "pages/icon",
       // "pages/loading",
       // "pages/nav-bar",
       // "pages/notice-bar",
