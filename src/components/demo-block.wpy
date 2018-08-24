@@ -20,7 +20,7 @@
 
 <template>
 
-<view class="custom-class demo-block {{ padding ? 'demo-block--padding' : '' }}">
+<view class="{{ externalClasses.custom }} demo-block {{ padding ? 'demo-block--padding' : '' }}">
   <view wx:if="{{ title }}" class="demo-block__title">{{ title }}</view>
   <slot />
 </view>
@@ -30,17 +30,20 @@
 <script>
 import wepy from 'wepy'
 
-Component({
-  properties: {
-    title: String,
-    padding: Boolean
-  },
-
-  externalClasses: ['custom-class']
-});
+import componentMixin from '../mixins/component'
 
 export default class demoBlock extends wepy.component {
 
+  mixins = [ componentMixin ]
+
+  props = {
+    externalClasses: {
+      type: Object,
+      default: { custom: 'custom-class' }
+    },
+    title: String,
+    padding: Boolean
+  }
   
 }
 </script>
