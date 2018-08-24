@@ -35,16 +35,6 @@
   text-align: center;
 }
 
-.mobile-nav {
-  margin-bottom: 20px;
-}
-
-.mobile-nav__title {
-  font-size: 16px;
-  background-color: #fff;
-  padding: 17px 15px;
-}
-
 </style>
 
 <template>
@@ -55,22 +45,7 @@
     <view class="title-text">Vant Weapp</view>
   </view>
   <view class="desc">轻量、可靠的小程序 UI 组件库</view>
-
-  <block wx:for="{{ list }}" wx:for-item="group" wx:key="group.title">
-    <view class="mobile-nav">
-      <view class="mobile-nav__title">{{ group.groupName }}</view>
-      <van-cell-group>
-        <van-cell
-          wx:for="{{ group.list }}"
-          wx:key="item.title"
-          is-link
-          title-width="200px"
-          url="/pages{{ item.path }}/index"
-          title="{{ item.title }}"
-        ></van-cell>
-      </van-cell-group>
-    </view>
-  </block>
+  <demo-repeat-cells :list.sync="list" :options="repeatCellOptions" />
 </view>
 
 </template>
@@ -78,7 +53,15 @@
 <script>
 import wepy from 'wepy'
 
+import vanCellGroup from '../components/van-cell-group'
+import demoRepeatCells from '../components/demo-repeat-cells'
+
 export default class Dashboard extends wepy.page {
+
+  components = {
+    'van-cell-group': vanCellGroup,
+    'demo-repeat-cells': demoRepeatCells
+  }
 
   data = {
     list: [
@@ -86,63 +69,63 @@ export default class Dashboard extends wepy.page {
         groupName: '基础组件',
         list: [
           {
-            path: '/col',
+            url: '/pages/col',
             title: 'Layout 布局'
           },
           {
-            path: '/badge',
+            url: '/pages/badge',
             title: 'Badge 徽章'
           },
           {
-            path: '/button',
+            url: '/pages/button',
             title: 'Button 按钮'
           },
           {
-            path: '/cell',
+            url: '/pages/cell',
             title: 'Cell 单元格'
           },
           {
-            path: '/icon',
+            url: '/pages/icon',
             title: 'Icon 图标'
           },
           {
-            path: '/loading',
+            url: '/pages/loading',
             title: 'Loading 加载'
           },
           {
-            path: '/nav-bar',
+            url: '/pages/nav-bar',
             title: 'NavBar 导航栏'
           },
           {
-            path: '/notice-bar',
+            url: '/pages/notice-bar',
             title: 'NoticeBar 通告栏'
           },
           {
-            path: '/panel',
+            url: '/pages/panel',
             title: 'Panel 面板'
           },
           {
-            path: '/popup',
+            url: '/pages/popup',
             title: 'Popup 弹出层'
           },
           {
-            path: '/progress',
+            url: '/pages/progress',
             title: 'Progress 进度条'
           },
           {
-            path: '/steps',
+            url: '/pages/steps',
             title: 'Steps 步骤条'
           },
           {
-            path: '/tag',
+            url: '/pages/tag',
             title: 'Tag 标记'
           },
           {
-            path: '/tabbar',
+            url: '/pages/tabbar',
             title: 'Tabbar 标签栏'
           },
           {
-            path: '/transition',
+            url: '/pages/transition',
             title: 'Transition 动画'
           }
         ]
@@ -151,23 +134,23 @@ export default class Dashboard extends wepy.page {
         groupName: '表单组件',
         list: [
           {
-            path: '/field',
+            url: '/pages/field',
             title: 'Field 输入框'
           },
           {
-            path: '/search',
+            url: '/pages/search',
             title: 'Search 搜索'
           },
           {
-            path: '/slider',
+            url: '/pages/slider',
             title: 'Slider 滑块'
           },
           {
-            path: '/stepper',
+            url: '/pages/stepper',
             title: 'Stepper 步进器'
           },
           {
-            path: '/switch',
+            url: '/pages/switch',
             title: 'Switch 开关'
           }
         ]
@@ -176,15 +159,15 @@ export default class Dashboard extends wepy.page {
         groupName: '操作反馈',
         list: [
           {
-            path: '/actionsheet',
+            url: '/pages/actionsheet',
             title: 'Actionsheet 上拉菜单'
           },
           {
-            path: '/toast',
+            url: '/pages/toast',
             title: 'Toast 轻提示'
           },
           {
-            path: '/notify',
+            url: '/pages/notify',
             title: 'Notify 消息通知'
           }
         ]
@@ -193,11 +176,11 @@ export default class Dashboard extends wepy.page {
         groupName: '高阶组件',
         list: [
           {
-            path: '/switch-cell',
+            url: '/pages/switch-cell',
             title: 'SwitchCell 开关单元格'
           },
           {
-            path: '/tree-select',
+            url: '/pages/tree-select',
             title: 'TreeSelect 分类选择'
           }
         ]
@@ -206,19 +189,24 @@ export default class Dashboard extends wepy.page {
         groupName: '业务组件',
         list: [
           {
-            path: '/card',
+            url: '/pages/card',
             title: 'Card 卡片'
           }
         ]
       }
-    ]
+    ],
+    
+    repeatCellOptions: {
+      isLink: true,
+      titleWidth: '200px'
+    }
   }
   
   onShareAppMessage() {
-      return {
-        title: 'Vant Weapp 组件库演示'
-      };
-    },
+    return {
+      title: 'Vant Weapp 组件库演示'
+    };
+  }
   
 }
 </script>
