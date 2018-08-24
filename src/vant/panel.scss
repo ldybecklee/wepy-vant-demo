@@ -1,0 +1,14 @@
+@import '../styles/var.scss';
+@import '../styles/hairline.scss';
+
+.van-panel {
+  background: $white;
+
+  &__header-value {
+    color: $red;
+  }
+
+  &__footer {
+    padding: 10px 15px;
+  }
+}
