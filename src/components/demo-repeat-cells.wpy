@@ -1,5 +1,97 @@
 <style lang="scss">
 
+@import '../styles/var.scss';
+@import '../styles/hairline.scss';
+
+.van-cell {
+  width: 100%;
+  display: flex;
+  padding: 10px 15px;
+  box-sizing: border-box;
+  line-height: 24px;
+  position: relative;
+  background-color: $white;
+  color: $text-color;
+  font-size: 14px;
+
+  &::after {
+    left: 15px;
+    right: 0;
+    width: auto;
+    transform: scale(1, .5);
+    border-bottom-width: 1px;
+  }
+
+  &-group {
+    background-color: $white;
+  }
+
+  &__label {
+    font-size: 12px;
+    line-height: 1.2;
+    color: $gray-darker;
+  }
+
+  &__title,
+  &__value {
+    flex: 1;
+  }
+
+  &__value {
+    overflow: hidden;
+    text-align: right;
+    vertical-align: middle;
+  }
+
+  &__left-icon {
+    font-size: 16px;
+    line-height: 24px;
+    margin-right: 5px;
+    vertical-align:middle;
+  }
+
+  &__right-icon {
+    color: $gray-dark;
+    font-size: 12px;
+    line-height: 24px;
+    margin-left: 5px;
+
+    &--left::before {
+      transform: rotate(180deg);
+    }
+
+    &--up::before {
+      transform: rotate(-90deg);
+    }
+
+    &--down::before {
+      transform: rotate(90deg);
+    }
+  }
+
+  &--clickable {
+    &:active {
+      background-color: $active-color;
+    }
+  }
+
+  &--required {
+    overflow: visible;
+
+    &::before {
+      content: '*';
+      position: absolute;
+      left: 7px;
+      font-size: 14px;
+      color: $red;
+    }
+  }
+
+  &--center {
+    align-items: center;
+  }
+}
+
 .mobile-nav {
   margin-bottom: 20px;
 }
@@ -18,14 +110,35 @@
     <view class="mobile-nav">
       <view class="mobile-nav__title">{{ group.groupName }}</view>
       <van-cell-group>
-        <van-cell
-          wx:for="{{ group.list }}"
-          wx:key="item.title"
-          is-link
-          title-width="200px"
-          url="/pages{{ item.path }}/index"
-          title="{{ item.title }}"
-        ></van-cell>
+        <block wx:for="{{ group.list }}" wx:key="item.title" item="item">
+        <view class="custom-class van-cell {{ center ? 'van-cell--center' : '' }} {{ required ? 'van-cell--required' : '' }} {{ isLink || clickable ? 'van-cell--clickable' : '' }} {{ border ? 'van-hairline' : '' }}"  
+  style="{{ customStyle }}"
+  bind:tap="onClick({{ item.url }})"
+>
+          <van-icon1 wx:if="{{ icon }}" custom-class="van-cell__left-icon left-icon-class" name="{{ icon }}" />
+          <slot wx:else name="icon" />
+
+          <view wx:if="{{ item.title }}" class="van-cell__title title-class" style="{{ titleWidth ? 'max-width: ' + titleWidth + ';min-width: ' + titleWidth : '' }}">
+            {{ item.title }}
+            <view wx:if="{{ label }}" class="van-cell__label label-class">{{ label }}</view>
+          </view>
+          <slot name="title" />
+
+          <view class="van-cell__value value-class">
+            <view wx:if="{{ value }}">{{ value }}</view>
+            <slot wx:else></slot>
+          </view>
+
+          <van-icon2
+            wx:if="{{ isLink }}"
+            name="arrow"
+            custom-class="van-cell__right-icon right-icon-class {{ arrowDirection ? 'van-cell__right-icon--' + arrowDirection : '' }}"
+          />
+          <slot wx:else name="right-icon" />
+
+          <slot name="extra" />
+        </view>
+        </block>
       </van-cell-group>
     </view>
   </block>
@@ -36,19 +149,64 @@
 import wepy from 'wepy'
 
 import vanCellGroup from '../components/van-cell-group'
-import vanCell from '../components/van-cell'
+import vanIcon from '../components/van-icon'
+import componentMixin from '../mixins/component'
 
 export default class repeatCells extends wepy.component {
 
+  mixins = [ componentMixin ]
+
   components = {
     'van-cell-group': vanCellGroup,
-    'van-cell': vanCell
+    'van-icon1': vanIcon,
+    'van-icon2': vanIcon
   }
   
   props = {
     list: {
       type: Array,
       default: []
+    },
+    externalClasses: {
+      type: Array,
+      default: [
+          'custom-class',
+          'title-class',
+          'label-class',
+          'value-class',
+          'left-icon-class',
+          'right-icon-class'
+        ]
+    },
+    options: {
+      type: Object
+    },
+    value: String,
+    icon: String,
+    label: String,
+    center: Boolean,
+    isLink: Boolean,
+    required: Boolean,
+    clickable: Boolean,
+    titleWidth: String,
+    customStyle: Boolean,
+    arrowDirection: Boolean,
+    linkType: {
+      type: String,
+      default: 'navigateTo'
+    },
+    border: {
+      type: Boolean,
+      default: true
+    }
+  }
+
+  methods = {
+    onClick(url) {
+      if (url) {
+        wx[this.linkType]({ url });
+      }
+      this.$emit('click');
     }
   }
   
