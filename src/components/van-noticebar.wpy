@@ -1,5 +1,7 @@
 <style lang="scss">
 
+@import '../vant/icon.scss';
+
 .van-notice-bar {
   display: flex;
   padding: 9px 10px;
@@ -45,7 +47,6 @@
 }
 
 </style>
-
 <template>
 
 <view
@@ -64,24 +65,18 @@
   </view>
 
   <block wx:if="{{ mode }}">
-    <van-icon
-      wx:if="{{ mode === 'closeable' }}"
-      class="van-notice-bar__right-icon"
-      name="close"
-      bind:tap="_handleButtonClick"
-    />
+    <view wx:if="{{ mode === 'closeable' }}" class="van-notice-bar__right-icon van-icon van-icon-close" bind:tap="_handleButtonClick" />
     <navigator
       wx:if="{{ mode === 'link' }}"
       url="{{ url }}"
       open-type="{{ openType }}"
     >
-      <van-icon class="van-notice-bar__right-icon" name="arrow" />
+      <view class="van-notice-bar__right-icon van-icon van-icon-arrow" />
     </navigator>
   </block>
-</view>
+</view> 
 
 </template>
-
 <script>
 import wepy from 'wepy'
 
@@ -89,60 +84,41 @@ const VALID_MODE = ['closeable', 'link'];
 const FONT_COLOR = '#f60';
 const BG_COLOR = '#fff7cc';
 
-Component({
-  options: {
-    addGlobalClass: true
-  },
-
-  externalClasses: ['custom-class'],
-
-  properties: {
-    text: {
-      type: String,
-      value: '',
-      observer() {
-        this.setData({}, this._init);
-      }
-    },
-    mode: {
-      type: String,
-      value: ''
-    },
-    url: {
-      type: String,
-      value: ''
-    },
+export default class vanNoticebar extends wepy.component {
+  
+  props = {
+    componentId: String,
+    text: String,
+    mode: String,
+    url: String,
     openType: {
       type: String,
-      value: 'navigate'
+      default: 'navigate'
     },
     delay: {
       type: Number,
-      value: 0
+      default: 0
     },
     speed: {
       type: Number,
-      value: 50
+      default: 40
     },
     scrollable: {
       type: Boolean,
-      value: true
+      default: true
     },
-    leftIcon: {
-      type: String,
-      value: ''
-    },
+    leftIcon: String,
     color: {
       type: String,
-      value: FONT_COLOR
+      default: FONT_COLOR
     },
     backgroundColor: {
       type: String,
-      value: BG_COLOR
+      default: BG_COLOR
     }
-  },
-
-  data: {
+  }
+  data = {
+    animationData: {},
     show: true,
     hasRightIcon: false,
     width: undefined,
@@ -151,23 +127,17 @@ Component({
     animation: null,
     resetAnimation: null,
     timer: null
-  },
-
-  attached() {
-    const { mode } = this.data;
-    if (mode && this._checkMode(mode)) {
-      this.setData({
-        hasRightIcon: true
-      });
+  }
+  onLoad() {
+    var mode = this.mode;
+    console.log(this.methods);
+    if (mode && this.methods._checkMode(mode)) {
+      this.hasRightIcon = true;
     }
-  },
 
-  detached() {
-    const { timer } = this.data;
-    timer && clearTimeout(timer);
-  },
-
-  methods: {
+    this.methods._init.call(this);
+  }
+  methods = {
     _checkMode(val) {
       const isValidMode = ~VALID_MODE.indexOf(val);
       if (!isValidMode) {
@@ -175,100 +145,82 @@ Component({
       }
       return isValidMode;
     },
-
     _init() {
-      wx.createSelectorQuery()
-        .in(this)
-        .select('.van-notice-bar__content')
-        .boundingClientRect((rect) => {
+      var that = this;
+      let componentId = this.componentId;
+
+      wx.createSelectorQuery().select('.van-notice-bar__content').boundingClientRect(function (rect) {
+        if (!rect || !rect.width) {
+          return;
+        }
+        that.width = rect.width;
+
+        wx.createSelectorQuery().select('.van-notice-bar__content-wrap').boundingClientRect(function (rect) {
           if (!rect || !rect.width) {
             return;
           }
-          this.setData({
-            width: rect.width
-          });
 
-          wx.createSelectorQuery()
-            .in(this)
-            .select('.van-notice-bar__content-wrap')
-            .boundingClientRect((rect) => {
-              if (!rect || !rect.width) {
-                return;
-              }
+          var wrapWidth = rect.width;
+          var width = that.width,
+              speed = that.speed,
+              scrollable = that.scrollable,
+              delay = that.delay;
 
-              const wrapWidth = rect.width;
-              const {
-                width, speed, scrollable, delay
-              } = this.data;
+          if (scrollable && wrapWidth < width) {
+            var elapse = width / speed * 1000;
+            var animation = wx.createAnimation({
+              duration: elapse,
+              timeingFunction: 'linear',
+              delay: delay
+            });
+            var resetAnimation = wx.createAnimation({
+              duration: 0,
+              timeingFunction: 'linear'
+            });
 
-              if (scrollable && wrapWidth < width) {
-                const elapse = width / speed * 1000;
-                const animation = wx.createAnimation({
-                  duration: elapse,
-                  timeingFunction: 'linear',
-                  delay
-                });
-                const resetAnimation = wx.createAnimation({
-                  duration: 0,
-                  timeingFunction: 'linear'
-                });
-
-                this.setData({
-                  elapse,
-                  wrapWidth,
-                  animation,
-                  resetAnimation
-                }, () => {
-                  this._scroll();
-                });
-              }
-            })
-            .exec();
-        })
-        .exec();
+            that.elapse = elapse;
+            that.wrapWidth = wrapWidth;
+            that.animation = animation;
+            that.resetAnimation = resetAnimation;
+            // that._scroll();
+            that.methods._scroll.call(that);
+          }
+        }).exec();
+      }).exec();
     },
-
     _scroll() {
-      const {
-        animation, resetAnimation, wrapWidth, elapse, speed
-      } = this.data;
+      let that = this;
+      var animation = that.animation,
+          resetAnimation = that.resetAnimation,
+          wrapWidth = that.wrapWidth,
+          elapse = that.elapse,
+          speed = that.speed;
+
       resetAnimation.translateX(wrapWidth).step();
-      const animationData = animation.translateX(-(elapse * speed) / 1000).step();
-      this.setData({
-        animationData: resetAnimation.export()
-      });
-      setTimeout(() => {
-        this.setData({
-          animationData: animationData.export()
-        });
+      var animationData = animation.translateX(-(elapse * speed) / 1000).step();
+      that.animationData = resetAnimation.export();
+      that.$apply();
+      setTimeout(function () {
+        that.animationData = animationData.export();
+        that.$apply();
       }, 100);
 
-      const timer = setTimeout(() => {
-        this._scroll();
+      var timer = setTimeout(function () {
+        that.methods._scroll.call(that);
       }, elapse);
 
-      this.setData({
-        timer
-      });
+      that.timer = timer;
     },
-
     _handleButtonClick() {
-      const { timer } = this.data;
+      var timer = this.data.timer;
       timer && clearTimeout(timer);
-      this.setData({
-        show: false,
-        timer: null
-      });
+      this.show = false;
+      this.timer = null;
+      this.$apply();
     },
-
     onClick(event) {
-      this.triggerEvent('click', event);
+      this.$emit('click', event);
     }
   }
-});
-
-export default class vanNoticeBar extends wepy.component {
-
-  
 }
 </script>
