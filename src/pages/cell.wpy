@@ -1,5 +1,9 @@
 <style lang="scss">
 
+@import '../vant/tag.scss';
+@import '../vant/icon.scss';
+@import '../vant/cell.scss';
+
 .title {
   margin-right: 5px;
   display: inline-block;
@@ -12,13 +16,13 @@
 
 <demo-block1 title="基础用法">
   <van-cell-group>
-    <view class="van-cell">
+    <view class="van-cell van-hairline">
       <view class="van-cell__title title-class">单元格</view>
       <view class="van-cell__value value-class">
         <view>内容</view>
       </view>
     </view>
-    <view class="van-cell van-hairline">
+    <view class="van-cell">
       <view class="van-cell__title title-class">
         单元格
         <view class="van-cell__label label-class">描述信息</view>
@@ -32,62 +36,57 @@
 
 <demo-block2 title="展示图标">
   <view class="van-cell-group van-hairline--top-bottom">
-    <view class="van-cell">
-      <view class="van-cell__left-icon left-icon-class van-icon van-icon--location" />
-      <view class="van-cell__title title-class">
-        单元格
-      </view>
-      <view class="van-cell__value value-class">
-        <view>内容</view>
-      </view>
+    <view class="van-cell van-hairline">
+      <view class="van-cell__left-icon left-icon-class van-icon van-icon-location" />
+      <view class="van-cell__title title-class">单元格</view>
     </view>
   </view>
 </demo-block2>
 
 <demo-block3 title="展示箭头">
   <view class="van-cell-group van-hairline--top-bottom">
-    <view class="van-cell van-cell--clickable">
+    <view class="van-cell van-hairline van-cell--clickable">
       <view class="van-cell__title title-class">单元格</view>
-      <view class="van-cell__right-icon right-icon-class van-icon van-icon--arrow" />
+      <view class="van-cell__right-icon right-icon-class van-icon van-icon-arrow" />
     </view>
-    <view class="van-cell van-cell--clickable">
+    <view class="van-cell van-hairline van-cell--clickable">
       <view class="van-cell__title title-class">单元格</view>
       <view class="van-cell__value value-class">
         <view>内容</view>
       </view>
-      <view class="van-cell__right-icon right-icon-class van-icon van-icon--arrow" />
+      <view class="van-cell__right-icon right-icon-class van-icon van-icon-arrow" />
     </view>
-    <naviator url="/pages/dashboard" class="van-cell van-cell--clickable">
+    <navigator url="/pages/dashboard" class="van-cell van-cell--clickable">
       <view class="van-cell__title title-class">单元格</view>
       <view class="van-cell__value value-class">
         <view>内容</view>
       </view>
-      <view class="van-cell__right-icon right-icon-class van-cell__right-icon--down van-icon van-icon--arrow" />
+      <view class="van-cell__right-icon right-icon-class van-icon van-icon-arrow" />
     </navigator>
   </view>
 </demo-block3>
 
 <demo-block4 title="高级用法">
   <view class="van-cell-group van-hairline--top-bottom">
-    <view class="van-cell van-cell--clickable">
-      <view class="van-cell__left-icon left-icon-class van-icon van-icon--shop" />
+    <view class="van-cell van-hairline van-cell--clickable">
+      <view class="van-cell__left-icon left-icon-class van-icon van-icon-shop" />
       <view class="van-cell__title title-class">
         <view class="title">单元格</view>
-        <van-tag type="danger">标签</van-tag>
+        <view class="van-hairline--surround van-tag van-tag--danger">标签</view>
       </view>
       <view class="van-cell__value value-class">
         <view>内容</view>
       </view>
-      <view class="van-cell__right-icon right-icon-class van-icon van-icon--arrow" />
+      <view class="van-cell__right-icon right-icon-class van-icon van-icon-arrow" />
     </view>
-    <view class="van-cell van-cell--clickable">
-      <view class="van-cell__left-icon left-icon-class van-icon van-icon--location" />
+    <view class="van-cell van-hairline van-cell--clickable">
+      <view class="van-cell__left-icon left-icon-class van-icon van-icon-location" />
       <view class="van-cell__title title-class">单元格</view>
-      <view class="van-cell__right-icon right-icon-class van-icon van-icon--arrow" />
+      <view class="van-cell__right-icon right-icon-class van-icon van-icon-arrow" />
     </view>
     <view class="van-cell">
       <view class="van-cell__title title-class">单元格</view>
-      <view class="van-cell__right-icon right-icon-class van-icon van-icon--search" />
+      <view class="van-cell__right-icon right-icon-class van-icon van-icon-search" />
     </view>
   </view>
 </demo-block4>
