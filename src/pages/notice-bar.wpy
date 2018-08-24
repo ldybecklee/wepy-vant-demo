@@ -1,0 +1,55 @@
+<style lang="scss">
+
+
+
+</style>
+
+<template>
+
+<demo-block1 title="基础用法">
+  <van-notice-bar1
+    :text="text"
+    leftIcon="//img.yzcdn.cn/public_files/2017/8/10/6af5b7168eed548100d9041f07b7c616.png"
+  />
+</demo-block1>
+
+<demo-block2 title="禁用滚动">
+  <van-notice-bar2 :scrollable="scrollable" :text="text" />
+</demo-block2>
+
+<demo-block3 title="通告栏模式">
+  <van-notice-bar3 mode="closeable" :text="text" custom-class="demo-margin-bottom" />
+  <van-notice-bar4 mode="link" :text="text" />
+</demo-block3>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+import demoBlock from '../components/demo-block'
+import vanNoticeBar from '../components/van-notice-bar'
+
+export default class Noticebar extends wepy.page {
+
+  config: {
+    "navigationBarTitleText": "NoticeBar 通告栏"
+  }
+
+  components = {
+    'demo-block1': demoBlock,
+    'demo-block2': demoBlock,
+    'demo-block3': demoBlock,
+    'van-notice-bar1': vanNoticeBar,
+    'van-notice-bar2': vanNoticeBar,
+    'van-notice-bar3': vanNoticeBar,
+    'van-notice-bar4': vanNoticeBar
+  }
+  
+  data = {
+    text: '足协杯战线连续第2年上演广州德比战，上赛季半决赛上恒大以两回合5-3的总比分淘汰富力。',
+    scrollable: false
+  }
+  
+}
+</script>
