@@ -420,11 +420,11 @@
 <template>
 
 <view
-  class="custom-class van-icon van-icon-{{ name }}"
+  class="{{ externalClasses[0] }} van-icon van-icon-{{ name }}"
   style="{{ color ? 'color: ' + color : '' }}; {{ size ? 'font-size: ' + size : '' }}"
   bind:tap="onClick"
 >
-  <view wx:if="{{ info !== null }}" class="van-icon__info">{{ info }}</view>
+  <view wx:if="{{ info !== '' }}" class="van-icon__info">{{ info }}</view>
 </view>
 
 </template>
@@ -432,29 +432,27 @@
 <script>
 import wepy from 'wepy'
 
-Component({
-  options: {
-    addGlobalClass: true
-  },
+export default class vanIcon extends wepy.component {
 
-  externalClasses: ['custom-class'],
-
-  properties: {
-    info: null,
+  props = {
+    externalClasses: {
+      type: Object,
+      default: ['custom-class']
+    },
+    info: {
+      type: String,
+      default: ''
+    },
     name: String,
     size: String,
     color: String
-  },
+  }
 
-  methods: {
+  methods = {
     onClick() {
-      this.triggerEvent('click');
+      this.$emit('click');
     }
   }
-});
-
-export default class vanIcon extends wepy.component {
-
   
 }
 </script>
