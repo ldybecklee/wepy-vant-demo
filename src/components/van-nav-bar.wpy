@@ -1,6 +1,7 @@
 <style lang="scss">
 
 @import '../styles/var.scss';
+@import '../vant/icon.scss';
 
 .van-nav-bar {
   height: 46px;
@@ -72,11 +73,7 @@
 >
   <view class="van-nav-bar__left" bind:tap="onClickLeft">
     <block wx:if="{{ leftArrow || leftText }}">
-      <van-icon
-        wx:if="{{ leftArrow }}"
-        name="arrow"
-        custom-class="van-nav-bar__arrow"
-      />
+      <view wx:if="{{ leftArrow }}" class="icon van-icon van-icon-arrow van-nav-bar__arrow" />
       <view wx:if="{{ leftText }}" class="van-nav-bar__text">{{ leftText }}</view>
     </block>
     <slot wx:else name="left" />
@@ -96,18 +93,21 @@
 <script>
 import wepy from 'wepy'
 
-Component({
-  externalClasses: [
-    'custom-class',
-    'title-class'
-  ],
+import componentMixin from '../mixins/component'
 
-  options: {
-    multipleSlots: true,
-    addGlobalClass: true
-  },
+export default class vanNavBar extends wepy.component {
 
-  properties: {
+  mixins = [ componentMixin ]
+
+  props = {
+    externalClasses: {
+      type: Array,
+      default: [
+        'custom-class',
+        'title-class'
+      ]
+    },
+    options: Object,
     title: String,
     leftText: String,
     rightText: String,
@@ -115,23 +115,19 @@ Component({
     fixed: Boolean,
     zIndex: {
       type: Number,
-      value: 1
+      default: 1
     }
-  },
+  }
 
-  methods: {
+  methods = {
     onClickLeft() {
-      this.triggerEvent('click-left');
+      this.$emit('click-left');
     },
 
     onClickRight() {
-      this.triggerEvent('click-right');
+      this.$emit('click-right');
     }
   }
-});
 
-export default class vanNavBar extends wepy.component {
-
-  
 }
 </script>
