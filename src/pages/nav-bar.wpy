@@ -15,7 +15,7 @@
     title="标题"
     leftText="返回"
     rightText="按钮"
-    :leftArrow="navBarLeftArrow1"
+    :leftArrow="navBarLeftArrow"
     bind:click-left="onClickLeft"
     bind:click-right="onClickRight"
   />
@@ -23,8 +23,8 @@
 </demo-block1>
 
 <demo-block2 title="高级用法">
-  <van-nav-bar2 title="标题" left-text="返回" left-arrow>
-    <view class="icon van-icon van-icon-search" style="font-size: 32px;" />
+  <van-nav-bar2 title="标题" leftText="返回" :leftArrow="navBarLeftArrow">
+    <view slot="right" class="icon van-icon van-icon-search" />
   </van-nav-bar2>
 </demo-block2>
 
@@ -39,6 +39,10 @@ import vanNavBar from '../components/van-nav-bar'
 
 export default class Navbar extends wepy.page {
 
+  config = {
+    "navigationBarTitleText": "NavBar 导航栏"
+  }
+
   components = {
     'demo-block1': demoBlock,
     'demo-block2': demoBlock,
@@ -47,7 +51,7 @@ export default class Navbar extends wepy.page {
   }
   
   data = {
-    navBarLeftArrow1: true
+    navBarLeftArrow: true
   }
   
   methods = {
