@@ -199,12 +199,13 @@ export default class vanSteps extends wepy.component {
       type: Array,
       'default': [ 'custom-class' ]
     },
+    options: Object,
     icon: String,
     steps: {
       type: Array
     },
     active: {
-      type: String
+      type: Number
     },
     direction: {
       type: String,
@@ -214,6 +215,10 @@ export default class vanSteps extends wepy.component {
       type: String,
       default: '#06bf04'
     }
+  }
+
+  data = {
+    formattedSteps: []
   }
   
   watch = {
@@ -229,14 +234,13 @@ export default class vanSteps extends wepy.component {
     formatSteps() {
       const { steps } = this.data;
       let that = this;
-      const formattedSteps = steps.map((step, index) => {
+      this.formattedSteps = steps.map((step, index) => {
         return {
           ...step,
           status: that.methods.getStatus.call(that,index)
         };
       });
 
-      this.steps = formattedSteps;
       this.$apply();
     },
 
@@ -254,6 +258,7 @@ export default class vanSteps extends wepy.component {
   }
   
   onLoad() {
+    console.log(this);
     this.methods.formatSteps.call(this);
   }
   
