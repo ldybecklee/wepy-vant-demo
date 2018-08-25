@@ -218,6 +218,7 @@ export default class vanStepper extends wepy.component {
   
   onLoad() {
     this.currentValue = this.methods.range.call(this,this.value);
+    this.$apply();
   }
   
 }
