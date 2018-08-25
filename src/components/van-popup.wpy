@@ -125,46 +125,42 @@
 <script>
 import wepy from 'wepy'
 
-Component({
-  options: {
-    addGlobalClass: true
-  },
+export default class vanPopup extends wepy.component {
 
-  externalClasses: [
-    'custom-class',
-    'overlay-class'
-  ],
-
-  properties: {
+  props = {
+    externalClasses: {
+      type: Array,
+      default: [
+        'custom-class',
+        'overlay-class'
+      ]
+    },
+    options: Object,
     show: Boolean,
     overlayStyle: String,
     overlay: {
       type: Boolean,
-      value: true
+      default: true
     },
     closeOnClickOverlay: {
       type: Boolean,
-      value: true
+      default: true
     },
     position: {
       type: String,
-      value: 'center'
+      default: 'center'
     }
-  },
-
-  methods: {
+  }
+  
+  methods = {
     onClickOverlay() {
-      this.triggerEvent('click-overlay');
+      this.$emit('click-overlay');
 
-      if (this.data.closeOnClickOverlay) {
-        this.triggerEvent('close');
+      if (this.closeOnClickOverlay) {
+        this.$emit('close');
       }
     }
   }
-});
-
-export default class vanPopup extends wepy.component {
-
   
 }
 </script>
