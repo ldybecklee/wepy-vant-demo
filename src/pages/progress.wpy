@@ -9,18 +9,17 @@
 <template>
 
 <demo-block1 title="基础用法">
-  <van-progress1 custom-class="progress" percentage="50" :options="progressOption1" />
+  <van-progress1 percentage="50" :options.sync="progressOption1" />
 </demo-block1>
 
 <demo-block2 title="置灰">
-  <van-progress2 custom-class="progress" inactive percentage="50" :options="progressOption2" />
+  <van-progress2 percentage="50" :options="progressOption2" />
 </demo-block2>
 
 <demo-block3 title="样式定制">
-  <van-progress3 custom-class="progress" pivotText="橙色" color="#f2826a" percentage="25" :options="progressOption3" />
-  <van-progress4 custom-class="progress" pivotText="红色" color="#f3594b" percentage="50" :options="progressOption4" />
+  <van-progress3 pivotText="橙色" color="#f2826a" percentage="25" :options="progressOption3" />
+  <van-progress4 pivotText="红色" color="#f3594b" percentage="50" :options="progressOption4" />
   <van-progress5
-    custom-class="progress"
     percentage="75"
     pivotText="紫色"
     pivotColor="#7232dd"
@@ -65,8 +64,13 @@ export default class Progress extends wepy.page {
     },
     progressOption5: {
       externalClasses: ['progress']
-    },
+    }
   }
+
+  // onLoad() {
+  //   let that = this;
+  //   setTimeout(function() { console.log('timer'); that.progressOption1.percentage = '75'; that.$apply(); }, 2000);
+  // }
   
 }
 </script>
