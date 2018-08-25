@@ -1,0 +1,77 @@
+<style lang="scss">
+
+.tabbar {
+  position: relative !important;
+}
+
+</style>
+
+<template>
+
+<demo-block1 title="基础用法">
+  <van-tabbar1 active="{{ active }}" custom-class="tabbar" bind:change="onChange">
+    <van-tabbar-item1 icon="shop">标签</van-tabbar-item1>
+    <van-tabbar-item2 icon="chat" dot>标签</van-tabbar-item2>
+    <van-tabbar-item3 icon="records" info="5">标签</van-tabbar-item3>
+    <van-tabbar-item4 icon="gold-coin" info="20">标签</van-tabbar-item4>
+  </van-tabbar1>
+</demo-block1>
+
+<demo-block2 title="自定义图标">
+  <van-tabbar2 active="{{ active2 }}" custom-class="tabbar" bind:change="onChange">
+    <van-tabbar-item5>
+      <span>自定义</span>
+      <image slot="icon" src="{{ icon.normal }}" class="icon" mode="aspectFit" />
+      <image slot="icon-active" src="{{ icon.active }}" mode="aspectFit" />
+    </van-tabbar-item5>
+    <van-tabbar-item6 icon="chat">标签</van-tabbar-item5>
+    <van-tabbar-item6 icon="records">标签</van-tabbar-item6>
+  </van-tabbar2>
+</demo-block2>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+import demoBlock from '../components/demo-block'
+import vanTabbar from '../components/van-tabbar'
+import vanTabbarItem from '../components/van-tabbar-item'
+
+export default class Tabbar extends wepy.page {
+
+  config = {
+    "navigationBarTitleText": "Tabbar 标签页"
+  }
+
+  components = {
+    'demo-block1': demoBlock,
+    'demo-block2': demoBlock,
+    'van-tabbar1': vanTabbar,
+    'van-tabbar2': vanTabbar,
+    'van-tabbar-item1': vanTabbarItem,
+    'van-tabbar-item2': vanTabbarItem,
+    'van-tabbar-item3': vanTabbarItem,
+    'van-tabbar-item4': vanTabbarItem,
+    'van-tabbar-item5': vanTabbarItem,
+    'van-tabbar-item6': vanTabbarItem
+  }
+  
+  data = {
+    active: 0,
+    active2: 0,
+    icon: {
+      normal:
+        'https://img.yzcdn.cn/public_files/2017/10/13/c547715be149dd3faa817e4a948b40c4.png',
+      active:
+        'https://img.yzcdn.cn/public_files/2017/10/13/793c77793db8641c4c325b7f25bf130d.png'
+    }
+  }
+  
+  methods = {
+    onChange(event) {
+      console.log(event.detail);
+    }
+  }
+  
+}
+</script>
