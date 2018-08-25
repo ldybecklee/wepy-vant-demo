@@ -1,0 +1,46 @@
+<style lang="scss">
+
+@import '../vant/tag.scss';
+
+</style>
+
+<template>
+
+<demo-block1 title="基础用法" padding>
+  <view class="van-hairline--surround van-tag demo-margin-right">标签</view>
+  <view class="van-hairline--surround van-tag demo-margin-right van-tag--danger">标签</view>
+  <view class="van-hairline--surround van-tag demo-margin-right van-tag--success">标签</view>
+  <view class="van-hairline--surround van-tag demo-margin-right van-tag--primary">标签</view>
+</demo-block1>
+
+<demo-block2 title="空心样式" padding>
+  <view class="van-hairline--surround van-tag demo-margin-right van-tag--plain">标签</view>
+  <view class="van-hairline--surround van-tag demo-margin-right van-tag--danger van-tag--plain">标签</view>
+  <view class="van-hairline--surround van-tag demo-margin-right van-tag--primary van-tag--plain">标签</view>
+  <view class="van-hairline--surround van-tag demo-margin-right van-tag--success van-tag--plain">标签</view>
+</demo-block2>
+
+<demo-block3 title="圆角样式" padding>
+  <view class="van-hairline--surround van-tag demo-margin-right van-tag--mark">标签</view>
+  <view class="van-hairline--surround van-tag demo-margin-right van-tag--danger van-tag--mark">标签</view>
+  <view class="van-hairline--surround van-tag demo-margin-right van-tag--primary van-tag--mark">标签</view>
+  <view class="van-hairline--surround van-tag demo-margin-right van-tag--success van-tag--mark">标签</view>
+</demo-block3>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+import demoBlock from '../components/demo-block'
+
+export default class Tag extends wepy.page {
+
+  components = {
+    'demo-block1': demoBlock,
+    'demo-block2': demoBlock,
+    'demo-block3': demoBlock
+  }
+  
+}
+</script>
