@@ -14,7 +14,7 @@
     :options="stepOption1" 
   />
   
-  <button class="demo-margin-right van-button van-button--normal van-button--default">下一步</button>
+  <button class="demo-margin-right van-button van-button--normal van-button--default" bind:click="nextStep">下一步</button>
 </demo-block1>
 
 <demo-block2 title="竖向步骤条">
