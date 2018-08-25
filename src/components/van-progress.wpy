@@ -1,0 +1,163 @@
+<style lang="scss">
+
+@import '../styles/var.pcss';
+
+.van-progress {
+  height: 4px;
+  position: relative;
+  border-radius: 4px;
+  background: $gray-light;
+
+  &__portion {
+    left: 0;
+    height: 100%;
+    position: absolute;
+    border-radius: inherit;
+
+    &--with-pivot {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+
+  &__pivot {
+    top: 50%;
+    right: 0;
+    min-width: 2em;
+    padding: 0 5px;
+    font-size: 10px;
+    position: absolute;
+    line-height: 1.6;
+    text-align: center;
+    border-radius: 1em;
+    word-break: keep-all;
+    box-sizing: border-box;
+    background-color: $gray-light;
+    transform: translate(100%, -50%);
+  }
+}
+
+</style>
+
+<template>
+
+<view class="van-progress custom-class">
+  <view
+    class="van-progress__portion {{ showPivot && text ? 'van-progress__portion--with-pivot' : '' }}"
+    style="{{ portionStyle }}"
+  >
+    <view
+      v-if="{{ showPivot && text }}"
+      style="{{ pivotStyle }}"
+      class="van-progress__pivot"
+    >
+      {{ text }}
+    </view>
+  </view>
+</view>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+import componentMixin from '../mixins/component'
+
+export default class vanProgress extends wepy.component {
+
+  mixins = [ componentMixin ]
+  
+  props = {
+    externalClasses: {
+      type: Array,
+      default: [
+        'custom-class'
+      ]
+    },
+    options: Object,
+    inactive: {
+      type: Boolean
+    },
+    pivotColor: {
+      type: String
+    },
+    percentage: {
+      type: Number
+    },
+    showPivot: {
+      type: Boolean,
+      value: true
+    },
+    pivotText: {
+      type: String
+    },
+    color: {
+      type: String,
+      value: '#38f'
+    },
+    textColor: {
+      type: String,
+      value: '#fff'
+    }
+  }
+  
+  data = {
+    pivotWidth: 0,
+    progressWidth: 0
+  },
+  
+  onLoad() {
+    this.methods.setText.call(this);
+    this.methods.setPivotStyle.call(this);
+    this.methods.getWidth.call(this);
+  }
+  
+  methods = {
+    getCurrentColor() {
+      return this.inactive ? '#cacaca' : this.color;
+    },
+
+    setText() {
+      this.text = this.pivotText || this.percentage + '%';
+      this.$apply();
+    },
+
+    setPortionStyle() {
+      const width = (this.progressWidth - this.pivotWidth) * this.percentage / 100 + 'px';
+      const background = this.methods.getCurrentColor.call(this);
+      this.portionStyle = `width: ${width}; background: ${background}; `;
+      this.$apply();
+    },
+
+    setPivotStyle() {
+      const color = this.textColor;
+      const background = this.pivotColor || this.methods.getCurrentColor.call(this);
+      this.pivotStyle = `color: ${color}; background: ${background}`;
+      this.$apply();
+    },
+
+    getRect(selector, callback) {
+      wx.createSelectorQuery()
+        .in(this)
+        .select(selector)
+        .boundingClientRect(rect => {
+          rect && callback(rect);
+        })
+        .exec();
+    },
+
+    getWidth() {
+      this.getRect('.van-progress', rect => {
+        this.progressWidth = rect.width;
+        this.methods.setPortionStyle.call(this);
+      });
+
+      this.getRect('.van-progress__pivot', rect => {
+        this.pivotWidth = rect.width || 0;
+        this.methods.setPortionStyle.call(this);
+      });
+    }
+  }
+  
+}
+</script>
