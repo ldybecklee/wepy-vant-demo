@@ -1,0 +1,53 @@
+<style lang="scss">
+
+.progress {
+  margin: 5px 15px 20px;
+}
+
+</style>
+
+<template>
+
+<demo-block1 title="基础用法">
+  <van-progress1 custom-class="progress" percentage="50" />
+</demo-block1>
+
+<demo-block2 title="置灰">
+  <van-progress2 custom-class="progress" inactive percentage="50" />
+</demo-block2>
+
+<demo-block3 title="样式定制">
+  <van-progress3 custom-class="progress" pivot-text="橙色" color="#f2826a" percentage="25" />
+  <van-progress4 custom-class="progress" pivot-text="红色" color="#f3594b" percentage="50" />
+  <van-progress5
+    custom-class="progress"
+    percentage="75"
+    pivot-text="紫色"
+    pivot-color="#7232dd"
+    color="linear-gradient(to right, #be99ff, #7232dd)"
+  />
+</demo-block3>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+import demoBlock from '../components/demo-block'
+import vanProgress from '../components/van-progress'
+
+export default class Progress extends wepy.page {
+
+  components = {
+    'demo-block1': demoBlock,
+    'demo-block2': demoBlock,
+    'demo-block3': demoBlock,
+    'van-progress1': vanProgress,
+    'van-progress2': vanProgress,
+    'van-progress3': vanProgress,
+    'van-progress4': vanProgress,
+    'van-progress5': vanProgress
+  }
+  
+}
+</script>
