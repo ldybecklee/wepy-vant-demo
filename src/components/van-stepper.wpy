@@ -142,6 +142,7 @@ export default class vanStepper extends wepy.component {
         'minus-class'
       ] 
     },
+    options: Object,
     value: {
       type: Number
     },
@@ -161,11 +162,15 @@ export default class vanStepper extends wepy.component {
       default: 1
     }
   }
+
+  data = {
+    currentValue: 0
+  }
   
   watch = {
     value(val) {
       if (val !== this.currentValue) {
-        this.currentValue = this.range(val);
+        this.currentValue = this.methods.range.call(this,val);
         this.$apply();
       }
     }
@@ -190,12 +195,12 @@ export default class vanStepper extends wepy.component {
 
       const diff = type === 'minus' ? -this.step : +this.step;
       const value = Math.round((this.currentValue + diff) * 100) / 100;
-      this.methods.triggerInput.call(this,this.range(value));
+      this.methods.triggerInput.call(this,this.methods.range.call(this,value));
       this.$emit(type);
     },
 
     onBlur(event) {
-      const currentValue = this.range(this.currentValue);
+      const currentValue = this.methods.range.call(this,this.currentValue);
       this.methods.triggerInput.call(this,currentValue);
       this.$emit('blur', event);
     },
