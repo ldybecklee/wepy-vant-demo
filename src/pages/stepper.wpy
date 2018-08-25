@@ -1,0 +1,54 @@
+<style lang="scss">
+
+
+
+</style>
+
+<template>
+
+<demo-block1 title="基础用法" :padding="blockPadding">
+  <van-stepper1 value="{{ value1 }}" />
+</demo-block1>
+
+<demo-block2 title="禁用状态" :padding="blockPadding">
+  <van-stepper1 value="{{ value1 }}" disabled />
+</demo-block2>
+
+<demo-block title="高级用法" padding>
+  <van-stepper
+    value="{{ value2 }}"
+    integer
+    min="5"
+    max="40"
+    step="2"
+  />
+</demo-block>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+import demoBlock from '../components/demo-block'
+import vanStepper from '../components/van-stepper'
+
+export default class Stepper extends wepy.page {
+
+  config = {
+    "navigationBarTitleText": "Stepper 步进器"
+  }
+
+  components = {
+    'demo-block1': demoBlock,
+    'demo-block2': demoBlock,
+    'van-stepper1': vanStepper,
+    'van-stepper2': vanStepper
+  }
+  
+  data = {
+    blockPadding: true,
+    
+  }
+  
+}
+</script>
