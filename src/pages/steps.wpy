@@ -36,6 +36,10 @@ import vanSteps from '../components/van-steps'
 
 export default class vanSteps extends wepy.page {
 
+  config = {
+    "navigationBarTitleText": "Steps 步骤条"
+  }
+
   components = {
     'demo-block1': demoBlock,
     'demo-block2': demoBlock,
