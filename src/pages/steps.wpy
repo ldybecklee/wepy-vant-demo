@@ -1,0 +1,78 @@
+<style lang="scss">
+
+
+
+</style>
+
+<template>
+
+<demo-block1 title="基础用法">
+  <van-steps1
+    :steps="steps"
+    :active="active"
+    custom-class="demo-margin-bottom"
+    :options="stepOption1" 
+  />
+  
+  <button class="demo-margin-right van-button van-button--normal van-button--default">下一步</button>
+</demo-block1>
+
+<demo-block2 title="竖向步骤条">
+  <van-steps2
+    :steps="steps"
+    :active="active"
+    direction="vertical"
+    activeColor="#f60"
+  />
+</demo-block2>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+
+import demoBlock from '../components/demo-block'
+import vanSteps from '../components/van-steps'
+
+export default class vanSteps extends wepy.page {
+
+  components = {
+    'demo-block1': demoBlock,
+    'demo-block2': demoBlock,
+    'van-steps1': vanSteps,
+    'van-steps2': vanSteps
+  }
+  
+  data = {
+    stepOption1: {
+      externalClasses: [ 'demo-margin-bottom' ]
+    },
+    active: '0',
+    steps: [
+      {
+        text: '步骤一',
+        desc: '描述信息'
+      },
+      {
+        text: '步骤二',
+        desc: '描述信息'
+      },
+      {
+        text: '步骤三',
+        desc: '描述信息'
+      },
+      {
+        text: '步骤四',
+        desc: '描述信息'
+      }
+    ]
+  }
+  
+  methods = {
+    nextStep() {
+      this.active = ++this.active % 4;
+    }
+  }
+  
+}
+</script>
