@@ -6,21 +6,21 @@
 
 <template>
 
-<demo-block1 title="基础用法" padding>
+<demo-block1 title="基础用法" :padding="blockPadding">
   <view class="van-hairline--surround van-tag demo-margin-right">标签</view>
   <view class="van-hairline--surround van-tag demo-margin-right van-tag--danger">标签</view>
   <view class="van-hairline--surround van-tag demo-margin-right van-tag--success">标签</view>
   <view class="van-hairline--surround van-tag demo-margin-right van-tag--primary">标签</view>
 </demo-block1>
 
-<demo-block2 title="空心样式" padding>
+<demo-block2 title="空心样式" :padding="blockPadding">
   <view class="van-hairline--surround van-tag demo-margin-right van-tag--plain">标签</view>
   <view class="van-hairline--surround van-tag demo-margin-right van-tag--danger van-tag--plain">标签</view>
   <view class="van-hairline--surround van-tag demo-margin-right van-tag--primary van-tag--plain">标签</view>
   <view class="van-hairline--surround van-tag demo-margin-right van-tag--success van-tag--plain">标签</view>
 </demo-block2>
 
-<demo-block3 title="圆角样式" padding>
+<demo-block3 title="圆角样式" :padding="blockPadding">
   <view class="van-hairline--surround van-tag demo-margin-right van-tag--mark">标签</view>
   <view class="van-hairline--surround van-tag demo-margin-right van-tag--danger van-tag--mark">标签</view>
   <view class="van-hairline--surround van-tag demo-margin-right van-tag--primary van-tag--mark">标签</view>
@@ -40,6 +40,10 @@ export default class Tag extends wepy.page {
     'demo-block1': demoBlock,
     'demo-block2': demoBlock,
     'demo-block3': demoBlock
+  }
+
+  data = {
+    blockPadding: true
   }
   
 }
