@@ -7,22 +7,16 @@
 <template>
 
 <demo-block1 title="基础用法" :padding="blockPadding">
-  <van-stepper1 value="{{ value1 }}" />
+  <van-stepper1 :options="stepOption1" />
 </demo-block1>
 
 <demo-block2 title="禁用状态" :padding="blockPadding">
-  <van-stepper1 value="{{ value1 }}" disabled />
+  <van-stepper2 :options="stepOption2" />
 </demo-block2>
 
-<demo-block title="高级用法" padding>
-  <van-stepper
-    value="{{ value2 }}"
-    integer
-    min="5"
-    max="40"
-    step="2"
-  />
-</demo-block>
+<demo-block3 title="高级用法" :padding="blockPadding">
+  <van-stepper3 :options="stepOption3" />
+</demo-block3>
 
 </template>
 
@@ -41,13 +35,28 @@ export default class Stepper extends wepy.page {
   components = {
     'demo-block1': demoBlock,
     'demo-block2': demoBlock,
+    'demo-block3': demoBlock,
     'van-stepper1': vanStepper,
-    'van-stepper2': vanStepper
+    'van-stepper2': vanStepper,
+    'van-stepper3': vanStepper
   }
   
   data = {
     blockPadding: true,
-    
+    stepOption1: {
+      value: 1
+    },
+    stepOption2: {
+      value: 1,
+      disabled: true
+    },
+    stepOption3: {
+      value: 5,
+      integer: true,
+      min: 5,
+      max: 40,
+      step: 2
+    }
   }
   
 }
