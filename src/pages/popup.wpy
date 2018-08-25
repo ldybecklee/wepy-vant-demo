@@ -39,54 +39,59 @@
 
 <template>
 
-<demo-block1 title="基础用法" padding>
+<demo-block1 title="基础用法" :padding="blockPadding">
   <button class="van-button van-button--normal van-button--default" bindtap="togglePopup">弹出 Popup</button>
   <van-popup1
-    :show="showMiddle"
+    :show.sync="showMiddle"
     custom-class="center"
-    bind:close="togglePopup"
+    :options="popupOptions1" 
+    @close.user="togglePopup"
   >
     内容
   </van-popup1>
 </demo-block1>
 
-<demo-block2 title="弹出位置" padding>
+<demo-block2 title="弹出位置" :padding="blockPadding">
   <button class="demo-margin-right van-button van-button--normal van-button--default" bindtap="toggleBottomPopup">底部弹出</button>
   <van-popup2
-    :show="showBottom"
+    :show.sync="showBottom"
     position="bottom"
     custom-class="bottom"
-    bind:close="toggleBottomPopup"
+    :options="popupOptions2" 
+    @close.user="toggleBottomPopup"
   >
     内容
   </van-popup2>
 
   <button class="demo-margin-right van-button van-button--normal van-button--default" bindtap="toggleTopPopup">顶部弹出</button>
   <van-popup3
-    :show="showTop"
+    :show.sync="showTop"
     position="top"
-    :overlay="popupOverlay"
+    :overlay.sync="popupOverlay"
     custom-class="top"
-    bind:close="toggleTopPopup"
+    :options="popupOptions3" 
+    @close.user="toggleTopPopup"
   >
     内容
   </van-popup3>
 
   <button class="van-button van-button--normal van-button--default" bindtap="toggleRightPopup">右侧弹出</button>
   <van-popup4
-    :show="showRight"
+    :show.sync="showRight"
     position="right"
     custom-class="right"
-    bind:close="toggleRightPopup"
+    :options="popupOptions4" 
+    @close.user="toggleRightPopup"
   >
     <button class="demo-margin-right van-button van-button--normal van-button--default" bindtap="toggleRightPopup">关闭弹层</button>
 
     <button class="van-button van-button--normal van-button--default" bindtap="toggleRightPopup2">右侧弹出</button>
     <van-popup5
-      :show="showRight2"
+      :show.sync="showRight2"
       position="right"
       custom-class="right"
-      bind:close="toggleRightPopup2"
+      :options="popupOptions5" 
+      @close.user="toggleRightPopup2"
     >
       <button class="van-button van-button--normal van-button--default" bindtap="toggleRightPopup2">关闭弹层</button>
     </van-popup5>
@@ -118,21 +123,38 @@ export default class Popup extends wepy.page {
   }
   
   data = {
+    blockPadding: true,
     showMiddle: false,
     showTop: false,
     showBottom: false,
     showLeft: false,
     showRight: false,
     showRight2: false,
-    popupOverlay: false
+    popupOverlay: false,
+    popupOptions1: {
+      externalClasses: ['center']
+    },
+    popupOptions2: {
+      externalClasses: ['bottom']
+    },
+    popupOptions3: {
+      externalClasses: ['top']
+    },
+    popupOptions4: {
+      externalClasses: ['right']
+    },
+    popupOptions5: {
+      externalClasses: ['right']
+    },
   }
   
-  method = {
-    toggle(type) {
-      type[0] = type[0].toUpperCase();
-      this[`show${type}`] = !this[`show${type}`];
-      this.$apply();
-    },
+  toggle(type) {
+    type = type[0].toUpperCase()+type.substr(1);
+    this[`show${type}`] = !this[`show${type}`];
+    this.$apply();
+  }
+
+  methods = {
 
     togglePopup() {
       this.toggle('middle');
