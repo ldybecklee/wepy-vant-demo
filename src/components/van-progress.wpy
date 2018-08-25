@@ -1,6 +1,6 @@
 <style lang="scss">
 
-@import '../styles/var.pcss';
+@import '../styles/var.scss';
 
 .van-progress {
   height: 4px;
