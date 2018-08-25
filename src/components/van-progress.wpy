@@ -41,10 +41,10 @@
 
 <template>
 
-<view class="van-progress custom-class">
+<view class="van-progress {{ externalClasses[0] }}">
   <view
     class="van-progress__portion {{ showPivot && text ? 'van-progress__portion--with-pivot' : '' }}"
-    style="{{ portionStyle }}"
+    style="{{ portionStyle }}" 
   >
     <view
       v-if="{{ showPivot && text }}"
@@ -61,11 +61,11 @@
 <script>
 import wepy from 'wepy'
 
-import componentMixin from '../mixins/component'
+import comOptionsMixin from '../mixins/com-options'
 
 export default class vanProgress extends wepy.component {
 
-  mixins = [ componentMixin ]
+  mixins = [ comOptionsMixin ]
   
   props = {
     externalClasses: {
@@ -82,62 +82,76 @@ export default class vanProgress extends wepy.component {
       type: String
     },
     percentage: {
-      type: Number
+      type: String
     },
     showPivot: {
       type: Boolean,
-      value: true
+      default: true
     },
     pivotText: {
       type: String
     },
     color: {
       type: String,
-      value: '#38f'
+      default: '#38f'
     },
     textColor: {
       type: String,
-      value: '#fff'
+      default: '#fff'
     }
   }
   
   data = {
     pivotWidth: 0,
-    progressWidth: 0
+    progressWidth: 0,
+    portionStyle: '',
+    pivotStyle: '',
+    text: ''
   }
-  
+
   watch = {
       inactive() {
           this.methods.setPivotStyle.call(this);
           this.methods.setPortionStyle.call(this);
+          this.$apply();
       },
       pivotColor() {
         this.methods.setPivotStyle.call(this);
+        this.$apply();
       },
       percentage() {
         this.methods.setText.call(this);
         this.methods.setPortionStyle.call(this);
+        this.$apply();
       },
       showPivot() {
         this.methods.getWidth.call(this);
+        this.$apply();
       },
       pivotText() {
         this.methods.setText.call(this);
         this.methods.getWidth.call(this);
+        this.$apply();
       },
       color() {
         this.methods.setPivotStyle.call(this);
         this.methods.setPortionStyle.call(this);
+        this.$apply();
       },
       textColor() {
         this.methods.setPivotStyle.call(this);
+        this.$apply();
+      },
+      options(newValue, oldValue) {
+        this.applyOptions();
       }
   }
-  
+
   onLoad() {
     this.methods.setText.call(this);
     this.methods.setPivotStyle.call(this);
     this.methods.getWidth.call(this);
+    this.$apply();
   }
   
   methods = {
@@ -147,26 +161,22 @@ export default class vanProgress extends wepy.component {
 
     setText() {
       this.text = this.pivotText || this.percentage + '%';
-      this.$apply();
     },
 
     setPortionStyle() {
       const width = (this.progressWidth - this.pivotWidth) * this.percentage / 100 + 'px';
       const background = this.methods.getCurrentColor.call(this);
       this.portionStyle = `width: ${width}; background: ${background}; `;
-      this.$apply();
     },
 
     setPivotStyle() {
       const color = this.textColor;
       const background = this.pivotColor || this.methods.getCurrentColor.call(this);
       this.pivotStyle = `color: ${color}; background: ${background}`;
-      this.$apply();
     },
 
     getRect(selector, callback) {
       wx.createSelectorQuery()
-        .in(this)
         .select(selector)
         .boundingClientRect(rect => {
           rect && callback(rect);
@@ -175,14 +185,17 @@ export default class vanProgress extends wepy.component {
     },
 
     getWidth() {
-      this.getRect('.van-progress', rect => {
-        this.progressWidth = rect.width;
-        this.methods.setPortionStyle.call(this);
+      var that = this;
+      this.methods.getRect.call(this,'.van-progress', rect => {
+        that.progressWidth = rect.width;
+        that.methods.setPortionStyle.call(that);
+        that.$apply();
       });
 
-      this.getRect('.van-progress__pivot', rect => {
-        this.pivotWidth = rect.width || 0;
-        this.methods.setPortionStyle.call(this);
+      this.methods.getRect.call(this,'.van-progress__pivot', rect => {
+        that.pivotWidth = rect.width || 0;
+        that.methods.setPortionStyle.call(that);
+        that.$apply();
       });
     }
   }
