@@ -9,22 +9,22 @@
 <template>
 
 <demo-block1 title="基础用法">
-  <van-progress1 custom-class="progress" percentage="50" />
+  <van-progress1 custom-class="progress" percentage="50" :options="progressOption1" />
 </demo-block1>
 
 <demo-block2 title="置灰">
-  <van-progress2 custom-class="progress" inactive percentage="50" />
+  <van-progress2 custom-class="progress" inactive percentage="50" :options="progressOption2" />
 </demo-block2>
 
 <demo-block3 title="样式定制">
-  <van-progress3 custom-class="progress" pivot-text="橙色" color="#f2826a" percentage="25" />
-  <van-progress4 custom-class="progress" pivot-text="红色" color="#f3594b" percentage="50" />
+  <van-progress3 custom-class="progress" pivotText="橙色" color="#f2826a" percentage="25" :options="progressOption3" />
+  <van-progress4 custom-class="progress" pivotText="红色" color="#f3594b" percentage="50" :options="progressOption4" />
   <van-progress5
     custom-class="progress"
     percentage="75"
-    pivot-text="紫色"
-    pivot-color="#7232dd"
-    color="linear-gradient(to right, #be99ff, #7232dd)"
+    pivotText="紫色"
+    pivotColor="#7232dd"
+    color="linear-gradient(to right, #be99ff, #7232dd)" :options="progressOption5"
   />
 </demo-block3>
 
@@ -47,6 +47,25 @@ export default class Progress extends wepy.page {
     'van-progress3': vanProgress,
     'van-progress4': vanProgress,
     'van-progress5': vanProgress
+  }
+  
+  data = {
+    progressOption1: {
+      externalClasses: ['progress']
+    },
+    progressOption2: {
+      externalClasses: ['progress'],
+      inactive: true
+    },
+    progressOption3: {
+      externalClasses: ['progress']
+    },
+    progressOption4: {
+      externalClasses: ['progress']
+    },
+    progressOption5: {
+      externalClasses: ['progress']
+    },
   }
   
 }
