@@ -19,7 +19,7 @@
 <template>
 
 <view
-  class="custom-class van-tabbar van-hairline--top-bottom {{ fixed ? 'van-tabbar--fixed' : '' }}"
+  class="{{ externalClasses[0] }} van-tabbar van-hairline--top-bottom {{ fixed ? 'van-tabbar--fixed' : '' }}"
   style="{{ zIndex ? 'style: ' + this.zIndex : '' }}"
 >
   <slot />
@@ -39,28 +39,6 @@ Component({
 
   externalClasses: ['custom-class'],
 
-  properties: {
-    active: {
-      type: Number,
-      observer(active) {
-        this.setData({ currentActive: active });
-        this.setActiveItem();
-      }
-    },
-    fixed: {
-      type: Boolean,
-      value: true
-    },
-    zIndex: {
-      type: Number,
-      value: 1
-    }
-  },
-
-  data: {
-    items: [],
-    currentActive: -1
-  },
 
   attached() {
     this.setData({ currentActive: this.data.active });
@@ -82,13 +60,56 @@ Component({
     }
   },
 
-  methods: {
+  
+});
+
+import ComOptionsMixin from '../mixins/com-options'
+
+export default class vanTabbar extends wepy.component {
+
+  mixins = [ ComOptionMixin ]
+  
+  props = {
+    externalClasses: {
+      type: Array,
+      default: [ 'custom-class' ]
+    },
+    options: Object,
+    active: {
+      type: Number
+    },
+    fixed: {
+      type: Boolean,
+      default: true
+    },
+    zIndex: {
+      type: Number,
+      default: 1
+    }
+  }
+  
+  data = {
+    items: [],
+    currentActive: -1
+  }
+  
+  watch = {
+    active(active) {
+      this.currentActive = acctive;
+      this.methods.setActiveItem.call(this);
+      this.$apply();
+    }
+  }
+  
+  methods = {
     setActiveItem() {
-      this.data.items.forEach((item, index) => {
+      let that = this;
+      this.items.forEach((item, index) => {
         item.setData({
           active: index === this.data.currentActive,
           count: this.data.items.length
         });
+        
       });
     },
 
@@ -101,10 +122,6 @@ Component({
       }
     }
   }
-});
-
-export default class vanTabbar extends wepy.component {
-
   
 }
 </script>
