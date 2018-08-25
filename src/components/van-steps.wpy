@@ -164,7 +164,7 @@
 
 <template>
 
-<view class="custom-class van-steps van-steps--{{ direction }}">
+<view class="{{ externalClasses[0] }} van-steps van-steps--{{ direction }}">
   <view
     wx:for="{{ formattedSteps }}"
     wx:key="index"
@@ -188,56 +188,56 @@
 <script>
 import wepy from 'wepy'
 
-Component({
-  options: {
-    addGlobalClass: true
-  },
+import ComOptionsMixin from '../mixins/com-options'
 
-  externalClasses: [
-    'custom-class'
-  ],
+export default class vanSteps extends wepy.component {
 
-  properties: {
+  mixins = [ ComOptionsMixin ]
+  
+  props = {
+    externalClasses: {
+      type: Array,
+      'default': [ 'custom-class' ]
+    },
     icon: String,
     steps: {
-      type: Array,
-      observer() {
-        this.formatSteps();
-      }
+      type: Array
     },
     active: {
-      type: Number,
-      observer() {
-        this.formatSteps();
-      }
+      type: String
     },
     direction: {
       type: String,
-      value: 'horizontal'
+      default: 'horizontal'
     },
     activeColor: {
       type: String,
-      value: '#06bf04'
+      default: '#06bf04'
     }
-  },
-
-  attached() {
-    this.formatSteps();
-  },
-
-  methods: {
+  }
+  
+  watch = {
+    steps() {
+      this.methods.formatSteps.call(this);
+    },
+    active() {
+      this.methods.formatSteps.call(this);
+    }
+  }
+  
+  methods = {
     formatSteps() {
       const { steps } = this.data;
+      let that = this;
       const formattedSteps = steps.map((step, index) => {
         return {
           ...step,
-          status: this.getStatus(index)
+          status: that.methods.getStatus.call(that,index)
         };
       });
 
-      this.setData({
-        formattedSteps
-      });
+      this.steps = formattedSteps;
+      this.$apply();
     },
 
     getStatus(index) {
@@ -252,10 +252,10 @@ Component({
       return '';
     }
   }
-});
-
-export default class vanSteps extends wepy.component {
-
+  
+  onLoad() {
+    this.methods.formatSteps.call(this);
+  }
   
 }
 </script>
