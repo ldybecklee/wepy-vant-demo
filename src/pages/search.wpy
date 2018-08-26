@@ -28,13 +28,13 @@
 
 <demo-block3 title="自定义行动按钮">
   <van-search3
-    :value="value"
+    :value.sync="value"
     placeholder="请输入搜索关键词"
     useActionSlot="y"
     @change.user="onChange"
     @search.user="onSearch"
   >
-    <view slot="action" bind:tap="onSearch">搜索</view>
+    <view slot="action">搜索</view>
   </van-search3>
 </demo-block3>
 
@@ -42,8 +42,8 @@
 
 <script>
 import wepy from 'wepy'
-import demoBlock from 'demo-block'
-import vanSearch from 'van-search'
+import demoBlock from '../components/demo-block'
+import vanSearch from '../components/van-search'
 
 export default class Search extends wepy.page {
 
@@ -70,10 +70,10 @@ export default class Search extends wepy.page {
       this.$apply();
     },
 
-    onSearch(event) {
-      if (event.detail) {
+    onSearch(value) {
+      if (value) {
         wx.showToast({
-          title: '搜索：' + event.detail,
+          title: '搜索：' + value,
           icon: 'none'
         });
       }
