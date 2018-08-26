@@ -29,40 +29,6 @@
 
 <script>
 import wepy from 'wepy'
-
-const ITEM_PATH = '../tabbar-item/index';
-
-Component({
-  options: {
-    addGlobalClass: true
-  },
-
-  externalClasses: ['custom-class'],
-
-
-  attached() {
-    this.setData({ currentActive: this.data.active });
-  },
-
-  relations: {
-    [ITEM_PATH]: {
-      type: 'descendant',
-
-      linked(target) {
-        this.data.items.push(target);
-        this.setActiveItem();
-      },
-
-      unlinked(target) {
-        this.data.items = this.data.items.filter(item => item !== target);
-        this.setActiveItem();
-      }
-    }
-  },
-
-  
-});
-
 import ComOptionsMixin from '../mixins/com-options'
 
 export default class vanTabbar extends wepy.component {
@@ -92,7 +58,7 @@ export default class vanTabbar extends wepy.component {
     items: [],
     currentActive: -1
   }
-  
+  /*
   watch = {
     active(active) {
       this.currentActive = acctive;
@@ -121,6 +87,11 @@ export default class vanTabbar extends wepy.component {
         this.setActiveItem();
       }
     }
+  }
+  */
+  onLoad() {
+    this.currentActive = this.active;
+    this.$apply();
   }
   
 }
