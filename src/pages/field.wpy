@@ -29,10 +29,10 @@
       placeholder="请输入用户名"
       clearable="y"
       icon="question"
-      icon-class="icon"
+      iconClass="icon"
       :options="fieldOption1" 
       required="y" 
-      bind:click-icon="onClickIcon"
+      @click-icon.user="onClickIcon"
     />
     <van-field3
       :value="password"
@@ -109,7 +109,7 @@
 
 <script>
 import wepy from 'wepy'
-import deomBlock from '../components/demo-block'
+import demoBlock from '../components/demo-block'
 import vanField from '../components/van-field'
 
 export default class Field extends wepy.page {
@@ -129,6 +129,25 @@ export default class Field extends wepy.page {
     'van-field6': vanField,
     'van-field7': vanField,
     'van-field8': vanField
+  }
+
+  data = {
+    sms: '',
+    value: '',
+    password: '',
+    username: '',
+    username2: '',
+    message: '',
+    phone: '1365577'
+  }
+
+  methods = {
+    onClickIcon() {
+      wx.showToast({
+        icon: 'none',
+        title: '点击图标'
+      });
+    }
   }
   
 }
