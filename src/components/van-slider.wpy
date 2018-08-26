@@ -60,50 +60,8 @@
 
 <script>
 import wepy from 'wepy'
-import TouchMixins from '../mixins/touch'
+import TouchMixin from '../mixins/touch'
 import ComOptionsMixin from '../mixins/com-options'
-
-const touchBehaviors = require('../behaviors/touch');
-
-Component({
-  options: {
-    addGlobalClass: true
-  },
-
-  externalClasses: ['custom-class'],
-
-  behaviors: [touchBehaviors],
-
-  properties: {
-    disabled: Boolean,
-    max: {
-      type: Number,
-      value: 100
-    },
-    min: {
-      type: Number,
-      value: 0
-    },
-    step: {
-      type: Number,
-      value: 1
-    },
-    value: {
-      type: Number,
-      value: 0
-    },
-    barHeight: {
-      type: String,
-      value: '2px'
-    }
-  },
-
-  attached() {
-    this.updateValue(this.data.value);
-  },
-
-  
-});
 
 export default class vanSlider extends wepy.component {
 
@@ -111,6 +69,10 @@ export default class vanSlider extends wepy.component {
   
   props = {
     options: Object,
+    customClass: {
+      type: String,
+      default: 'custom-class'
+    },
     disabled: {
       type: String,
       default: 'n'
@@ -137,6 +99,10 @@ export default class vanSlider extends wepy.component {
     }
   }
   
+  data = {
+    barStyle: ''
+  }
+
   methods = {
     getRect(callback) {
       wx.createSelectorQuery()
@@ -146,33 +112,32 @@ export default class vanSlider extends wepy.component {
     },
 
     onTouchStart(event) {
-      if (this.disabled) return;
+      if (this.disabled=='y') return;
 
-      this.methods.touchStart.call(this, event);
-      this.startValue = this.format(this.value);
+      this.touchStart.call(this, event);
+      this.startValue = this.methods.format.call(this, this.value);
       this.$apply();
     },
 
     onTouchMove(event) {
-      if (this.disabled) return;
-
-      this.methods.touchMove.call(this, event);
+      if (this.disabled=='y') return;
+      this.touchMove.call(this, event);
       let that = this;
-      this.getRect(rect => {
+      this.methods.getRect.call(this,rect => {
         const diff = that.deltaX / rect.width * 100;
         that.methods.updateValue.call(that, that.startValue + diff);
       });
     },
 
     onTouchEnd() {
-      if (this.disabled) return;
+      if (this.disabled=='y') return;
       this.methods.updateValue.call(this, this.value, true);
     },
 
     onClick(event) {
-      if (this.disabled) return;
+      if (this.disabled=='y') return;
       let that = this;
-      this.getRect(rect => {
+      this.methods.getRect.call(this, rect => {
         const value = (event.detail.x - rect.left) / rect.width * 100;
         that.methods.updateValue.call(that, value, true);
       });
@@ -195,7 +160,7 @@ export default class vanSlider extends wepy.component {
   }
   
   onLoad() {
-    this.methods.updateValue.call(this, this.data.value);
+    this.methods.updateValue.call(this, this.value);
   }
   
 }
