@@ -8,14 +8,14 @@
 
 <demo-block1 title="基础用法" :padding="blockPadding">
   <van-switch1
-    :checked="checked"
+    :checked.sync="checked"
     @change.user="onChange"
   />
 </demo-block1>
 
 <demo-block2 title="禁用状态" :padding="blockPadding">
   <van-switch2
-    :checked="checked"
+    :checked.sync="checked"
     disabled="y" 
     @change.user="onChange"
   />
@@ -23,7 +23,7 @@
 
 <demo-block3 title="加载状态" :padding="blockPadding">
   <van-switch3
-    :checked="checked"
+    :checked.sync="checked"
     loading="y"
     @change.user="onChange"
   />
@@ -31,7 +31,7 @@
 
 <demo-block4 title="高级用法" :padding="blockPadding">
   <van-switch4
-    :checked="checked2"
+    :checked.sync="checked2"
     size="36px"
     @change.user="onChange2"
   />
@@ -51,10 +51,10 @@ export default class Switch extends wepy.page {
   }
 
   components = {
-    'dmo-block1': demoBlock,
-    'dmo-block2': demoBlock,
-    'dmo-block3': demoBlock,
-    'dmo-block4': demoBlock,
+    'demo-block1': demoBlock,
+    'demo-block2': demoBlock,
+    'demo-block3': demoBlock,
+    'demo-block4': demoBlock,
     'van-switch1': vanSwitch,
     'van-switch2': vanSwitch,
     'van-switch3': vanSwitch,
@@ -62,17 +62,18 @@ export default class Switch extends wepy.page {
   }
   
   data = {
+    blockPadding: true,
     checked: true,
     checked2: true
   }
   
   methods = {
-    onChange({ detail }) {
+    onChange(detail) {
       this.checked = detail;
       this.$apply();
     },
 
-    onChange2({ detail }) {
+    onChange2(detail) {
       let that = this;
       wx.showModal({
         title: '提示',
