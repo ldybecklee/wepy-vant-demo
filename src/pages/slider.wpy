@@ -53,6 +53,7 @@ export default class Slider extends wepy.page {
     'demo-block1': demoBlock,
     'demo-block2': demoBlock,
     'demo-block3': demoBlock,
+    'demo-block4': demoBlock,
     'van-slider1': vanSlider,
     'van-slider2': vanSlider,
     'van-slider3': vanSlider,
@@ -60,10 +61,10 @@ export default class Slider extends wepy.page {
   }
 
   methods = {
-    onChange(event) {
+    onChange(value) {
       wx.showToast({
         icon: 'none',
-        title: `当前值：${event.detail}`
+        title: `当前值：${value}`
       });
     }
   }
