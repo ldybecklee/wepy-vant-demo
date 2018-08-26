@@ -145,72 +145,72 @@
 
 <script>
 import wepy from 'wepy'
+import ComOptionsMixin from '../mixins/com-options'
 
-Component({
-  options: {
-    addGlobalClass: true
-  },
+export default class vanTransition extends wepy.component {
 
-  externalClasses: ['custom-class'],
-
-  properties: {
+  mixins = [ ComOptionsMixin ]
+  
+  props = {
+    externalClasses: {
+      type: Array,
+      default: ['custom-class']
+    },
+    options: Object,
     customStyle: String,
     show: {
-      value: true,
       type: Boolean,
-      observer(value) {
-        if (value) {
-          this.show();
-        } else {
-          this.setData({
-            type: 'leave'
-          });
-        }
-      }
+      default: true
     },
     name: {
       type: String,
-      value: 'fade'
+      default: 'fade'
     },
     duration: {
-      type: Number,
-      value: 300
+      type: String,
+      default: '300'
     }
-  },
-
+  }
+  
   data: {
     type: '',
     inited: false,
     display: false
-  },
-
-  attached() {
-    if (this.data.show) {
-      this.show();
+  }
+  
+  watch = {
+    show(value) {
+      if (value) {
+        this.show();
+      } else {
+        this.type = 'leave';
+      }
+      this.$apply();
     }
-  },
-
+  }
+  
   methods: {
     show() {
-      this.setData({
-        inited: true,
-        display: true,
-        type: 'enter'
-      });
+      this.inited = true;
+      this.display = true;
+      this.type = 'enter';
+      this.$apply();
     },
 
     onAnimationEnd() {
-      if (!this.data.show) {
-        this.setData({
-          display: false
-        });
+      if (!this.show) {
+        this.display = false;
       }
+      this.$apply();
     }
   }
-});
-
-export default class vanTransition extends wepy.component {
-
+  
+  onLoad() {
+    if (this.show) {
+      this.show();
+    }
+    this.$apply();
+  }
   
 }
 </script>
