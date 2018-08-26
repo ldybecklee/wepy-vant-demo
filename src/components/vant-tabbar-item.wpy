@@ -91,7 +91,7 @@ export default class vanTabbarItem extends wepy.component {
     count: 0
   }
   
-  methods: {
+  methods = {
     onClick() {
       //const parent = this.getRelationNodes(TABBAR_PATH)[0];
       //if (parent) {
