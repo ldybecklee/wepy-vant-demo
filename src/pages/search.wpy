@@ -1,0 +1,87 @@
+<style lang="scss">
+
+
+
+</style>
+
+<template>
+
+<demo-block1 title="基本用法">
+  <van-search1
+    :value="value"
+    placeholder="请输入搜索关键词"
+    @change.user="onChange"
+    @search.use="onSearch"
+  />
+</demo-block1>
+
+<demo-block2 title="监听对应事件">
+  <van-search2
+    :value="value"
+    showAction="y"
+    placeholder="请输入搜索关键词"
+    @change.user="onChange"
+    @search.user="onSearch"
+    @cancel.user="onCancel"
+  />
+</demo-block2>
+
+<demo-block3 title="自定义行动按钮">
+  <van-search3
+    :value="value"
+    placeholder="请输入搜索关键词"
+    useActionSlot="y"
+    @change.user="onChange"
+    @search.user="onSearch"
+  >
+    <view slot="action" bind:tap="onSearch">搜索</view>
+  </van-search3>
+</demo-block3>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+import demoBlock from 'demo-block'
+import vanSearch from 'van-search'
+
+export default class Search extends wepy.page {
+
+  components = {
+    'demo-block1': demoBlock,
+    'demo-block2': demoBlock,
+    'demo-block3': demoBlock,
+    'van-search1': vanSearch,
+    'van-search2': vanSearch,
+    'van-search3': vanSearch
+  }
+  
+  data = {
+    value: ''
+  }
+  
+  methods = {
+    onChange(e) {
+      this.value = e.detail;
+      this.$apply();
+    },
+
+    onSearch(event) {
+      if (event.detail) {
+        wx.showToast({
+          title: '搜索：' + event.detail,
+          icon: 'none'
+        });
+      }
+    },
+
+    onCancel() {
+      wx.showToast({
+        title: '取消',
+        icon: 'none'
+      });
+    }
+  }
+  
+}
+</script>
