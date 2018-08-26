@@ -69,16 +69,16 @@
 <template>
 
 <van-popup
-  show="{{ show }}"
-  overlay="{{ overlay }}"
-  close-on-click-overlay="{{ closeOnClickOverlay }}"
-  custom-class="van-actionsheet {{ title ? 'van-actionsheet--withtitle' : '' }}"
+  :show.sync="show"
+  :overlay="overlay"
+  :closeOnClickOverlay="closeOnClickOverlay"
+  :customClass="popupCustomClass"
   position="bottom"
-  bind:close="onClose"
+  @close.user="onClose"
 >
   <view wx:if="{{ title }}" class="van-hairline--top-bottom van-actionsheet__header">
     <view>{{ title }}</view>
-    <van-icon custom-class="van-actionsheet__close" name="close" bind:click="onClose" />
+    <van-icon customClass="van-actionsheet__close" name="close" bind:click="onClose" />
   </view>
   <view wx:else class="van-hairline--bottom">
     <view
@@ -92,7 +92,7 @@
         <view class="van-actionsheet__name">{{ item.name }}</view>
         <view class="van-actionsheet__subname" wx:if="{{ item.subname }}">{{ item.subname }}</view>
       </block>
-      <van-loading wx:else custom-class="van-actionsheet__loading" size="20px" />
+      <van-loading wx:else customClass="van-actionsheet__loading" size="20px" />
     </view>
   </view>
   <view
@@ -111,32 +111,62 @@
 
 <script>
 import wepy from 'wepy'
+import comOptionsMixin from '../mixins/com-options'
+import vanPopup from '../components/van-popup'
+import vanLoading from '../components/van-loading'
+import vanIcon from '../components/van-icon'
 
 export default class vanActionsheet extends wepy.component {
+
+  mixins = [ comOptionsMixin ]
+
+  components = {
+    'van-popup': vanPopup,
+    'van-loading': vanLoading,
+    'van-icon': vanIcon
+  }
+
   props = {
-    options: {
-      cardClass: {
-        type: String,
-        default: 'card-class'
-      },
-      useThumbSlot: {
-        type: Boolean,
-        default: false
-      },
-      useDetailSlot: {
-        type: Boolean,
-        default: false
-      },
-      thumb: String,
-      price: String,
-      title: String,
-      num: Number,
-      desc: String,
-      status: String,
-      componentId: String
+    options: Object,
+    show: {
+      type: Boolean,
+      default: false
+    },
+    actions: {
+      type: Array
+    },
+    cancelText: String,
+    title: String
+  }
+
+  data = {
+    popupCustomClass: 'van-actionsheet'
+  }
+  
+  methods = {
+    onSelect(event) {
+      const { index } = event.currentTarget.dataset;
+      const item = this.actions[index];
+      if (item && !item.disabled && !item.loading) {
+        this.$emit('select', item);
+      }
+    },
+
+    onCancel() {
+      this.$emit('cancel');
+    },
+
+    onClose() {
+      this.$emit('close');
     }
   }
-  data = {}
-  
+
+  onLoad() {
+    if(this.title) {
+      this.popupCustomClass = 'van-actionsheet van-actionsheet--withtitle';
+      this.$apply();
+    }
+  }
+
 }
 </script>
