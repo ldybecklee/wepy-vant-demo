@@ -1,0 +1,84 @@
+<style lang="scss">
+
+@import '../components/cell.scss';
+
+.block {
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  position: fixed;
+  margin: -50px 0 0 -50px;
+  background-color: #38f;
+}
+
+</style>
+
+<template>
+
+<demo-block title="基础用法" :padding="blockPadding">
+  <view class="van-cell van-hairline van-cell--clickable" bind:tag="onClickFade">
+    <view class="van-cell__title title-class">Fade</view>
+    <view class="van-cell__right-icon right-icon-class van-icon van-icon-arrow" />
+  </view>
+  <view class="van-cell van-hairline van-cell--clickable" bind:tag="onClickFadeUp">
+    <view class="van-cell__title title-class">Fade Up</view>
+    <view class="van-cell__right-icon right-icon-class van-icon van-icon-arrow" />
+  </view>
+  <view class="van-cell van-hairline van-cell--clickable" bind:tag="onClickFadeDown">
+    <view class="van-cell__title title-class">Fade Down</view>
+    <view class="van-cell__right-icon right-icon-class van-icon van-icon-arrow" />
+  </view>
+  <view class="van-cell van-hairline van-cell--clickable" bind:tag="onClickFadeLeft">
+    <view class="van-cell__title title-class">Fade Left</view>
+    <view class="van-cell__right-icon right-icon-class van-icon van-icon-arrow" />
+  </view>
+  <view class="van-cell van-hairline van-cell--clickable" bind:tag="onClickFadeRight">
+    <view class="van-cell__title title-class">Fade Right</view>
+    <view class="van-cell__right-icon right-icon-class van-icon van-icon-arrow" />
+  </view>
+  <view class="van-cell van-hairline van-cell--clickable" bind:tag="onClickSlideUp">
+    <view class="van-cell__title title-class">Slide Up</view>
+    <view class="van-cell__right-icon right-icon-class van-icon van-icon-arrow" />
+  </view>
+  <view class="van-cell van-hairline van-cell--clickable" bind:tag="onClickSlideDown">
+    <view class="van-cell__title title-class">Slide Down</view>
+    <view class="van-cell__right-icon right-icon-class van-icon van-icon-arrow" />
+  </view>
+  <view class="van-cell van-hairline van-cell--clickable" bind:tag="onClickSlideLeft">
+    <view class="van-cell__title title-class">Slide Left</view>
+    <view class="van-cell__right-icon right-icon-class van-icon van-icon-arrow" />
+  </view>
+  <view class="van-cell van-hairline van-cell--clickable" bind:tag="onClickSlideRight">
+    <view class="van-cell__title title-class">Slide Right</view>
+    <view class="van-cell__right-icon right-icon-class van-icon van-icon-arrow" />
+  </view>
+
+  <van-transition show="show" name="name" :options="transitionOption" />
+</demo-block>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+import demoBlock from  '../components/demo-block'
+import vanTransition from '../components/van-transition'
+
+export default class Transition extends wepy.page {
+
+  components = {
+    'demo-block': demoBlock,
+    'van-transition': vanTransition
+  }
+  
+  data = {
+    blockPadding: true,
+    show: false,
+    name: '',
+    transitionOption: {
+      externalClasses: [ 'block' ]
+    }
+  }
+  
+}
+</script>
