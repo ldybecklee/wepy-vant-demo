@@ -1,0 +1,100 @@
+<style lang="scss">
+
+.content {
+  padding: 20px;
+}
+
+</style>
+
+<template>
+
+<demo-block1 title="基础用法" padding>
+  <van-button bind:click="toggleActionsheet1">弹出 Actionsheet</van-button>
+  <van-actionsheet1
+    :show="show1"
+    :actions="actions"
+    @close.user="toggleActionsheet1"
+    @select.user="toggleActionsheet1"
+  />
+</demo-block1>
+
+<demo-block2 title="带取消按钮的 Actionsheet" padding>
+  <van-button bind:click="toggleActionsheet2">弹出带取消按钮的 Actionsheet</van-button>
+  <van-actionsheet2
+    :show="show2"
+    :actions="actions"
+    cancelText="取消"
+    @close.user="toggleActionsheet2"
+    @cancel.user="toggleActionsheet2"
+    @select.user="toggleActionsheet2"
+  />
+</demo-block2>
+
+<demo-block3 title="带标题的 Actionsheet" padding>
+  <van-button bind:click="toggleActionsheet3">弹出带标题的 Actionsheet</van-button>
+  <van-actionsheet3
+    :show="show3"
+    title="标题"
+    @close.user="toggleActionsheet3"
+  >
+    <view class="content">内容</view>
+  </van-actionsheet3>
+</demo-block3>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+import demoBlock from '../components/demo-block'
+import vanActionsheet from '../components/van-actionsheet'
+
+export default class Actionsheet extends wepy.page {
+
+  config = {
+    "navigationBarTitleText": "Actionsheet 上拉菜单"
+  }
+
+  components = {
+    'demo-block1': demoBlock,
+    'demo-block2': demoBlock,
+    'van-actionsheet1': vanActionsheet,
+    'van-actionsheet2': vanActionsheet
+  }
+  
+  data = {
+    show1: false,
+    show2: false,
+    show3: false
+  }
+
+  onLoad() {
+    this.ctions = [
+      { name: '选项' },
+      { name: '选项', subname: '禁用' },
+      { name: '选项', loading: true },
+      { name: '禁用选项', disabled: true }
+    ];
+    this.$apply();
+  }
+
+  methods = {
+    toggle(type) {
+      this[type] = !this[type];
+      this.$apply();
+    },
+
+    toggleActionsheet1() {
+      this.toggle('show1');
+    },
+
+    toggleActionsheet2() {
+      this.toggle('show2');
+    },
+
+    toggleActionsheet3() {
+      this.toggle('show3');
+    }
+  }
+  
+}
+</script>
