@@ -66,6 +66,10 @@ import vanTransition from '../components/van-transition'
 
 export default class Transition extends wepy.page {
 
+  config = {
+    "navigationBarTitleText": "Transition 动画"
+  }
+
   components = {
     'demo-block': demoBlock,
     'van-transition': vanTransition
@@ -74,9 +78,58 @@ export default class Transition extends wepy.page {
   data = {
     blockPadding: true,
     show: false,
-    name: '',
+    name: 'fade',
     transitionOption: {
       externalClasses: [ 'block' ]
+    }
+  }
+  
+  methods = {
+    onClickFade() {
+      this.methods.trigger.call(this,'fade');
+    },
+
+    onClickFadeUp() {
+      this.methods.trigger.call(this,'fade-up');
+    },
+
+    onClickFadeDown() {
+      this.methods.trigger.call(this,'fade-down');
+    },
+
+    onClickFadeLeft() {
+      this.methods.trigger.call(this,'fade-left');
+    },
+
+    onClickFadeRight() {
+      this.methods.trigger.call(this,'fade-right');
+    },
+
+    onClickSlideUp() {
+      this.methods.trigger.call(this,'slide-up');
+    },
+
+    onClickSlideDown() {
+      this.methods.trigger.call(this,'slide-down');
+    },
+
+    onClickSlideLeft() {
+      this.methods.trigger.call(this,'slide-left');
+    },
+
+    onClickSlideRight() {
+      this.methods.trigger.call(this,'slide-right');
+    },
+
+    trigger(name) {
+      this.name = name; 
+      this.show = true;
+      let that = this;
+      setTimeout(() => {
+        that.show = false;
+        that.$apply();
+      }, 500);
+      this.$apply();
     }
   }
   
