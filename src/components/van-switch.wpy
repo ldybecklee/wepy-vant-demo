@@ -51,11 +51,11 @@
 <template>
 
 <view
-  class="van-switch custom-class {{ checked ? 'van-switch--on' : '' }} {{ disabled ? 'van-switch--disabled' : '' }}"
+  class="van-switch {{ customClass }} {{ checked=='y' ? 'van-switch--on' : '' }} {{ disabled=='y' ? 'van-switch--disabled' : '' }}"
   style="font-size: {{ size }};"
   bind:tap="onClick"
 >
-  <view class="van-switch__node node-class">
+  <view class="van-switch__node {{ nodeClass }}">
     <van-loading wx:if="{{ loading }}" size="50%" custom-class="van-switch__loading" />
   </view>
 </view>
@@ -64,37 +64,54 @@
 
 <script>
 import wepy from 'wepy'
-
-Component({
-  options: {
-    addGlobalClass: true
-  },
-
-  externalClasses: ['custom-class', 'node-class'],
-
-  properties: {
-    checked: Boolean,
-    loading: Boolean,
-    disabled: Boolean,
-    size: {
-      type: String,
-      value: '30px'
-    }
-  },
-
-  methods: {
-    onClick() {
-      if (!this.data.disabled && !this.data.loading) {
-        const checked = !this.data.checked;
-        this.triggerEvent('input', checked);
-        this.triggerEvent('change', checked);
-      }
-    }
-  }
-});
+import ComOptionsMixin from '../mixins/com-options'
+import vanLoading from '../components/van-loading'
 
 export default class vanSwitch extends wepy.component {
 
+  mixins = [ ComOptionsMixin ]
+  
+  components = {
+    'van-loading': vanLoading
+  }
+
+  props = {
+    customClass: {
+      type: String,
+      default: 'custom-class'
+    },
+    nodeClass: {
+      type: String,
+      default: 'node-class'
+    },
+    options: Object,
+    checked: {
+      type: String,
+      default: 'n'
+    },
+    loading: {
+      type: String,
+      default: 'n'
+    },
+    disabled: {
+      type: String,
+      default: 'n'
+    },
+    size: {
+      type: String,
+      default: '30px'
+    }
+  }
+  
+  methods = {
+    onClick() {
+      if (!this.disabled && !this.loading) {
+        const checked = !this.checked;
+        this.$emit('input', checked);
+        this.$emit('change', checked);
+      }
+    }
+  }
   
 }
 </script>
