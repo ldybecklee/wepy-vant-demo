@@ -47,6 +47,10 @@ import vanSearch from 'van-search'
 
 export default class Search extends wepy.page {
 
+  config = {
+    "navigationBarTitleText": "Search 搜索"
+  }
+  
   components = {
     'demo-block1': demoBlock,
     'demo-block2': demoBlock,
