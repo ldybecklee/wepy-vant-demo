@@ -52,8 +52,8 @@
 
 @for $i from 1 to 12 {
   .van-loading__dot:nth-of-type(#{$i}) {
-    opacity: calc(1 - (0.75 / 12) * ($i - 1));
-    transform: rotate(calc($i * 30deg));
+    opacity: 1 - (0.75 / 12) * ($i - 1);
+    transform: rotate($i * 30deg);
   }
 }
 
@@ -72,7 +72,7 @@
 <template>
 
 <view
-  class="van-loading custom-class"
+  class="van-loading {{ customClass }}"
   style="width: {{ size }}; height: {{ size }}"
 >
   <view
@@ -92,32 +92,31 @@
 
 <script>
 import wepy from 'wepy'
-
-Component({
-  options: {
-    addGlobalClass: true
-  },
-
-  externalClasses: ['custom-class'],
-
-  properties: {
-    size: {
-      type: String,
-      value: '30px'
-    },
-    type: {
-      type: String,
-      value: 'circular'
-    },
-    color: {
-      type: String,
-      value: '#c9c9c9'
-    }
-  }
-});
+import ComOptionsMixin from '../mixins/com-options'
 
 export default class vanLoading extends wepy.component {
 
+  mixins = [ ComOptionsMixin ]
+
+  props = {
+    customClass: {
+      type: String,
+      default: 'custom-class'
+    },
+    options: Object,
+    size: {
+      type: String,
+      default: '30px'
+    },
+    type: {
+      type: String,
+      default: 'circular'
+    },
+    color: {
+      type: String,
+      default: '#c9c9c9'
+    }
+  }
   
 }
 </script>
