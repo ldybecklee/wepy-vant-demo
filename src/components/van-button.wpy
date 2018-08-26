@@ -142,12 +142,12 @@
 <template>
 
 <button
-  class="{{ externalClasses[0] }} van-button {{ classes }}"
-  disabled="{{ disabled }}"
+  class="{{ customClass }} van-button {{ classes }}"
+  disabled="{{ disabled=='y' }}"
   hover-class="button-hover"
   open-type="{{ openType }}"
   app-parameter="{{ appParameter }}"
-  hover-stop-propagation="{{ hoverStopPropagation }}"
+  hover-stop-propagation="{{ hoverStopPropagation=='y' }}"
   hover-start-time="{{ hoverStartTime }}"
   hover-stay-time="{{ hoverStayTime }}"
   lang="{{ lang }}"
@@ -159,9 +159,9 @@
   bindtap="onClick"
 >
   <van-loading
-    wx:if="{{ loading }}"
+    wx:if="{{ loading=='y' }}"
     size="20px"
-    custom-class="{{ externalClasses[1] }}"
+    customClass="{{ loadingClass }}"
     color="{{ type === 'default' ? '#c9c9c9' : '#fff' }}"
   />
   <slot></slot>
@@ -172,16 +172,29 @@
 
 <script>
 import wepy from 'wepy'
-
+import ComOptionsMixin from '../mixins/com-options'
 import classnames from '../utils/classnames'
+import vanLoading from '../components/van-loading'
+
 
 export default class vanButton extends wepy.component {
   
+  mixins = [ ComOptionsMixin ]
+
+  components = {
+    'van-loading': vanLoading
+  }
+
   props = {
-    externalClasses: {
-      type: Array,
-      default: ['custom-class', 'loading-class']
+    customClass: {
+      type: String,
+      default: 'custom-class'
     },
+    loadingClass: {
+      type: String,
+      default: 'loading-class'
+    },
+    options: Object,
     type: {
       type: String,
       default: 'default'
@@ -190,13 +203,26 @@ export default class vanButton extends wepy.component {
       type: String,
       default: 'normal'
     },
-    plain: Boolean,
-    disabled: Boolean,
-    loading: Boolean,
-    block: Boolean,
-    square: Boolean,
-
-    loading: Boolean,
+    plain: {
+      type: String,
+      default: 'n'
+    },
+    disabled: {
+      type: String,
+      default: 'n'
+    },
+    loading: {
+      type: String,
+      default: 'n'
+    },
+    block: {
+      type: String,
+      default: 'n'
+    },
+    square: {
+      type: String,
+      default: 'n'
+    },
     // 在自定义组件中，无法与外界的 form 组件联动，暂时不开放
     // formType: String,
     openType: String,
@@ -206,14 +232,17 @@ export default class vanButton extends wepy.component {
     //   type: String,
     //   default: 'button-hover'
     // },
-    hoverStopPropagation: Boolean,
+    hoverStopPropagation: {
+      type: String,
+      default: 'n'
+    },
     hoverStartTime: {
-      type: Number,
-      default: 20
+      type: String,
+      default: '20'
     },
     hoverStayTime: {
-      type: Number,
-      default: 70
+      type: String,
+      default: '70'
     },
     lang: {
       type: String,
@@ -239,7 +268,7 @@ export default class vanButton extends wepy.component {
 
   methods = {
     onClick() {
-      if (!this.disabled && !this.loading) {
+      if (this.disabled!='y' && this.loading!='y') {
         this.$emit('click');
         this.$emit('getuserinfo');
         this.$emit('contact');
@@ -252,12 +281,12 @@ export default class vanButton extends wepy.component {
     setClasses() {
       const { type, size, plain, disabled, loading, square, block } = this.data;
       this.classes = classnames(`van-button--${type}`, `van-button--${size}`, {
-          'van-button--block': block,
-          'van-button--plain': plain,
-          'van-button--square': square,
-          'van-button--loading': loading,
-          'van-button--disabled': disabled,
-          'van-button--unclickable': disabled || loading
+          'van-button--block': block=='y',
+          'van-button--plain': plain=='y',
+          'van-button--square': square=='y',
+          'van-button--loading': loading=='y',
+          'van-button--disabled': disabled=='y',
+          'van-button--unclickable': disabled=='y' || loading=='y'
         });
       this.$apply();
     }
