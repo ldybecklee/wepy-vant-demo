@@ -9,30 +9,30 @@
 <template>
 
 <demo-block1 title="基础用法">
-  <van-slider1 custom-class="slider" value="50" bind:change="onChange" />
+  <van-slider1 customClass="slider" value="50" @change.user="onChange"  />
 </demo-block1>
 
 <demo-block2 title="指定选择范围">
   <van-slider2
-    custom-class="slider"
+    customClass="slider"
     value="50"
     min="10"
     max="90"
-    bind:change="onChange"
+    @change.user="onChange"
   />
 </demo-block2>
 
 <demo-block3 title="禁用">
-  <van-slider3 custom-class="slider" value="50" disabled />
+  <van-slider3 customClass="slider" value="50" disabled="y" />
 </demo-block3>
 
 <demo-block4 title="指定步长">
   <van-slider4
-    custom-class="slider"
+    customClass="slider"
     value="50"
     step="10"
-    bar-height="4px"
-    bind:change="onChange"
+    barHeight="4px"
+    @change.user="onChange"
   />
 </demo-block4>
 
@@ -45,6 +45,10 @@ import vanSlider from '../components/van-slider'
 
 export default class Slider extends wepy.page {
 
+  config = {
+    "navigationBarTitleText": "Slider 滑块"
+  }
+
   components = {
     'demo-block1': demoBlock,
     'demo-block2': demoBlock,
@@ -55,6 +59,14 @@ export default class Slider extends wepy.page {
     'van-slider4': vanSlider,
   }
 
+  methods = {
+    onChange(event) {
+      wx.showToast({
+        icon: 'none',
+        title: `当前值：${event.detail}`
+      });
+    }
+  }
   
 }
 </script>
