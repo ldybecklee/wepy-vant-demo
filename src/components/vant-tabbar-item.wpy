@@ -56,14 +56,16 @@
   style="{{ count ? 'width: ' + 100 / count + '%' : '' }}"
   bind:tap="onClick"
 >
-  <view class="van-tabbar-item__icon {{ dot ? 'van-tabbar-item__icon--dot' : '' }}">
+  <view class="van-tabbar-item__icon {{ dot=='y' ? 'van-tabbar-item__icon--dot' : '' }}">
     <block wx:if="{{ active }}">
       <slot name="icon-active" />
     </block>
     <block wx:else>
       <slot name="icon" />
     </block>
-    <van-icon wx:if="{{ icon }}" name="{{ icon }}" info="{{ info }}" />
+    <view wx:if="{{ icon }}" class="icon van-icon van-icon-{{ icon }}">
+      <view wx:if="{{ info !== null }}" class="van-icon__info">{{ info }}</view>
+    </view>
   </view>
   <view class="van-tabbar-item__text">
     <slot />
@@ -74,31 +76,61 @@
 
 <script>
 import wepy from 'wepy'
-import ComOptionMixin from '../mixins/com-options'
+import ComOptionsMixin from '../mixins/com-options'
 
 export default class vanTabbarItem extends wepy.component {
 
-  mixins = [ ComOptionMixin ]
+  mixins = [ ComOptionsMixin ]
 
   props = {
     info: String,
     icon: String,
-    dot: Boolean
+    dot: String,
+    count: String,
+    tabbar: {
+      type: Object,
+      default: {
+        activeIndex: 0,
+        count: 0
+      },
+      twoWay: true
+    },
+    index: {
+      type: String
+    }
   }
   
   data = {
     active: false,
     count: 0
   }
+
+  watch = {
+    tabbar(val) {
+      this.methods.applyTabbar.call(this);
+    }
+  }
   
   methods = {
-    onClick() {
-      //const parent = this.getRelationNodes(TABBAR_PATH)[0];
-      //if (parent) {
-        //parent.onChange(this);
-      //}
+    onClick(event) {
+      this.active = true;
+      // 更改tabbar值,因为是双向绑定值所以会影响到其他的tabbar-item
+      this.tabbar = {
+        activeIndex: this.index,
+        count: this.count
+      };
+      this.$apply();
       this.$emit('click');
+    },
+    applyTabbar() {
+      this.active = this.tabbar.activeIndex == this.index;
+      this.count = this.tabbar.count;
+      this.$apply();
     }
+  }
+
+  onLoad() {
+    this.methods.applyTabbar.call(this);
   }
   
 }
