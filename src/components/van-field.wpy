@@ -2,6 +2,7 @@
 
 @import '../styles/var.scss';
 @import '../vant/cell.scss';
+@import '../vant/icon.scss';
 
 .van-field {
   &__body {
@@ -96,15 +97,12 @@
 
   <view
   class="{{ customClass }} van-field {{ labelAlign ? 'van-field--label-' + labelAlign : '' }} van-cell {{ center=='y' ? 'van-cell--center' : '' }} {{ required=='y' ? 'van-cell--required' : '' }} {{ isLink=='y' || clickable ? 'van-cell--clickable' : '' }} {{ border=='y' ? 'van-hairline' : '' }}"  
-  style="{{ customStyle }}"
-  bind:tap="onClick"
->
-    <van-icon wx:if="{{ leftIcon }}" custom-class="van-cell__left-icon left-icon-class" name="{{ leftIcon }}" />
+  style="{{ customStyle }}">
+    <view wx:if="{{ leftIcon }}" class="van-cell__left-icon left-icon-clas icon van-icon van-icon-{{ leftIcon }}" />
     <view wx:if="{{ label }}" class="van-cell__title title-class" style="max-width: 90px; min-width: 90px;">
       {{ label }}
     </view>
     <view class="van-cell__value value-class">
-      
       <slot name="label" slot="title" />
       <view class="van-field__body {{ type === 'textarea' ? 'van-field__body--textarea' : '' }}">
         <textarea
@@ -112,11 +110,11 @@
           class="input-class van-field__control van-field__textarea {{ inputAlign ? 'van-field--' + inputAlign : '' }} {{ error=='y' ? 'van-field--error' : '' }} {{ disabled=='y' ? 'van-field__control--disabled' : '' }}"
           focus="{{ focus }}"
           value="{{ value }}"
-          disabled="{{ disabled }}"
-          readonly="{{ readonly }}"
+          disabled="{{ disabled=='y' }}"
+          readonly="{{ readonly=='y' }}"
           maxlength="{{ maxlength }}"
           placeholder="{{ placeholder }}"
-          auto-height="{{ autosize }}"
+          auto-height="{{ autosize=='y' }}"
           placeholder-class="{{ placeholderClass }} {{ error=='y' ? 'van-field--error' : '' }}"
           cursor-spacing="{{ cursorSpacing }}"
           bindinput="onInput"
@@ -128,10 +126,10 @@
           wx:else
           class="input-class van-field__control {{ inputAlign ? 'van-field--' + inputAlign : '' }} {{ error=='y' ? 'van-field--error' : '' }} {{ disabled=='y' ? 'van-field__control--disabled' : '' }}"
           type="{{ type }}"
-          focus="{{ focus }}"
+          focus="{{ focus=='y' }}"
           value="{{ value }}"
-          disabled="{{ disabled }}"
-          readonly="{{ readonly }}"
+          disabled="{{ disabled=='y' }}"
+          readonly="{{ readonly=='y' }}"
           maxlength="{{ maxlength }}"
           placeholder="{{ placeholder }}"
           placeholder-class="{{ placeholderClass }} {{ error=='y' ? 'van-field--error' : '' }}"
@@ -142,21 +140,12 @@
           bind:focus="onFocus"
           bind:confirm="onConfirm"
         />
-        <van-icon
-          wx:if="{{ showClear }}"
-          name="clear"
-          custom-class="van-field__clear"
-          bind:touchstart="onClear"
-        />
-        <view class="van-field__icon-container" wx:if="{{ icon || useIconSlot }}" bind:tap="onClickIcon">
-          <van-icon
-            wx:if="{{ icon }}"
-            name="{{ icon }}"
-            custom-class="van-field__icon {{ iconClass }}"
-          />
+        <view wx:if="{{ showClear }}" class="van-field__clear van-icon van-icon-clear" bind:touchstart="onClear" />
+        <view class="van-field__icon-container" wx:if="{{ icon || useIconSlot=='y' }}" bind:tap="onClickIcon">
+          <view wx:if="{{ icon }}" class="van-field__icon {{ iconClass }} icon van-icon van-icon-{{ icon }}" />
           <slot wx:else name="icon" />
         </view>
-        <view wx:if="{{ useButtonSlot }}" class="van-field__button">
+        <view wx:if="{{ useButtonSlot=='y' }}" class="van-field__button">
           <slot name="button" />
         </view>
       </view>
@@ -165,11 +154,7 @@
       </view>
       
     </view>
-    <van-icon
-      wx:if="{{ isLink }}"
-      name="arrow"
-      custom-class="van-cell__right-icon right-icon-class {{ arrowDirection ? 'van-cell__right-icon--' + arrowDirection : '' }}"
-    />
+    <view wx:if="{{ isLink=='y' }}" class="van-cell__right-icon right-icon-class {{ arrowDirection ? 'van-cell__right-icon--' + arrowDirection : '' }} icon van-icon van-icon-arrow" />
   </view>
 
   
@@ -265,7 +250,7 @@ export default class vanField extends wepy.component {
     },
     border: {
       type: String,
-      value: 'y'
+      default: 'y'
     }
   }
   
