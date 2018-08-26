@@ -112,11 +112,11 @@
 
 <view
   wx:if="{{ overlay }}"
-  class="{{ externalClasses[1] }} van-popup__overlay {{ show ? 'van-popup--show' : '' }}"
+  class="{{ overlayClass }} van-popup__overlay {{ show ? 'van-popup--show' : '' }}"
   style="{{ overlayStyle }}"
   bind:tap="onClickOverlay"
 />
-<view class="{{ externalClasses[0] }} van-popup {{ position ? 'van-popup--' + position : '' }} {{ show ? 'van-popup--show' : '' }}">
+<view class="{{ customClass }} van-popup {{ position ? 'van-popup--' + position : '' }} {{ show ? 'van-popup--show' : '' }}">
   <slot />
 </view>
 
@@ -132,12 +132,13 @@ export default class vanPopup extends wepy.component {
   mixins = [ componentMixin ]
 
   props = {
-    externalClasses: {
-      type: Array,
-      default: [
-        'custom-class',
-        'overlay-class'
-      ]
+    customClass: {
+      type: String,
+      default: 'custom-class'
+    },
+    overlayClass: {
+      type: String,
+      default: 'overlay-class'
     },
     options: Object,
     show: Boolean,
