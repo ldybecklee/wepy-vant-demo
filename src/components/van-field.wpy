@@ -1,6 +1,7 @@
 <style lang="scss">
 
 @import '../styles/var.scss';
+@import '../vant/cell.scss';
 
 .van-field {
   &__body {
@@ -93,108 +94,143 @@
 
 <template>
 
-<van-cell
-  icon="{{ leftIcon }}"
-  title="{{ label }}"
-  center="{{ center }}"
-  border="{{ border }}"
-  is-link="{{ isLink }}"
-  required="{{ required }}"
-  custom-style="{{ customStyle }}"
-  title-width="90px"
-  custom-class="{{ customClass }} van-field {{ labelAlign ? 'van-field--label-' + labelAlign : '' }}"
+  <view
+  class="{{ customClass }} van-field {{ labelAlign ? 'van-field--label-' + labelAlign : '' }} van-cell {{ center=='y' ? 'van-cell--center' : '' }} {{ required=='y' ? 'van-cell--required' : '' }} {{ isLink=='y' || clickable ? 'van-cell--clickable' : '' }} {{ border=='y' ? 'van-hairline' : '' }}"  
+  style="{{ customStyle }}"
+  bind:tap="onClick"
 >
-  <slot name="label" slot="title" />
-  <view class="van-field__body {{ type === 'textarea' ? 'van-field__body--textarea' : '' }}">
-    <textarea
-      wx:if="{{ type === 'textarea' }}"
-      class="input-class van-field__control van-field__textarea {{ inputAlign ? 'van-field--' + inputAlign : '' }} {{ error ? 'van-field--error' : '' }} {{ disabled ? 'van-field__control--disabled' : '' }}"
-      focus="{{ focus }}"
-      value="{{ value }}"
-      disabled="{{ disabled }}"
-      readonly="{{ readonly }}"
-      maxlength="{{ maxlength }}"
-      placeholder="{{ placeholder }}"
-      auto-height="{{ autosize }}"
-      placeholder-class="{{ placeholderClass }} {{ error ? 'van-field--error' : '' }}"
-      cursor-spacing="{{ cursorSpacing }}"
-      bindinput="onInput"
-      bind:blur="onBlur"
-      bind:focus="onFocus"
-      bind:confirm="onConfirm"
-    />
-    <input
-      wx:else
-      class="input-class van-field__control {{ inputAlign ? 'van-field--' + inputAlign : '' }} {{ error ? 'van-field--error' : '' }} {{ disabled ? 'van-field__control--disabled' : '' }}"
-      type="{{ type }}"
-      focus="{{ focus }}"
-      value="{{ value }}"
-      disabled="{{ disabled }}"
-      readonly="{{ readonly }}"
-      maxlength="{{ maxlength }}"
-      placeholder="{{ placeholder }}"
-      placeholder-class="{{ placeholderClass }} {{ error ? 'van-field--error' : '' }}"
-      confirm-type="{{ confirmType }}"
-      cursor-spacing="{{ cursorSpacing }}"
-      bindinput="onInput"
-      bind:blur="onBlur"
-      bind:focus="onFocus"
-      bind:confirm="onConfirm"
-    />
+    <van-icon wx:if="{{ leftIcon }}" custom-class="van-cell__left-icon left-icon-class" name="{{ leftIcon }}" />
+    <view wx:if="{{ label }}" class="van-cell__title title-class" style="max-width: 90px; min-width: 90px;">
+      {{ label }}
+    </view>
+    <view class="van-cell__value value-class">
+      
+      <slot name="label" slot="title" />
+      <view class="van-field__body {{ type === 'textarea' ? 'van-field__body--textarea' : '' }}">
+        <textarea
+          wx:if="{{ type === 'textarea' }}"
+          class="input-class van-field__control van-field__textarea {{ inputAlign ? 'van-field--' + inputAlign : '' }} {{ error=='y' ? 'van-field--error' : '' }} {{ disabled=='y' ? 'van-field__control--disabled' : '' }}"
+          focus="{{ focus }}"
+          value="{{ value }}"
+          disabled="{{ disabled }}"
+          readonly="{{ readonly }}"
+          maxlength="{{ maxlength }}"
+          placeholder="{{ placeholder }}"
+          auto-height="{{ autosize }}"
+          placeholder-class="{{ placeholderClass }} {{ error=='y' ? 'van-field--error' : '' }}"
+          cursor-spacing="{{ cursorSpacing }}"
+          bindinput="onInput"
+          bind:blur="onBlur"
+          bind:focus="onFocus"
+          bind:confirm="onConfirm"
+        />
+        <input
+          wx:else
+          class="input-class van-field__control {{ inputAlign ? 'van-field--' + inputAlign : '' }} {{ error=='y' ? 'van-field--error' : '' }} {{ disabled=='y' ? 'van-field__control--disabled' : '' }}"
+          type="{{ type }}"
+          focus="{{ focus }}"
+          value="{{ value }}"
+          disabled="{{ disabled }}"
+          readonly="{{ readonly }}"
+          maxlength="{{ maxlength }}"
+          placeholder="{{ placeholder }}"
+          placeholder-class="{{ placeholderClass }} {{ error=='y' ? 'van-field--error' : '' }}"
+          confirm-type="{{ confirmType }}"
+          cursor-spacing="{{ cursorSpacing }}"
+          bindinput="onInput"
+          bind:blur="onBlur"
+          bind:focus="onFocus"
+          bind:confirm="onConfirm"
+        />
+        <van-icon
+          wx:if="{{ showClear }}"
+          name="clear"
+          custom-class="van-field__clear"
+          bind:touchstart="onClear"
+        />
+        <view class="van-field__icon-container" wx:if="{{ icon || useIconSlot }}" bind:tap="onClickIcon">
+          <van-icon
+            wx:if="{{ icon }}"
+            name="{{ icon }}"
+            custom-class="van-field__icon {{ iconClass }}"
+          />
+          <slot wx:else name="icon" />
+        </view>
+        <view wx:if="{{ useButtonSlot }}" class="van-field__button">
+          <slot name="button" />
+        </view>
+      </view>
+      <view wx:if="{{ errorMessage }}" class="van-field__error-message">
+        {{ errorMessage }}
+      </view>
+      
+    </view>
     <van-icon
-      wx:if="{{ showClear }}"
-      name="clear"
-      custom-class="van-field__clear"
-      bind:touchstart="onClear"
+      wx:if="{{ isLink }}"
+      name="arrow"
+      custom-class="van-cell__right-icon right-icon-class {{ arrowDirection ? 'van-cell__right-icon--' + arrowDirection : '' }}"
     />
-    <view class="van-field__icon-container" wx:if="{{ icon || useIconSlot }}" bind:tap="onClickIcon">
-      <van-icon
-        wx:if="{{ icon }}"
-        name="{{ icon }}"
-        custom-class="van-field__icon {{ iconClass }}"
-      />
-      <slot wx:else name="icon" />
-    </view>
-    <view wx:if="{{ useButtonSlot }}" class="van-field__button">
-      <slot name="button" />
-    </view>
   </view>
-  <view wx:if="{{ errorMessage }}" class="van-field__error-message">
-    {{ errorMessage }}
-  </view>
-</van-cell>
+
+  
+</view>
 
 </template>
 
 <script>
 import wepy from 'wepy'
+import ComOptionsMixin from '../mixins/com-options'
 
-Component({
-  behaviors: ['wx://form-field'],
+export default class vanField extends wepy.component {
 
-  externalClasses: [
-    'input-class'
-  ],
-
-  options: {
-    multipleSlots: true,
-    addGlobalClass: true
-  },
-
-  properties: {
+  mixins = [ ComOptionsMixin ]
+  
+  props = {
+    externalClasses: {
+      type: Array,
+      default: ['input-class']
+    },
+    options: Object,
     icon: String,
     label: String,
-    error: Boolean,
-    focus: Boolean,
-    center: Boolean,
-    isLink: Boolean,
+    error: {
+      type: String,
+      default: 'n'
+    },
+    focus: {
+      type: String,
+      default: 'n'
+    },
+    center: {
+      type: String,
+      default: 'n'
+    },
+    isLink: {
+      type: String,
+      default: 'n'
+    },
     leftIcon: String,
-    disabled: Boolean,
-    autosize: Boolean,
-    readonly: Boolean,
-    required: Boolean,
+    disabled: {
+      type: String,
+      default: 'n'
+    },
+    autosize: {
+      type: String,
+      default: 'n'
+    },
+    readonly: {
+      type: String,
+      default: 'n'
+    },
+    required: {
+      type: String,
+      default: 'n'
+    },
     iconClass: String,
-    clearable: Boolean,
+    clearable: {
+      type: String,
+      default: 'n'
+    },
     labelAlign: String,
     inputAlign: String,
     customClass: String,
@@ -202,94 +238,92 @@ Component({
     errorMessage: String,
     placeholder: String,
     customStyle: String,
-    useIconSlot: Boolean,
-    useButtonSlot: Boolean,
+    useIconSlot: {
+      type: String,
+      default: 'n'
+    },
+    useButtonSlot: {
+      type: String,
+      default: 'n'
+    },
     placeholderClass: String,
     cursorSpacing: {
-      type: Number,
-      value: 50
+      type: String,
+      default: '50'
     },
     maxlength: {
-      type: Number,
-      value: -1
+      type: String,
+      default: '-1'
     },
     value: {
-      type: null,
-      value: ''
+      type: String,
+      default: ''
     },
     type: {
       type: String,
-      value: 'text'
+      default: 'text'
     },
     border: {
-      type: Boolean,
-      value: true
+      type: String,
+      value: 'y'
     }
-  },
-
-  data: {
+  }
+  
+  data = {
     focused: false,
     showClear: false
-  },
+  }
 
-  methods: {
+  methods = {
     onInput(event) {
       const { value = '' } = event.detail || {};
-      this.triggerEvent('input', value);
-      this.triggerEvent('change', value);
-      this.setData({
-        value,
-        showClear: this.getShowClear({ value })
-      });
+      this.$emit('input', value);
+      this.$emit('change', value);
+      this.value = value;
+      this.showClear = this.methods.getShowClear.call(this, { value });
+      this.$apply();
     },
 
     onFocus(event) {
-      this.triggerEvent('focus', event);
-      this.setData({
-        focused: true,
-        showClear: this.getShowClear({ focused: true })
-      });
+      this.$emit('focus', event);
+      this.focused = 'y';
+      this.showClear = this.methods.getShowClear.call(this, { focused: 'y' });
+      this.$apply();
     },
 
     onBlur(event) {
-      this.focused = false;
-      this.triggerEvent('blur', event);
-      this.setData({
-        focused: false,
-        showClear: this.getShowClear({ focused: false })
-      });
+      this.focused = 'n';
+      this.$emit('blur', event);
+      this.focused = 'n';
+      this.showClear = this.methods.getShowClear.call(this, { focused: 'n' });
+      this.$apply();
     },
 
     onClickIcon() {
-      this.triggerEvent('click-icon');
+      this.$emit('click-icon');
     },
 
     getShowClear(options) {
       const {
-        focused = this.data.focused,
-        value = this.data.value
+        focused = this.focused,
+        value = this.value
       } = options;
 
-      return this.data.clearable && focused && value !== '' && !this.data.readonly;
+      return this.clearable=='y' && focused=='y' && value !== '' && this.readonly!='y';
     },
 
     onClear() {
-      this.setData({
-        value: '',
-        showClear: this.getShowClear({ value: '' })
-      });
-      this.triggerEvent('input', '');
-      this.triggerEvent('change', '');
+      this.value = '';
+      this.showClear = this.methods.getShowClear.call(this, { value: '' });
+      this.$emit('input', '');
+      this.$emit('change', '');
+      this.$apply();
     },
 
     onConfirm() {
-      this.triggerEvent('confirm', this.data.value);
+      this.$emit('confirm', this.value);
     }
   }
-});
-
-export default class vanField extends wepy.component {
-
   
 }
 </script>
