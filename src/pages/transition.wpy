@@ -1,6 +1,6 @@
 <style lang="scss">
 
-@import '../components/cell.scss';
+@import '../vant/cell.scss';
 
 .block {
   top: 50%;
