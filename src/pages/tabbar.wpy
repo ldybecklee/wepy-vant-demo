@@ -9,23 +9,23 @@
 <template>
 
 <demo-block1 title="基础用法">
-  <van-tabbar1 active="{{ active }}" custom-class="tabbar" bind:change="onChange">
-    <van-tabbar-item1 icon="shop">标签</van-tabbar-item1>
-    <van-tabbar-item2 icon="chat" dot>标签</van-tabbar-item2>
-    <van-tabbar-item3 icon="records" info="5">标签</van-tabbar-item3>
-    <van-tabbar-item4 icon="gold-coin" info="20">标签</van-tabbar-item4>
+  <van-tabbar1 bind:change="onChange" :options="tabbarOption1">
+    <van-tabbar-item1 icon="shop" :tabbar.sync="tabbar" index="0">标签</van-tabbar-item1>
+    <van-tabbar-item2 icon="chat" dot="y" :tabbar.sync="tabbar" index="1">标签</van-tabbar-item2>
+    <van-tabbar-item3 icon="records" info="5" :tabbar.sync="tabbar" index="2">标签</van-tabbar-item3>
+    <van-tabbar-item4 icon="gold-coin" info="20" :tabbar.sync="tabbar" index="3">标签</van-tabbar-item4>
   </van-tabbar1>
 </demo-block1>
 
 <demo-block2 title="自定义图标">
-  <van-tabbar2 active="{{ active2 }}" custom-class="tabbar" bind:change="onChange">
-    <van-tabbar-item5>
+  <van-tabbar2 bind:change="onChange" :options="tabbarOption2">
+    <van-tabbar-item5 :tabbar.sync="tabbar2" index="0">
       <span>自定义</span>
       <image slot="icon" src="{{ icon.normal }}" class="icon" mode="aspectFit" />
       <image slot="icon-active" src="{{ icon.active }}" mode="aspectFit" />
     </van-tabbar-item5>
-    <van-tabbar-item6 icon="chat">标签</van-tabbar-item5>
-    <van-tabbar-item6 icon="records">标签</van-tabbar-item6>
+    <van-tabbar-item6 icon="chat" :tabbar.sync="tabbar2" index="1">标签</van-tabbar-item6>
+    <van-tabbar-item7 icon="records" :tabbar.sync="tabbar2" index="2">标签</van-tabbar-item7>
   </van-tabbar2>
 </demo-block2>
 
@@ -53,17 +53,32 @@ export default class Tabbar extends wepy.page {
     'van-tabbar-item3': vanTabbarItem,
     'van-tabbar-item4': vanTabbarItem,
     'van-tabbar-item5': vanTabbarItem,
-    'van-tabbar-item6': vanTabbarItem
+    'van-tabbar-item6': vanTabbarItem,
+    'van-tabbar-item7': vanTabbarItem
   }
   
   data = {
-    active: 0,
-    active2: 0,
+    active: true,
+    active2: true,
+    tabbar: {
+      activeIndex: 0,
+      count: 4 
+    },
+    tabbar2: {
+      activeIndex: 0,
+      count: 3
+    },
     icon: {
       normal:
         'https://img.yzcdn.cn/public_files/2017/10/13/c547715be149dd3faa817e4a948b40c4.png',
       active:
         'https://img.yzcdn.cn/public_files/2017/10/13/793c77793db8641c4c325b7f25bf130d.png'
+    },
+    tabbarOption1: {
+      externalClasses: [ 'tabbar' ]
+    },
+    tabbarOption2: {
+      externalClasses: [ 'tabbar' ]
     }
   }
   
