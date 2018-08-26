@@ -1,5 +1,7 @@
 <style lang="scss">
 
+@import '../vant/button';
+
 .content {
   padding: 20px;
 }
@@ -8,21 +10,21 @@
 
 <template>
 
-<demo-block1 title="基础用法" padding>
-  <van-button bind:click="toggleActionsheet1">弹出 Actionsheet</van-button>
+<demo-block1 title="基础用法" :padding="blockPadding">
+  <van-button1 @click.user="toggleActionsheet1">弹出 Actionsheet</van-button1>
   <van-actionsheet1
-    :show="show1"
-    :actions="actions"
+    :show.sync="show1"
+    :actions.sync="actions"
     @close.user="toggleActionsheet1"
     @select.user="toggleActionsheet1"
   />
 </demo-block1>
 
-<demo-block2 title="带取消按钮的 Actionsheet" padding>
-  <van-button bind:click="toggleActionsheet2">弹出带取消按钮的 Actionsheet</van-button>
+<demo-block2 title="带取消按钮的 Actionsheet" :padding="blockPadding">
+  <van-button2 @click.user="toggleActionsheet2">弹出带取消按钮的 Actionsheet</van-button2>
   <van-actionsheet2
-    :show="show2"
-    :actions="actions"
+    :show.sync="show2"
+    :actions.sync="actions"
     cancelText="取消"
     @close.user="toggleActionsheet2"
     @cancel.user="toggleActionsheet2"
@@ -30,10 +32,10 @@
   />
 </demo-block2>
 
-<demo-block3 title="带标题的 Actionsheet" padding>
-  <van-button bind:click="toggleActionsheet3">弹出带标题的 Actionsheet</van-button>
+<demo-block3 title="带标题的 Actionsheet" :padding="blockPadding">
+  <van-button3 @click.user="toggleActionsheet3">弹出带标题的 Actionsheet</van-button3>
   <van-actionsheet3
-    :show="show3"
+    :show.sync="show3"
     title="标题"
     @close.user="toggleActionsheet3"
   >
@@ -47,6 +49,7 @@
 import wepy from 'wepy'
 import demoBlock from '../components/demo-block'
 import vanActionsheet from '../components/van-actionsheet'
+import vanButton from '../components/van-button'
 
 export default class Actionsheet extends wepy.page {
 
@@ -57,31 +60,39 @@ export default class Actionsheet extends wepy.page {
   components = {
     'demo-block1': demoBlock,
     'demo-block2': demoBlock,
+    'demo-block3': demoBlock,
     'van-actionsheet1': vanActionsheet,
-    'van-actionsheet2': vanActionsheet
+    'van-actionsheet2': vanActionsheet,
+    'van-actionsheet3': vanActionsheet,
+    'van-button1': vanButton,
+    'van-button2': vanButton,
+    'van-button3': vanButton
   }
   
   data = {
+    blockPadding: true,
     show1: false,
     show2: false,
-    show3: false
-  }
-
-  onLoad() {
-    this.ctions = [
+    show3: false,
+    actions: [
       { name: '选项' },
       { name: '选项', subname: '禁用' },
       { name: '选项', loading: true },
       { name: '禁用选项', disabled: true }
-    ];
-    this.$apply();
+    ]
+  }
+
+  onLoad() {
+    // this.actions = [
+    //   { name: '选项' },
+    //   { name: '选项', subname: '禁用' },
+    //   { name: '选项', loading: true },
+    //   { name: '禁用选项', disabled: true }
+    // ];
+    // this.$apply();
   }
 
   methods = {
-    toggle(type) {
-      this[type] = !this[type];
-      this.$apply();
-    },
 
     toggleActionsheet1() {
       this.toggle('show1');
@@ -94,6 +105,11 @@ export default class Actionsheet extends wepy.page {
     toggleActionsheet3() {
       this.toggle('show3');
     }
+  }
+
+  toggle(type) {
+    this[type] = !this[type];
+    this.$apply();
   }
   
 }
