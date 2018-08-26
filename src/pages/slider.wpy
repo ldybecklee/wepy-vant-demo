@@ -1,0 +1,60 @@
+<style lang="scss">
+
+.slider {
+  margin: 0 15px 30px;
+}
+
+</style>
+
+<template>
+
+<demo-block1 title="基础用法">
+  <van-slider1 custom-class="slider" value="50" bind:change="onChange" />
+</demo-block1>
+
+<demo-block2 title="指定选择范围">
+  <van-slider2
+    custom-class="slider"
+    value="50"
+    min="10"
+    max="90"
+    bind:change="onChange"
+  />
+</demo-block2>
+
+<demo-block3 title="禁用">
+  <van-slider3 custom-class="slider" value="50" disabled />
+</demo-block3>
+
+<demo-block4 title="指定步长">
+  <van-slider4
+    custom-class="slider"
+    value="50"
+    step="10"
+    bar-height="4px"
+    bind:change="onChange"
+  />
+</demo-block4>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+import demoBlock from '../components/demo-block'
+import vanSlider from '../components/van-slider'
+
+export default class Slider extends wepy.page {
+
+  components = {
+    'demo-block1': demoBlock,
+    'demo-block2': demoBlock,
+    'demo-block3': demoBlock,
+    'van-slider1': vanSlider,
+    'van-slider2': vanSlider,
+    'van-slider3': vanSlider,
+    'van-slider4': vanSlider,
+  }
+
+  
+}
+</script>
