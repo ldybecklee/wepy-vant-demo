@@ -43,7 +43,7 @@
   <button class="van-button van-button--normal van-button--default" bindtap="togglePopup">弹出 Popup</button>
   <van-popup1
     :show.sync="showMiddle"
-    custom-class="center"
+    customClass="center"
     :options="popupOptions1" 
     @close.user="togglePopup"
   >
@@ -56,8 +56,7 @@
   <van-popup2
     :show.sync="showBottom"
     position="bottom"
-    custom-class="bottom"
-    :options="popupOptions2" 
+    customClass="bottom"
     @close.user="toggleBottomPopup"
   >
     内容
@@ -68,8 +67,7 @@
     :show.sync="showTop"
     position="top"
     :overlay.sync="popupOverlay"
-    custom-class="top"
-    :options="popupOptions3" 
+    customClass="top"
     @close.user="toggleTopPopup"
   >
     内容
@@ -79,8 +77,7 @@
   <van-popup4
     :show.sync="showRight"
     position="right"
-    custom-class="right"
-    :options="popupOptions4" 
+    customClass="right" 
     @close.user="toggleRightPopup"
   >
     <button class="demo-margin-right van-button van-button--normal van-button--default" bindtap="toggleRightPopup">关闭弹层</button>
@@ -89,8 +86,7 @@
     <van-popup5
       :show.sync="showRight2"
       position="right"
-      custom-class="right"
-      :options="popupOptions5" 
+      customClass="right" 
       @close.user="toggleRightPopup2"
     >
       <button class="van-button van-button--normal van-button--default" bindtap="toggleRightPopup2">关闭弹层</button>
@@ -131,21 +127,6 @@ export default class Popup extends wepy.page {
     showRight: false,
     showRight2: false,
     popupOverlay: false,
-    popupOptions1: {
-      externalClasses: ['center']
-    },
-    popupOptions2: {
-      externalClasses: ['bottom']
-    },
-    popupOptions3: {
-      externalClasses: ['top']
-    },
-    popupOptions4: {
-      externalClasses: ['right']
-    },
-    popupOptions5: {
-      externalClasses: ['right']
-    },
   }
   
   toggle(type) {
