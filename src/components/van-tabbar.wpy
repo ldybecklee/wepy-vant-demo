@@ -20,7 +20,7 @@
 
 <view
   class="{{ externalClasses[0] }} van-tabbar van-hairline--top-bottom {{ fixed=='y' ? 'van-tabbar--fixed' : '' }}"
-  style="{{ zIndex ? 'style: ' + this.zIndex : '' }}" bindtap="onClick"  
+  style="{{ zIndex ? 'style: ' + this.zIndex : '' }}"  
 >
   <slot />
 </view>
