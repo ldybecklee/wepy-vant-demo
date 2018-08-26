@@ -134,7 +134,7 @@
 
 <view
   wx:if="{{ inited }}"
-  class="van-transition custom-class"
+  class="van-transition {{ externalClasses[0] }}"
   style="animation-name: van-{{ name }}-{{ type }}; animation-duration: {{ duration }}ms; {{ display ? '' : 'display: none;' }} {{ customStyle }}"
   bind:animationend="onAnimationEnd"
 >
@@ -181,7 +181,7 @@ export default class vanTransition extends wepy.component {
   watch = {
     show(value) {
       if (value) {
-        this.show();
+        this.methods.show.call(this);
       } else {
         this.type = 'leave';
       }
@@ -207,7 +207,7 @@ export default class vanTransition extends wepy.component {
   
   onLoad() {
     if (this.show) {
-      this.show();
+      this.methods.show.call(this);
     }
     this.$apply();
   }
