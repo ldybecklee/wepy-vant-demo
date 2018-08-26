@@ -98,7 +98,7 @@
   <view
   class="{{ customClass }} van-field {{ labelAlign ? 'van-field--label-' + labelAlign : '' }} van-cell {{ center=='y' ? 'van-cell--center' : '' }} {{ required=='y' ? 'van-cell--required' : '' }} {{ isLink=='y' || clickable ? 'van-cell--clickable' : '' }} {{ border=='y' ? 'van-hairline' : '' }}"  
   style="{{ customStyle }}">
-    <view wx:if="{{ leftIcon }}" class="van-cell__left-icon left-icon-clas icon van-icon van-icon-{{ leftIcon }}" />
+    <view wx:if="{{ leftIcon }}" class="van-cell__left-icon left-icon-class icon van-icon van-icon-{{ leftIcon }}" />
     <view wx:if="{{ label }}" class="van-cell__title title-class" style="max-width: 90px; min-width: 90px;">
       {{ label }}
     </view>
