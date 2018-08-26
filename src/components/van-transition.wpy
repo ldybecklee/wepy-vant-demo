@@ -172,7 +172,7 @@ export default class vanTransition extends wepy.component {
     }
   }
   
-  data: {
+  data = {
     type: '',
     inited: false,
     display: false
@@ -189,7 +189,7 @@ export default class vanTransition extends wepy.component {
     }
   }
   
-  methods: {
+  methods = {
     show() {
       this.inited = true;
       this.display = true;
