@@ -1,5 +1,6 @@
 <style lang="scss">
 
+@import '../vant/icon.scss';
 @import '../vant/cell.scss';
 
 .block {
@@ -17,44 +18,44 @@
 <template>
 
 <demo-block title="基础用法" :padding="blockPadding">
-  <view class="van-cell van-hairline van-cell--clickable" bind:tag="onClickFade">
+  <view class="van-cell van-hairline van-cell--clickable" bind:tap="onClickFade">
     <view class="van-cell__title title-class">Fade</view>
     <view class="van-cell__right-icon right-icon-class van-icon van-icon-arrow" />
   </view>
-  <view class="van-cell van-hairline van-cell--clickable" bind:tag="onClickFadeUp">
+  <view class="van-cell van-hairline van-cell--clickable" bind:tap="onClickFadeUp">
     <view class="van-cell__title title-class">Fade Up</view>
     <view class="van-cell__right-icon right-icon-class van-icon van-icon-arrow" />
   </view>
-  <view class="van-cell van-hairline van-cell--clickable" bind:tag="onClickFadeDown">
+  <view class="van-cell van-hairline van-cell--clickable" bind:tap="onClickFadeDown">
     <view class="van-cell__title title-class">Fade Down</view>
     <view class="van-cell__right-icon right-icon-class van-icon van-icon-arrow" />
   </view>
-  <view class="van-cell van-hairline van-cell--clickable" bind:tag="onClickFadeLeft">
+  <view class="van-cell van-hairline van-cell--clickable" bind:tap="onClickFadeLeft">
     <view class="van-cell__title title-class">Fade Left</view>
     <view class="van-cell__right-icon right-icon-class van-icon van-icon-arrow" />
   </view>
-  <view class="van-cell van-hairline van-cell--clickable" bind:tag="onClickFadeRight">
+  <view class="van-cell van-hairline van-cell--clickable" bind:tap="onClickFadeRight">
     <view class="van-cell__title title-class">Fade Right</view>
     <view class="van-cell__right-icon right-icon-class van-icon van-icon-arrow" />
   </view>
-  <view class="van-cell van-hairline van-cell--clickable" bind:tag="onClickSlideUp">
+  <view class="van-cell van-hairline van-cell--clickable" bind:tap="onClickSlideUp">
     <view class="van-cell__title title-class">Slide Up</view>
     <view class="van-cell__right-icon right-icon-class van-icon van-icon-arrow" />
   </view>
-  <view class="van-cell van-hairline van-cell--clickable" bind:tag="onClickSlideDown">
+  <view class="van-cell van-hairline van-cell--clickable" bind:tap="onClickSlideDown">
     <view class="van-cell__title title-class">Slide Down</view>
     <view class="van-cell__right-icon right-icon-class van-icon van-icon-arrow" />
   </view>
-  <view class="van-cell van-hairline van-cell--clickable" bind:tag="onClickSlideLeft">
+  <view class="van-cell van-hairline van-cell--clickable" bind:tap="onClickSlideLeft">
     <view class="van-cell__title title-class">Slide Left</view>
     <view class="van-cell__right-icon right-icon-class van-icon van-icon-arrow" />
   </view>
-  <view class="van-cell van-hairline van-cell--clickable" bind:tag="onClickSlideRight">
+  <view class="van-cell van-hairline van-cell--clickable" bind:tap="onClickSlideRight">
     <view class="van-cell__title title-class">Slide Right</view>
     <view class="van-cell__right-icon right-icon-class van-icon van-icon-arrow" />
   </view>
 
-  <van-transition show="show" name="name" :options="transitionOption" />
+  <van-transition :show.sync="show" :name.sync="name" :options="transitionOption" />
 </demo-block>
 
 </template>
@@ -86,51 +87,51 @@ export default class Transition extends wepy.page {
   
   methods = {
     onClickFade() {
-      this.methods.trigger.call(this,'fade');
+      this.trigger('fade');
     },
 
     onClickFadeUp() {
-      this.methods.trigger.call(this,'fade-up');
+      this.trigger('fade-up');
     },
 
     onClickFadeDown() {
-      this.methods.trigger.call(this,'fade-down');
+      this.trigger('fade-down');
     },
 
     onClickFadeLeft() {
-      this.methods.trigger.call(this,'fade-left');
+      this.trigger('fade-left');
     },
 
     onClickFadeRight() {
-      this.methods.trigger.call(this,'fade-right');
+      this.trigger('fade-right');
     },
 
     onClickSlideUp() {
-      this.methods.trigger.call(this,'slide-up');
+      this.trigger('slide-up');
     },
 
     onClickSlideDown() {
-      this.methods.trigger.call(this,'slide-down');
+      this.trigger('slide-down');
     },
 
     onClickSlideLeft() {
-      this.methods.trigger.call(this,'slide-left');
+      this.trigger('slide-left');
     },
 
     onClickSlideRight() {
-      this.methods.trigger.call(this,'slide-right');
-    },
-
-    trigger(name) {
-      this.name = name; 
-      this.show = true;
-      let that = this;
-      setTimeout(() => {
-        that.show = false;
-        that.$apply();
-      }, 500);
-      this.$apply();
+      this.trigger('slide-right');
     }
+  }
+
+  trigger(name) {
+    this.name = name; 
+    this.show = true;
+    let that = this;
+    setTimeout(() => {
+      that.show = false;
+      that.$apply();
+    }, 500);
+    this.$apply();
   }
   
 }
