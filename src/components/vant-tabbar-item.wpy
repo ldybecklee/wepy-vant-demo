@@ -1,6 +1,7 @@
 <style lang="scss">
 
 @import '../styles/var.scss';
+@import '../vant/icon.scss';
 
 .van-tabbar-item {
   float: left;
@@ -73,45 +74,32 @@
 
 <script>
 import wepy from 'wepy'
-
-const TABBAR_PATH = '../tabbar/index';
-
-Component({
-  properties: {
-    info: null,
-    icon: String,
-    dot: Boolean
-  },
-
-  options: {
-    multipleSlots: true,
-    addGlobalClass: true
-  },
-
-  relations: {
-    [TABBAR_PATH]: {
-      type: 'ancestor'
-    }
-  },
-
-  data: {
-    active: false,
-    count: 0
-  },
-
-  methods: {
-    onClick() {
-      const parent = this.getRelationNodes(TABBAR_PATH)[0];
-      if (parent) {
-        parent.onChange(this);
-      }
-      this.triggerEvent('click');
-    }
-  }
-});
+import ComOptionMixin from '../mixins/com-options'
 
 export default class vanTabbarItem extends wepy.component {
 
+  mixins = [ ComOptionMixin ]
+
+  props = {
+    info: String,
+    icon: String,
+    dot: Boolean
+  }
+  
+  data = {
+    active: false,
+    count: 0
+  }
+  
+  methods: {
+    onClick() {
+      //const parent = this.getRelationNodes(TABBAR_PATH)[0];
+      //if (parent) {
+        //parent.onChange(this);
+      //}
+      this.$emit('click');
+    }
+  }
   
 }
 </script>
