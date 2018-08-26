@@ -62,13 +62,13 @@
 <template>
 
 <van-overlay
-  show="{{ show && (mask || forbidClick) }}"
-  mask="{{ mask }}"
-  z-index="3000"
+  :show.sync="showOverlay"
+  :mask="mask"
+  zIndex="3000"
 />
 <van-transition
-  show="{{ show }}"
-  custom-class="van-toast__container"
+  :show.sync="show"
+  customClass="van-toast__container"
 >
   <view class="van-toast van-toast--{{ type === 'text' ? 'text' : 'icon' }} van-toast--{{ position }}">
     <!-- text only -->
@@ -79,8 +79,8 @@
       <van-loading
         wx:if="{{ type === 'loading' }}"
         color="white"
-        type="{{ loadingType }}"
-        custom-class="van-toast__loading"
+        :type="loadingType"
+        customClass="van-toast__loading"
       />
       <van-icon wx:else class="van-toast__icon" name="{{ type }}" />
       <view wx:if="{{ message }}" class="van-toast__text">{{ message }}</view>
@@ -92,44 +92,48 @@
 
 <script>
 import wepy from 'wepy'
+import vanOverlay from '../components/van-overlay'
+import vanTransition from '../components/van-transition'
+import vanLoading from '../components/van-loading'
+import vanIcon from '../components/van-icon'
 
-// import Toast from './toast';
+export default class vanToast extends wepy.component {
 
-Component({
-  options: {
-    addGlobalClass: true
-  },
+  components = {
+    'van-overlay': vanOverlay,
+    'van-transition': vanTransition,
+    'van-loading': vanLoading
+  }
 
-  properties: {
+  props = {
     show: Boolean,
     mask: Boolean,
     message: String,
     forbidClick: Boolean,
     type: {
       type: String,
-      value: 'text'
+      default: 'text'
     },
     loadingType: {
       type: String,
-      value: 'circular'
+      default: 'circular'
     },
     position: {
       type: String,
-      value: 'middle'
-    }
-  },
-
-  methods: {
-    clear() {
-      this.setData({
-        show: false
-      });
+      default: 'middle'
     }
   }
-});
-
-export default class vanToast extends wepy.component {
-
+  
+  data = {
+    showOverlay: show && (this.mask || this.forbidClick)
+  }
+  
+  methods = {
+    clear() {
+      this.show = false;
+      this.$apply();
+    }
+  }
   
 }
 </script>
