@@ -13,9 +13,9 @@
 <template>
 
 <van-transition
-  show="{{ show }}"
-  custom-class="van-overlay"
-  custom-style="z-index: {{ zIndex }}; {{ mask ? 'background-color: rgba(0, 0, 0, .7);' : '' }}; {{ customStyle }}"
+  :show.sync="show"
+  customClass="van-overlay"
+  :customStyle="customStyle"
   bind:tap="onClick"
 />
 
@@ -23,31 +23,38 @@
 
 <script>
 import wepy from 'wepy'
+import vanTransition from '../components/van-transition'
 
-Component({
-  options: {
-    addGlobalClass: true
-  },
+export default class vanOverlay extends wepy.component {
 
-  properties: {
+  components = {
+    'van-transition': vanTransition
+  }
+  
+  props = {
     show: Boolean,
     mask: Boolean,
     customStyle: String,
     zIndex: {
-      type: Number,
-      value: 1
-    }
-  },
-
-  methods: {
-    onClick() {
-      this.triggerEvent('click');
+      type: String,
+      default: '1'
     }
   }
-});
-
-export default class vanOverlay extends wepy.component {
-
+  
+  methods = {
+    onClick() {
+      this.$emit('click');
+    }
+  }
+  
+  onLoad() {
+    var customStyle = 'z-index: ' + this.zIndex + ';';
+    if(this.mask) {
+      customStyle += 'background-color: rgba(0, 0, 0, .7);';
+    }
+    this.customStyle = customStyle + this.customStyle;
+    this.$apply();
+  }
   
 }
 </script>
