@@ -1,0 +1,135 @@
+<style lang="scss">
+
+@import '../vant/cell.scss';
+@import '../vant/button.scss';
+
+.button {
+  vertical-align: middle;
+}
+
+.icon {
+  color: #38f;
+}
+
+</style>
+
+<template>
+
+<demo-block1 title="基础用法">
+  <view class="van-cell-group van-hairline--top-bottom">
+    <van-field1 :value="value" placeholder="请输入用户名" border="n" clearable="y" />
+  </view>
+</demo-block1>
+
+<demo-block2 title="自定义类型">
+  <view class="van-cell-group van-hairline--top-bottom">
+    <van-field2
+      :value="username"
+      label="用户名"
+      placeholder="请输入用户名"
+      clearable="y"
+      icon="question"
+      icon-class="icon"
+      :options="fieldOption1" 
+      required="y" 
+      bind:click-icon="onClickIcon"
+    />
+    <van-field3
+      :value="password"
+      type="password"
+      label="密码"
+      placeholder="请输入密码"
+      required="y"
+      border="n"
+    />
+  </view>
+</demo-block2>
+
+<demo-block3 title="禁用输入框">
+  <view class="van-cell-group van-hairline--top-bottom">
+    <van-field4
+      value="输入框已禁用"
+      label="用户名"
+      leftIcon="contact"
+      disabled="y"
+      border="n"
+    />
+  </view>
+</demo-block3>
+
+<demo-block4 title="错误提示">
+  <view class="van-cell-group van-hairline--top-bottom">
+    <van-field5
+      :value="username2"
+      label="用户名"
+      placeholder="请输入用户名"
+      error="y"
+    />
+    <van-field6
+      :value="phone"
+      label="手机号"
+      placeholder="请输入手机号"
+      errorMessage="手机号格式错误"
+      border="n"
+    />
+  </view>
+</demo-block4>
+
+<demo-block5 title="高度自适应">
+  <view class="van-cell-group van-hairline--top-bottom">
+    <van-field7
+      :value="message"
+      label="留言"
+      type="textarea"
+      placeholder="请输入留言"
+      rows="1"
+      autosize="y"
+      border="n"
+    />
+  </view>
+</demo-block5>
+
+<demo-block6 title="插入按钮">
+  <view class="van-cell-group van-hairline--top-bottom">
+    <van-field8
+      :value="sms"
+      center="y"
+      clearable="y"
+      label="短信验证码"
+      placeholder="请输入短信验证码"
+      useButtonSlot="y"
+      border="n"
+    >
+      <button slot="button" class="demo-margin-right button van-button van-button--small van-button--primary">发送验证码</button>
+    </van-field8>
+  </view>
+</demo-block6>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+import deomBlock from '../components/demo-block'
+import vanField from '../components/van-field'
+
+export default class Field extends wepy.page {
+
+  components = {
+    'demo-block1': demoBlock,
+    'demo-block2': demoBlock,
+    'demo-block3': demoBlock,
+    'demo-block4': demoBlock,
+    'demo-block5': demoBlock,
+    'demo-block6': demoBlock,
+    'van-field1': vanField,
+    'van-field2': vanField,
+    'van-field3': vanField,
+    'van-field4': vanField,
+    'van-field5': vanField,
+    'van-field6': vanField,
+    'van-field7': vanField,
+    'van-field8': vanField
+  }
+  
+}
+</script>
