@@ -84,10 +84,6 @@ import vanField from '../components/van-field'
 
 export default class vanSearch extends wepy.component {
 
-  config = {
-    "navigationBarTitleText": "Search 搜索"
-  }
-
   mixins = [ ComOptionsMixin ]
   
   components = {
