@@ -79,68 +79,92 @@
 
 <script>
 import wepy from 'wepy'
-
-Component({
-  externalClasses: ['custom-class', 'cancel-class'],
-
-  options: {
-    multipleSlots: true,
-    addGlobalClass: true
-  },
-
-  properties: {
-    disabled: Boolean,
-    readonly: Boolean,
-    showAction: Boolean,
-    useActionSlot: Boolean,
-    placeholder: String,
-    value: {
-      type: String,
-      observer(currentValue) {
-        this.setData({ currentValue });
-      }
-    },
-    background: {
-      type: String,
-      value: '#f2f2f2'
-    },
-    maxlength: {
-      type: Number,
-      value: -1
-    }
-  },
-
-  attached() {
-    this.setData({ currentValue: this.data.value });
-  },
-
-  methods: {
-    onChange(event) {
-      this.triggerEvent('change', event.detail);
-    },
-
-    onCancel() {
-      this.setData({ currentValue: '' });
-      this.triggerEvent('cancel');
-      this.triggerEvent('change', '');
-    },
-
-    onSearch() {
-      this.triggerEvent('search', this.data.currentValue);
-    },
-
-    onFocus() {
-      this.triggerEvent('focus');
-    },
-
-    onBlur() {
-      this.triggerEvent('blur');
-    }
-  }
-});
+import ComOptionsMixin from '../mixins/com-options'
+import vanField from '../components/van-field'
 
 export default class vanSearch extends wepy.component {
 
+  config = {
+    "navigationBarTitleText": "Search 搜索"
+  }
+
+  mixins = [ ComOptionsMixin ]
+  
+  components = {
+    'van-field': vanField
+  }
+  
+  props = {
+    externalClasses: {
+      type: Array,
+      default: ['custom-class', 'cancel-class']
+    },
+    options: Object,
+    disabled: {
+      type: String,
+      default: 'n'
+    },
+    readonly: {
+      type: String,
+      default: 'n'
+    },
+    showAction: {
+      type: String,
+      default: 'n'
+    },
+    useActionSlot: {
+      type: String,
+      default: 'n'
+    },
+    placeholder: String,
+    value: {
+      type: String
+    },
+    background: {
+      type: String,
+      default: '#f2f2f2'
+    },
+    maxlength: {
+      type: String,
+      default: '-1'
+    }
+  }
+  
+  watch = {
+    value(currentValue) {
+      this.currentValue = currentValue;
+      this.$apply();
+    }
+  }
+  
+  methods = {
+    onChange(event) {
+      this.$emit('change', event.detail);
+    },
+
+    onCancel() {
+      this.currentValue = '';
+      this.$emit('cancel');
+      this.$emit('change', '');
+    },
+
+    onSearch() {
+      this.$emit('search', this.currentValue);
+    },
+
+    onFocus() {
+      this.$emit('focus');
+    },
+
+    onBlur() {
+      this.$emit('blur');
+    }
+  }
+  
+  onLoad() {
+    this.currentValue = this.data.value;
+    this.$apply();
+  }
   
 }
 </script>
