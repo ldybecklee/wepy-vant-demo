@@ -51,12 +51,12 @@
 <template>
 
 <view
-  class="van-switch {{ customClass }} {{ checked=='y' ? 'van-switch--on' : '' }} {{ disabled=='y' ? 'van-switch--disabled' : '' }}"
+  class="van-switch {{ customClass }} {{ checked ? 'van-switch--on' : '' }} {{ disabled=='y' ? 'van-switch--disabled' : '' }}"
   style="font-size: {{ size }};"
   bind:tap="onClick"
 >
   <view class="van-switch__node {{ nodeClass }}">
-    <van-loading wx:if="{{ loading }}" size="50%" custom-class="van-switch__loading" />
+    <van-loading wx:if="{{ loading=='y' }}" size="50%" customClass="van-switch__loading" />
   </view>
 </view>
 
@@ -86,8 +86,8 @@ export default class vanSwitch extends wepy.component {
     },
     options: Object,
     checked: {
-      type: String,
-      default: 'n'
+      type: Boolean,
+      default: false
     },
     loading: {
       type: String,
@@ -105,7 +105,7 @@ export default class vanSwitch extends wepy.component {
   
   methods = {
     onClick() {
-      if (!this.disabled && !this.loading) {
+      if (this.disabled!='y' && this.loading!='y') {
         const checked = !this.checked;
         this.$emit('input', checked);
         this.$emit('change', checked);
