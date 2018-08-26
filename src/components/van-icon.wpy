@@ -420,7 +420,7 @@
 <template>
 
 <view
-  class="{{ externalClasses[0] }} van-icon van-icon-{{ name }}"
+  class="{{ customClass }} van-icon van-icon-{{ name }}"
   style="{{ color ? 'color: ' + color : '' }}; {{ size ? 'font-size: ' + size : '' }}"
   bind:tap="onClick"
 >
@@ -435,9 +435,9 @@ import wepy from 'wepy'
 export default class vanIcon extends wepy.component {
 
   props = {
-    externalClasses: {
-      type: Object,
-      default: ['custom-class']
+    customClass: {
+      type: String,
+      default: 'custom-class'
     },
     info: {
       type: String,
