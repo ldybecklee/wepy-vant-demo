@@ -36,6 +36,10 @@ import demoBlock from '../components/demo-block'
 
 export default class Tag extends wepy.page {
 
+  config = {
+    "navigationBarTitleText": "Tag 标记"
+  }
+
   components = {
     'demo-block1': demoBlock,
     'demo-block2': demoBlock,

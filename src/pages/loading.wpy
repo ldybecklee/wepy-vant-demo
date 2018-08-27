@@ -47,6 +47,10 @@ import demoBlock from '../components/demo-block'
 
 export default class Loading extends wepy.page {
 
+  config = {
+    "navigationBarTitleText": "Loading 加载"
+  }
+
   components = {
     'demo-block1': demoBlock,
     'demo-block2': demoBlock

@@ -37,6 +37,10 @@ import vanProgress from '../components/van-progress'
 
 export default class Progress extends wepy.page {
 
+  config = {
+    "navigationBarTitleText": "Progress 进度条"
+  }
+
   components = {
     'demo-block1': demoBlock,
     'demo-block2': demoBlock,
