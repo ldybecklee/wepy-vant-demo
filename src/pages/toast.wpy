@@ -7,20 +7,20 @@
 <template>
 
 <demo-block1 title="文字提示" :padding="blockPadding">
-  <van-button1 bind:tap="showToast">文字提示</van-button1>
+  <van-button1 @click.user="showToast">文字提示</van-button1>
 </demo-block1>
 
 <demo-block2 title="加载提示" :padding="blockPadding">
-  <van-button2 bind:tap="showLoadingToast">加载提示</van-button2>
+  <van-button2 @click.user="showLoadingToast">加载提示</van-button2>
 </demo-block2>
 
 <demo-block3 title="成功/失败提示" :padding="blockPadding">
-  <van-button3 bind:tap="showSuccessToast" customClass="demo-margin-right">成功提示</van-button3>
-  <van-button4 bind:tap="showFailToast">失败提示</van-button4>
+  <van-button3 @click.user="showSuccessToast" customClass="demo-margin-right">成功提示</van-button3>
+  <van-button4 @click.user="showFailToast">失败提示</van-button4>
 </demo-block3>
 
 <demo-block4 title="高级用法" :padding="blockPadding">
-  <van-button5 bind:tap="showCustomizedToast">高级用法</van-button5>
+  <van-button5 @click.user="showCustomizedToast">高级用法</van-button5>
 </demo-block4>
 
 <van-toast id="van-toast" />
@@ -32,8 +32,9 @@ import wepy from 'wepy'
 import demoBlock from '../components/demo-block'
 import vanButton from  '../components/van-button'
 import vanToast from  '../components/van-toast'
+import Toast from '../utils/toast'
 
-export default class Toast extends wepy.page {
+export default class ToastPage extends wepy.page {
 
   config = {
     "navigationBarTitleText": "Toast 轻提示"
@@ -58,6 +59,8 @@ export default class Toast extends wepy.page {
   
   methods = {
     showToast() {
+      console.log(Toast);
+      console.log('show toast');
       Toast('我是提示文案，建议不超过十五字~');
     },
 
