@@ -100,6 +100,10 @@ import demoBlock from '../components/demo-block'
 
 export default class Cell extends wepy.page {
 
+  config = {
+    "navigationBarTitleText": "Cell 单元格"
+  }
+
   components = {
     'demo-block1': demoBlock,
     'demo-block2': demoBlock,
