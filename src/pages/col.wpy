@@ -68,6 +68,10 @@ import demoBlock from '../components/demo-block'
 
 export default class Col extends wepy.page {
 
+  config = {
+    "navigationBarTitleText": "Layout 布局"
+  }
+
   components = {
     'demo-block1': demoBlock,
     'demo-block2': demoBlock
