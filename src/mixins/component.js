@@ -1,15 +1,18 @@
 import wepy from 'wepy';
 
 export default class ComponentMixin extends wepy.mixin {
-  
-  // 需要在component组件中定义props: 
-  // { 
-  //   options: { 
- //      type: Object 
-  //   } 
-  // }
-  
-  onLoad() {  
+
+  props = {
+    options: Object
+  }
+
+  watch = {
+    options(newValue, oldValue) {
+      this.applyOptions();
+    }
+  }
+
+  applyOptions() {
     // 增加使用options参数进行props传值，
     // 进行value类型验证
     // options对象内的值会覆盖掉props上面的值
@@ -24,6 +27,10 @@ export default class ComponentMixin extends wepy.mixin {
       this[key] = this.options[key];
     }
     this.$apply();
+  }
+
+  onLoad() {  
+    this.applyOptions();
   }
   
 }
