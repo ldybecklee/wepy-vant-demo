@@ -1,8 +1,8 @@
-@import '../var.scss';
+@import '../var';
 
 $border-poses: top, right, bottom, left;
 
-@define-mixin border-retina $poses: $border-poses, $border-retina-color: $border-color {
+@mixin border-retina($poses: $border-poses, $border-retina-color: $border-color) {
   content: '';
   position: absolute;
   top: 0;
@@ -15,11 +15,12 @@ $border-poses: top, right, bottom, left;
   box-sizing: border-box;
 
   @each $pos in $poses {
-    border-$(pos): 1px solid $border-retina-color;
+    border-#{$pos}: 1px solid $border-retina-color;
   }
+  
 }
 
-@define-mixin hairline $border-retina-color: $border-color {
+@mixin hairline($border-retina-color: $border-color) {
   content: '';
   position: absolute;
   top: 0;

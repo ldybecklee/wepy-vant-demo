@@ -1,4 +1,4 @@
-@define-mixin multi-ellipsis $lines {
+@mixin multi-ellipsis($lines) {
   overflow : hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -6,7 +6,7 @@
   -webkit-box-orient: vertical;
 }
 
-@define-mixin ellipsis {
+@mixin ellipsis() {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
