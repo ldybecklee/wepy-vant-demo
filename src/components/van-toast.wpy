@@ -62,13 +62,14 @@
 <template>
 
 <van-overlay
-  :show.sync="showOverlay"
-  :mask="mask"
+  :show.sync="_showOverlay"
+  :mask.sync="_hasMask"
   zIndex="3000"
 />
+
 <van-transition
   :show.sync="show"
-  customClass="van-toast__container"
+  customClass="van-toast__container" 
 >
   <view class="van-toast van-toast--{{ type === 'text' ? 'text' : 'icon' }} van-toast--{{ position }}">
     <!-- text only -->
@@ -79,10 +80,10 @@
       <van-loading
         wx:if="{{ type === 'loading' }}"
         color="white"
-        :type="loadingType"
+        :type.sync="loadingType"
         customClass="van-toast__loading"
       />
-      <van-icon wx:else class="van-toast__icon" name="{{ type }}" />
+      <van-icon wx:else customClass="van-toast__icon" :name.sync="type" />
       <view wx:if="{{ message }}" class="van-toast__text">{{ message }}</view>
     </block>
   </view>
@@ -102,14 +103,24 @@ export default class vanToast extends wepy.component {
   components = {
     'van-overlay': vanOverlay,
     'van-transition': vanTransition,
-    'van-loading': vanLoading
+    'van-loading': vanLoading,
+    'van-icon': vanIcon
   }
 
   props = {
-    show: Boolean,
-    mask: Boolean,
+    show: {
+      type: Boolean,
+      twoWay: true
+    },
+    mask: {
+      type: String,
+      default: 'n'
+    },
     message: String,
-    forbidClick: Boolean,
+    forbidClick: {
+      type: String,
+      default: 'n'
+    },
     type: {
       type: String,
       default: 'text'
@@ -121,23 +132,62 @@ export default class vanToast extends wepy.component {
     position: {
       type: String,
       default: 'middle'
+    },
+    duration: {
+      type: String,
+      default: '3000'
     }
   }
   
   data = {
-    showOverlay: false
+    timer: null,
+    _showOverlay: false,
+    _hasMask: false
   }
   
+  watch = {
+    show(display) {
+      if(display) {
+        this.methods.show.call(this);
+      } else {
+        this.methods.hide.call(this);
+      }
+    }
+  }
+
   methods = {
-    clear() {
-      this.show = false;
+
+    show() {
+      const { duration } = this.data;
+
+      clearTimeout(this.timer);
+      this.show = true;
+      let that = this;
+      if (duration > 0 && duration !== Infinity) {
+        that.timer = setTimeout(() => {
+          that.methods.hide.call(that);
+        }, duration);
+      }
+
+      this.methods.effectOverlay.call(this);
       this.$apply();
+    },
+
+    hide() {
+      clearTimeout(this.timer);
+      this.show = false;
+      this.methods.effectOverlay.call(this);
+      this.$apply();
+    },
+
+    effectOverlay() {
+      this._hasMask = this.mask=='y';
+      this._showOverlay = this.show && (this.mask=='y' || this.forbidClick=='y');
     }
   }
 
   onLoad() {
-    this.showOverlay = this.show && (this.mask || this.forbidClick);
-    console.log('show overlay', this.showOverlay);
+    this.methods.effectOverlay.call(this);
     this.$apply();
   }
   
