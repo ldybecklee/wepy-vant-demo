@@ -1,7 +1,7 @@
 # wepy-vant-demo
 Vant Weapp 官方小程序案例wepy版
 
-[Vant Weapp](https://youzan.github.io/vant-weapp) Vant Weapp 是有赞移动端组件库 Vant 的小程序版本，两者基于相同的视觉规范，提供一致的 API 接口，助力开发者快速搭建小程序应用
+[Vant Weapp](https://youzan.github.io/vant-weapp) 是有赞移动端组件库 Vant 的小程序版本，两者基于相同的视觉规范，提供一致的 API 接口，助力开发者快速搭建小程序应用
 
 这里是 Vant Weapp 在 WePY 中的移植。
 
