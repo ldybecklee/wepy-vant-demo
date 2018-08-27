@@ -111,7 +111,7 @@
       <view class="mobile-nav__title">{{ group.groupName }}</view>
       <van-cell-group>
         <block wx:for="{{ group.list }}" wx:key="item.title" item="item">
-        <view class="custom-class van-cell {{ center ? 'van-cell--center' : '' }} {{ required ? 'van-cell--required' : '' }} {{ isLink || clickable ? 'van-cell--clickable' : '' }} {{ border ? 'van-hairline' : '' }}"  
+        <view class="custom-class van-cell {{ center ? 'van-cell--center' : '' }} {{ required ? 'van-cell--required' : '' }} {{ isLink || clickable ? 'van-cell--clickable' : '' }} {{ border ? 'van-hairline--bottom' : '' }}"  
   style="{{ customStyle }}"
   bind:tap="onClick({{ item.url }})"
 >
