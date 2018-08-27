@@ -114,6 +114,10 @@ import vanField from '../components/van-field'
 
 export default class Field extends wepy.page {
 
+  config = {
+    "navigationBarTitleText": "Field 输入框"
+  }
+
   components = {
     'demo-block1': demoBlock,
     'demo-block2': demoBlock,
