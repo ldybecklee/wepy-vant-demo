@@ -48,6 +48,10 @@ import demoBlock from '../components/demo-block'
 
 export default class Badge extends wepy.page {
 
+  config = {
+    "navigationBarTitleText": "Badge 徽章"
+  }
+
   components = {
     'demo-block': demoBlock
   }
