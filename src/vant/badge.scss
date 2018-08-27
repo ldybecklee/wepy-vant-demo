@@ -25,7 +25,7 @@
   }
 
   &::after {
-    @mixin hairline;
+    @include hairline();
     border-bottom-width: 1px;
   }
 
