@@ -1,0 +1,61 @@
+<style lang="scss">
+
+</style>
+
+<template>
+
+<demo-block1 :padding="blockPadding" title="基础用法">
+  <van-button1 @click.user="showNotify">显示消息通知</van-button1>
+</demo-block1>
+
+<demo-block2 :padding="blockPadding" title="自定义配置">
+  <van-button2 @click.user="showNotify2">显示自定义消息通知</van-button2>
+</demo-block2>
+
+<van-notify1 id="van-notify" :show.sync="showNotify1" text="通知内容" />
+<van-notify2 id="custom-selector" :show.sync="showNotify2" duration="1000" text="通知内容" backgroundColor="#38f" />
+
+</template>
+
+<script>
+import wepy from 'wepy'
+import demoBlock from '../components/demo-block'
+import vanNotify from '../components/van-notify'
+import vanButton from '../components/van-button'
+
+export default class Actionsheet extends wepy.page {
+
+  config = {
+    "navigationBarTitleText": "Noitfy 消息通知"
+  }
+
+  components = {
+    'demo-block1': demoBlock,
+    'demo-block2': demoBlock,
+    'van-button1': vanButton,
+    'van-button2': vanButton,
+    'van-notify1': vanNotify,
+    'van-notify2': vanNotify
+  }
+  
+  data = {
+    blockPadding: true,
+    showNotify1: false,
+    showNotify2: false
+  }
+
+  methods = {
+
+    showNotify() {
+      this.showNotify1 = true;
+      this.$apply();
+    },
+    showNotify2() {
+      this.showNotify2 = true;
+      this.$apply();
+    }
+
+  }
+  
+}
+</script>
