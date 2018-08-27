@@ -130,25 +130,23 @@
 <script>
 import wepy from 'wepy'
 
-Component({
-  externalClasses: [
-    'custom-class',
-    'title-class',
-    'label-class',
-    'value-class',
-    'left-icon-class',
-    'right-icon-class'
-  ],
+export default class vanCell extends wepy.component {
 
-  options: {
-    multipleSlots: true,
-    addGlobalClass: true
-  },
-
-  properties: {
-    title: null,
-    value: null,
+  props = {
+    externalClasses: {
+      type: Array,
+      default: [
+        'custom-class',
+        'title-class',
+        'label-class',
+        'value-class',
+        'left-icon-class',
+        'right-icon-class'
+      ]
+    },
+    title: String,
     url: String,
+    value: String,
     icon: String,
     label: String,
     center: Boolean,
@@ -160,27 +158,25 @@ Component({
     arrowDirection: String,
     linkType: {
       type: String,
-      value: 'navigateTo'
+      default: 'navigateTo'
     },
     border: {
       type: Boolean,
-      value: true
-    }
-  },
+      default: true
+    } 
+  }
 
-  methods: {
+  methods = {
     onClick() {
       const { url } = this.data;
       if (url) {
-        wx[this.data.linkType]({ url });
+        wx[this.linkType]({ url });
       }
-      this.triggerEvent('click');
+      this.$emit('click');
     }
   }
-});
 
-export default class vanCell extends wepy.component {
+  onLoad() { console.log('data',this.data); }
 
-  
 }
 </script>

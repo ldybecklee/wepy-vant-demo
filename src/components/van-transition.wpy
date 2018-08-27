@@ -134,7 +134,7 @@
 
 <view
   wx:if="{{ inited }}"
-  class="van-transition {{ externalClasses[0] }}"
+  class="van-transition {{ customClass }}"
   style="animation-name: van-{{ name }}-{{ type }}; animation-duration: {{ duration }}ms; {{ display ? '' : 'display: none;' }} {{ customStyle }}"
   bind:animationend="onAnimationEnd"
 >
@@ -152,9 +152,9 @@ export default class vanTransition extends wepy.component {
   mixins = [ ComOptionsMixin ]
   
   props = {
-    externalClasses: {
-      type: Array,
-      default: ['custom-class']
+    customClass: {
+      type: String,
+      default: 'custom-class'
     },
     options: Object,
     customStyle: String,

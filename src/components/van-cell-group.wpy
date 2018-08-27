@@ -16,23 +16,18 @@
 <script>
 import wepy from 'wepy'
 
-Component({
-  options: {
-    addGlobalClass: true
-  },
-
-  externalClasses: ['custom-class'],
-
-  properties: {
-    border: {
-      type: Boolean,
-      value: true
-    }
-  }
-});
-
 export default class vanCellGroup extends wepy.component {
 
-  
+  props = {
+    externalClasses: {
+      type: Array,
+      default: ['custom-class']
+    },
+    border: {
+      type: Boolean,
+      default: true
+    }
+  }
+
 }
 </script>

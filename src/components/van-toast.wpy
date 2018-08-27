@@ -125,7 +125,7 @@ export default class vanToast extends wepy.component {
   }
   
   data = {
-    showOverlay: show && (this.mask || this.forbidClick)
+    showOverlay: false
   }
   
   methods = {
@@ -133,6 +133,12 @@ export default class vanToast extends wepy.component {
       this.show = false;
       this.$apply();
     }
+  }
+
+  onLoad() {
+    this.showOverlay = this.show && (this.mask || this.forbidClick);
+    console.log('show overlay', this.showOverlay);
+    this.$apply();
   }
   
 }
