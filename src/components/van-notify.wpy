@@ -21,9 +21,9 @@
 
 <van-transition
   name="slide-down"
-  show="{{ show }}"
-  custom-class="van-notify"
-  custom-style="background-color:{{ backgroundColor }}"
+  :show.sync="show"
+  customClass="van-notify"
+  :customStyle.sync="customStyle"
 >
   {{ text }}
 </van-transition>
@@ -32,57 +32,78 @@
 
 <script>
 import wepy from 'wepy'
+import comOptionsMixin from '../mixins/com-options'
+import vanTransition from '../components/van-transition'
 
-// import Notify from './notify'
+export default class vanNotify extends wepy.component {
 
-Component({
-  options: {
-    addGlobalClass: true
-  },
+  mixins = [ comOptionsMixin ]
 
-  properties: {
+  components = {
+    'van-transition': vanTransition
+  }
+
+  props = {
+    options: Object,
+    show: {
+      type: Boolean,
+      twoWay: true
+    },
     text: String,
     color: {
       type: String,
-      value: '#fff'
+      default: '#fff'
     },
     backgroundColor: {
       type: String,
-      value: '#e64340'
+      default: '#e64340'
     },
     duration: {
-      type: Number,
-      value: 3000
+      type: String,
+      default: '3000'
     }
-  },
+  }
 
-  methods: {
+  data = {
+    customStyle: ''
+  }
+
+  watch = {
+    show(display) {
+      if(display) {
+        this.methods.show.call(this);
+      } else {
+        this.methods.hide.call(this);
+      }
+    }
+  }
+
+  methods = {
     show() {
       const { duration } = this.data;
 
       clearTimeout(this.timer);
-      this.setData({
-        show: true
-      });
-
+      this.show = true;
+      let that = this;
       if (duration > 0 && duration !== Infinity) {
-        this.timer = setTimeout(() => {
-          this.hide();
+        that.timer = setTimeout(() => {
+          that.methods.hide.call(that);
         }, duration);
       }
+      this.$apply();
     },
 
     hide() {
       clearTimeout(this.timer);
-      this.setData({
-        show: false
-      });
+      this.show = false;
+      this.$apply();
     }
   }
-});
-
-export default class vanNotify extends wepy.component {
-
   
+  onLoad() {
+    this.customStyle = 'background-color:' + this.backgroundColor;
+    this.$apply();
+  }
+
 }
 </script>
