@@ -40,7 +40,7 @@ import vanTabbarItem from '../components/van-tabbar-item'
 export default class Tabbar extends wepy.page {
 
   config = {
-    "navigationBarTitleText": "Tabbar 标签页"
+    "navigationBarTitleText": "Tabbar 标签栏"
   }
 
   components = {
