@@ -9,8 +9,15 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "beautify": "beautify-pages.bat"
   },
-  "author": "Bruce Xiong",
-  "license": "ISC",
+  "keywords": [
+    "demo"
+    "ui",
+    "weixin",
+    "weapp",
+    "vant"
+  ],
+  "author": "Beck Lee",
+  "license": "MIT",
   "dependencies": {
     "crypto": "^1.0.1",
     "oauth-1.0a": "^2.2.4",
